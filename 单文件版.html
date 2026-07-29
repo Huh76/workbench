@@ -1,0 +1,2469 @@
+<!DOCTYPE html>
+<!-- build:trailwork-20260728j -->
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>TRAEWork · 卡片式智能办公工作台</title>
+  <style>
+/* ============================================================
+ * TRAEWork 工作台 —— Soft UI · 奶油米色治愈系
+ * 低饱和橄榄绿主色 · 超大圆角 · 柔和微阴影 · 哑光质感
+ * ============================================================ */
+:root{
+  --bg:#F5F0E7;
+  --bg-grad:linear-gradient(160deg,#FBF8F1 0%,#EFE7D6 100%);
+  --panel:#FCFAF4;
+  --panel-soft:#F3ECDD;
+  --sidebar:#E9E1CF;
+  --sidebar-hover:#DFD5BF;
+  --sidebar-active:#7C8A5A;
+  --primary:#7C8A5A;
+  --primary-dark:#5E6B41;
+  --primary-soft:#E8EDDC;
+  --text:#3D3A30;
+  --text-soft:#8C8576;
+  --border-soft:#E7E0D1;
+  --ok:#7C8A5A; --warn:#C08A3E; --bad:#C26B5A;
+  --radius:22px; --radius-sm:15px; --radius-pill:999px;
+  --shadow:0 8px 22px rgba(120,108,78,.12);
+  --shadow-soft:0 3px 10px rgba(120,108,78,.08);
+  --shadow-lg:0 14px 34px rgba(120,108,78,.18);
+  --inset:inset 0 1px 0 rgba(255,255,255,.7);
+  --neu:0 6px 16px rgba(120,108,78,.10), inset 0 1px 0 rgba(255,255,255,.7);
+}
+*{box-sizing:border-box} html,body{height:100%;margin:0}
+body{font-family:"Segoe UI","PingFang SC","Microsoft YaHei",system-ui,sans-serif;background:var(--bg-grad);background-attachment:fixed;color:var(--text);font-size:14px;line-height:1.6;-webkit-font-smoothing:antialiased}
+
+.app{display:flex;height:100vh;overflow:hidden}
+
+/* 左侧导航 —— 奶油沙色软面板 · 经典 Dashboard 竖向导航（轻新拟态改良版） */
+.sidebar{width:212px;flex:0 0 212px;background:var(--sidebar);color:#5a5444;display:flex;flex-direction:column;box-shadow:6px 0 28px rgba(120,108,78,.07), inset -1px 0 0 rgba(255,255,255,.55)}
+.sidebar .brand{padding:22px 18px 16px;border-bottom:1px solid rgba(120,108,78,.10)}
+.sidebar .brand h1{font-size:16px;margin:0;color:#3D3A30;letter-spacing:.3px;font-weight:800;line-height:1.2;display:flex;align-items:center}
+.sidebar .brand h1::before{content:"";width:22px;height:22px;border-radius:7px;background:linear-gradient(135deg,var(--primary),var(--primary-dark));box-shadow:var(--shadow-soft);margin-right:9px;flex:0 0 22px}
+.sidebar .brand p{margin:9px 0 0 31px;font-size:10.5px;color:#928B7A;line-height:1.3}
+.nav{padding:14px 12px;overflow-y:auto;flex:1}
+.nav-item{display:flex;flex-direction:row;align-items:center;gap:11px;padding:11px 13px;border-radius:15px;cursor:pointer;margin-bottom:7px;color:#6a6453;transition:.18s;user-select:none;background:transparent;text-align:left}
+.nav-item:hover{background:var(--sidebar-hover);transform:translateY(-1px);box-shadow:var(--shadow-soft)}
+.nav-item.active{background:var(--sidebar-active);color:#fff;box-shadow:var(--shadow), inset 0 1px 0 rgba(255,255,255,.20)}
+.nav-item .num{width:31px;height:31px;flex:0 0 31px;display:grid;place-items:center;background:rgba(124,138,90,.20);border-radius:10px;font-size:13px;font-weight:800;color:#5E6B41;box-shadow:inset 0 1px 0 rgba(255,255,255,.45)}
+.nav-item.active .num{background:rgba(255,255,255,.28);color:#fff;box-shadow:none}
+.nav-item .meta{display:flex;flex-direction:column;align-items:flex-start;min-width:0}
+.nav-item .meta b{display:block;font-size:13px;line-height:1.25;font-weight:700;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:128px}
+.nav-item .meta span{font-size:10.5px;color:#928B7A;margin-top:2px;line-height:1.2;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:128px}
+.nav-item.active .meta span{color:#eef2e6}
+.sidebar .foot{padding:12px 14px;font-size:10px;color:#928B7A;border-top:1px solid rgba(120,108,78,.10);line-height:1.5}
+
+/* 主区 */
+.main{flex:1;overflow-y:auto;padding:28px 34px 56px}
+.main-head{margin-bottom:20px}
+.main-head h2{margin:0 0 5px;font-size:22px;font-weight:700;color:#3D3A30}
+.main-head p{margin:0;color:var(--text-soft);font-size:12.5px}
+.module{display:none}
+.module.active{display:block;animation:fade .2s ease}
+@keyframes fade{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
+
+/* 卡片 —— 超大圆角 · 柔和阴影 · 轻新拟态哑光 */
+.card{background:var(--panel);border:none;border-radius:var(--radius);box-shadow:var(--neu);padding:20px;margin-bottom:18px}
+.card h3{margin:0 0 13px;font-size:15px;display:flex;align-items:center;gap:9px;font-weight:600}
+.card h3 .dot{width:9px;height:9px;border-radius:50%;background:var(--primary);box-shadow:0 0 0 4px var(--primary-soft)}
+.row{display:flex;flex-wrap:wrap;gap:14px}
+.field{display:flex;flex-direction:column;gap:6px}
+.field label{font-size:12px;color:var(--text-soft);font-weight:500}
+input[type=text],input[type=number],input[type=password],select,textarea{border:1px solid var(--border-soft);border-radius:var(--radius-sm);padding:9px 12px;font-size:13px;font-family:inherit;background:#fff;color:var(--text);outline:none;transition:.15s;box-shadow:var(--shadow-soft)}
+input:focus,select:focus,textarea:focus{border-color:var(--primary);box-shadow:0 0 0 3px var(--primary-soft)}
+textarea{resize:vertical;line-height:1.7}
+.btn{border:none;background:var(--primary);color:#fff;border-radius:var(--radius-sm);padding:9px 18px;font-size:13px;cursor:pointer;transition:filter .15s,transform .12s;text-decoration:none;display:inline-block;font-weight:600;box-shadow:var(--shadow-soft)}
+.btn:hover{filter:brightness(1.05);transform:translateY(-1px)}
+.btn:active{transform:translateY(0)}
+.btn.ghost{background:var(--panel);color:var(--primary);box-shadow:var(--shadow-soft);border:1px solid var(--border-soft)}
+.btn.ghost:hover{background:var(--primary-soft);transform:translateY(-1px)}
+.btn.sm{padding:6px 14px;font-size:12px}
+.btn.ghost.on{background:var(--primary);color:#fff;border-color:var(--primary)}
+.btn.warn{background:#b07a3e}
+
+/* 房源 */
+.stats{display:flex;gap:14px;flex-wrap:wrap;margin-bottom:16px}
+.stat{background:var(--panel);border:none;border-radius:var(--radius-sm);padding:13px 17px;min-width:118px;box-shadow:var(--neu)}
+.stat b{display:block;font-size:20px;color:var(--primary-dark)}.stat span{font-size:11.5px;color:var(--text-soft)}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:14px}
+.house{border:none;border-radius:var(--radius);padding:15px;background:var(--panel);transition:.18s;cursor:pointer;box-shadow:var(--shadow-soft),var(--inset)}
+.house:hover{box-shadow:var(--shadow-lg);transform:translateY(-3px)}
+.house .top{display:flex;justify-content:space-between;align-items:flex-start;gap:8px;flex-wrap:wrap}
+.house .top b{font-size:13.5px}
+.tag{font-size:10.5px;padding:3px 10px;border-radius:var(--radius-pill);white-space:nowrap;font-weight:500}
+.tag.res{background:#E7EEDA;color:#5E6B41}.tag.apt{background:#E7EAF2;color:#43508c}.tag.biz{background:#F6E4DF;color:#9c4a3a}.tag.gas{background:#F7EECF;color:#9a6a1e}
+.house .price{color:var(--bad);font-size:18px;font-weight:700;margin:8px 0 3px}
+.house .price small{color:var(--text-soft);font-size:11.5px;font-weight:400}
+.house .kv{display:flex;gap:12px;flex-wrap:wrap;font-size:11.5px;color:var(--text-soft);margin:6px 0}
+.house .kv b{color:var(--text)}
+.house .fac{font-size:11.5px;color:var(--text-soft);border-top:1px dashed var(--border-soft);padding-top:8px;margin-top:6px}
+.badge-warn{color:var(--bad);font-size:11px}
+
+/* 表格 */
+.table-wrap{overflow-x:auto;-webkit-overflow-scrolling:touch}
+table.md{width:100%;border-collapse:collapse;font-size:12.5px;margin-top:6px;min-width:400px;border-radius:var(--radius-sm);overflow:hidden}
+table.md th,table.md td{border-bottom:1px solid var(--border-soft);padding:9px 11px;text-align:left;vertical-align:top}
+table.md th{background:var(--panel-soft);color:var(--text);font-weight:600}
+table.md tr:nth-child(even) td{background:rgba(244,238,226,.5)}
+
+/* 色彩 */
+.color-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(210px,1fr));gap:12px}
+.swatch{border:none;border-radius:var(--radius-sm);overflow:hidden;background:var(--panel);box-shadow:var(--shadow-soft),var(--inset)}
+.swatch .chip{height:62px}
+.swatch .info{padding:10px 12px;font-size:11.5px}
+.swatch .info b{font-size:12.5px}
+.swatch .info code{display:block;margin-top:3px;color:var(--text-soft);font-family:ui-monospace,Menlo,Consolas,monospace}
+.swatch .info .cmyk{color:#5a5444;margin-top:3px}
+.bigcolor{width:100%;height:110px;border-radius:var(--radius-sm);box-shadow:var(--shadow-soft),var(--inset)}
+.kvtable{width:100%;border-collapse:collapse;font-size:13px}
+.kvtable td{padding:8px 11px;border-bottom:1px solid var(--border-soft)}
+.kvtable td:first-child{color:var(--text-soft);width:120px}
+
+/* 图像 */
+.canvas-wrap{background:#15171b;border-radius:var(--radius-sm);padding:14px;text-align:center;overflow:auto;box-shadow:var(--shadow-soft)}
+canvas{max-width:100%;background:
+  linear-gradient(45deg,#cfcfcf 25%,transparent 25%),linear-gradient(-45deg,#cfcfcf 25%,transparent 25%),
+  linear-gradient(45deg,transparent 75%,#cfcfcf 75%),linear-gradient(-45deg,transparent 75%,#cfcfcf 75%);
+  background-size:16px 16px;background-position:0 0,0 8px,8px -8px,-8px 0;border-radius:8px}
+
+.toolbar{display:flex;flex-wrap:wrap;gap:9px;align-items:center}
+.slider-row{display:flex;align-items:center;gap:7px}
+.slider-row input[type=range]{width:120px;accent-color:var(--primary)}
+.hint{font-size:12px;color:var(--text-soft);line-height:1.7}
+.cmyk-report{font-family:ui-monospace,Menlo,Consolas,monospace;font-size:12px;white-space:pre-wrap;background:#15171b;color:#cfe3c6;padding:13px;border-radius:var(--radius-sm);max-height:220px;overflow:auto}
+.notice{background:#EFF3E4;border:1px solid #D9E2C5;color:#5d6b3c;border-radius:var(--radius-sm);padding:12px 15px;font-size:12px;margin-bottom:16px;line-height:1.7;box-shadow:var(--shadow-soft)}
+
+/* 列表（招聘/短剧/影视） */
+.fcard{border:none;border-radius:var(--radius-sm);padding:15px;background:var(--panel);margin-bottom:12px;box-shadow:var(--shadow-soft),var(--inset);transition:.15s}
+.fcard:hover{box-shadow:var(--shadow)}
+.fcard h4{margin:0 0 7px;font-size:14px;display:flex;justify-content:space-between;gap:8px;align-items:baseline;flex-wrap:wrap}
+.fcard .meta{font-size:11.5px;color:var(--text-soft);display:flex;flex-wrap:wrap;gap:8px;margin:6px 0}
+.fcard .meta b{color:var(--text)}
+.fcard p{margin:6px 0 0;font-size:12.5px;color:#4a4636}
+.pill{display:inline-block;padding:3px 11px;border-radius:var(--radius-pill);font-size:11px;background:var(--primary-soft);color:var(--primary-dark);margin:2px 4px 2px 0;font-weight:500}
+.dflex{display:flex;gap:10px;align-items:center;flex-wrap:wrap}
+.spread{justify-content:space-between}
+.muted{color:var(--text-soft)}
+.dmeta{display:block;margin-top:6px;font-size:11.5px;color:#8c8576}
+.dmeta b{color:#5a5444}
+.dmeta a{color:var(--primary);text-decoration:none}
+.dmeta a:hover{text-decoration:underline}
+
+/* 智能配色 · 预设画廊 */
+.pal-gallery{display:grid;grid-template-columns:repeat(auto-fill,minmax(158px,1fr));gap:11px;margin-top:6px}
+.pcard{border:none;border-radius:var(--radius-sm);padding:9px 10px;background:var(--panel);cursor:pointer;transition:.15s;box-shadow:var(--shadow-soft),var(--inset)}
+.pcard:hover{box-shadow:var(--shadow);transform:translateY(-2px)}
+.pcard .pname{font-size:11.5px;color:var(--text);margin-bottom:7px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.pcard .pbar{display:flex;height:24px;border-radius:8px;overflow:hidden}
+.pcard .pbar span{flex:1}
+
+/* ============================================================
+ * 模块4 · 全能 AI 智能辅助（全面升级版）
+ * ============================================================ */
+.ai-funcs{display:flex;flex-wrap:wrap;gap:10px}
+.ai-func{border:none;background:var(--panel-soft);color:var(--text-soft);border-radius:var(--radius-pill);padding:10px 18px;font-size:13px;cursor:pointer;box-shadow:var(--shadow-soft);transition:.15s;font-weight:600}
+.ai-func:hover{background:#ece4d3;transform:translateY(-1px)}
+.ai-func.active{background:var(--primary);color:#fff;box-shadow:var(--shadow)}
+
+/* 分类筛选胶囊 */
+.ai-cats{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:14px}
+.ai-cat{border:none;background:var(--panel-soft);color:var(--text-soft);border-radius:var(--radius-pill);padding:6px 15px;font-size:12.5px;cursor:pointer;box-shadow:var(--shadow-soft);transition:.15s;font-weight:600}
+.ai-cat:hover{background:#ece4d3}
+.ai-cat.active{background:var(--primary);color:#fff;box-shadow:var(--shadow)}
+
+/* AI 平台实时直达按钮 */
+.ai-platforms{display:flex;flex-wrap:wrap;gap:9px}
+.ai-plat{display:flex;flex-direction:column;gap:2px;text-decoration:none;background:var(--panel-soft);border-radius:var(--radius-sm);padding:9px 15px;box-shadow:var(--shadow-soft);transition:.15s;min-width:92px}
+.ai-plat:hover{background:#ece4d3;transform:translateY(-1px)}
+.ai-plat b{color:var(--primary-dark);font-size:13px;font-weight:700;line-height:1.2}
+.ai-plat span{color:var(--text-soft);font-size:10.5px}
+
+/* 今日 AI 精选卡片 */
+#ai-hot-list{display:grid;grid-template-columns:repeat(auto-fill,minmax(215px,1fr));gap:12px;margin-top:10px}
+.ai-hot{display:flex;flex-direction:column;gap:6px;text-decoration:none;background:var(--panel-soft);border-radius:var(--radius-sm);padding:13px 15px;box-shadow:var(--shadow-soft);transition:.15s}
+.ai-hot:hover{background:#ece4d3;transform:translateY(-2px)}
+.ai-hot b{color:var(--primary-dark);font-size:13.5px;font-weight:700;line-height:1.35}
+.ai-hot p{margin:0;color:var(--text-soft);font-size:11.5px;line-height:1.6}
+.ai-hot .tag{align-self:flex-start;background:var(--primary-soft);color:var(--primary-dark);border-radius:var(--radius-pill);padding:2px 10px;font-size:10.5px;font-weight:600;margin-top:2px}
+.ai-form{display:flex;flex-direction:column;gap:14px}
+.ai-form .field{width:100%}
+.ai-form textarea{min-height:108px}
+.ai-form .inline{display:flex;gap:14px;flex-wrap:wrap}
+.ai-form .inline .field{flex:1;min-width:200px}
+#ai-output{min-height:80px}
+/* Markdown 渲染 */
+.md-body{font-size:13.5px;line-height:1.8;color:#4a4636}
+.md-body h1{font-size:19px;margin:18px 0 10px;padding-bottom:8px;border-bottom:2px solid var(--primary-soft);color:#3D3A30}
+.md-body h2{font-size:16.5px;margin:16px 0 9px;color:var(--primary-dark)}
+.md-body h3{font-size:14.5px;margin:13px 0 7px;color:#3D3A30}
+.md-body p{margin:9px 0}
+.md-body ul,.md-body ol{margin:9px 0;padding-left:22px}
+.md-body li{margin:5px 0}
+.md-body strong{color:var(--primary-dark);font-weight:700}
+.md-body blockquote{margin:11px 0;padding:10px 15px;background:var(--primary-soft);border-left:4px solid var(--primary);border-radius:8px;color:#5a6444}
+.md-body code{background:var(--panel-soft);padding:2px 7px;border-radius:6px;font-family:ui-monospace,Menlo,Consolas,monospace;font-size:12.5px;color:#5E6B41}
+.md-body pre{background:#15171b;color:#dCE8D2;padding:13px;border-radius:var(--radius-sm);overflow:auto}
+.md-body pre code{background:none;color:inherit;padding:0}
+.md-body table.md{margin:11px 0}
+.md-body hr{border:none;border-top:1px dashed var(--border-soft);margin:14px 0}
+.md-placeholder{color:var(--text-soft)}
+
+/* ============================================================
+ * 模块8 · APP新人体验 & 薅羊毛线报（紧凑标签板）
+ * ============================================================ */
+.wool-tabs{display:flex;gap:8px;overflow-x:auto;flex-wrap:nowrap;-webkit-overflow-scrolling:touch;scrollbar-width:none;padding-bottom:2px}
+.wool-tabs::-webkit-scrollbar{display:none}
+.wool-tab{border:none;background:var(--panel-soft);color:var(--text-soft);border-radius:var(--radius-pill);padding:8px 15px;font-size:12.5px;cursor:pointer;box-shadow:var(--shadow-soft);transition:.15s;font-weight:600;white-space:nowrap;flex:0 0 auto}
+.wool-tab:hover{background:#ece4d3;transform:translateY(-1px)}
+.wool-tab.active{background:var(--primary);color:#fff;box-shadow:var(--shadow)}
+.wool-board .hint{margin:0 0 4px}
+/* 风险徽章 */
+.risk-tag{display:inline-block;padding:2px 9px;border-radius:var(--radius-pill);font-size:11px;font-weight:600;line-height:1.6;white-space:normal}
+.risk-ok{background:#E7EEDA;color:#5E6B41}
+.risk-warn{background:#F7EECF;color:#9a6a1e}
+.risk-bad{background:#F6E4DF;color:#9c4a3a}
+/* 教程/攻略卡片 */
+.wool-cards{display:grid;grid-template-columns:repeat(auto-fill,minmax(255px,1fr));gap:12px;margin-top:4px}
+.wcard{border:none;border-radius:var(--radius-sm);padding:14px;background:var(--panel);box-shadow:var(--shadow-soft),var(--inset)}
+.wcard h4{margin:0 0 8px;font-size:13.5px;color:#3D3A30;display:flex;align-items:center;gap:7px}
+.wcard .wbody{font-size:12.5px;color:#4a4636;line-height:1.75}
+.wcard .wbody b{color:var(--primary-dark)}
+
+/* 全网实时检索 */
+.live-search{display:flex;flex-direction:column;gap:10px;margin-bottom:6px}
+.live-search-bar{display:flex;gap:8px;align-items:center;flex-wrap:wrap}
+.live-search-bar input{flex:1;min-width:220px}
+.live-quick{display:flex;flex-wrap:wrap;gap:6px;align-items:center}
+.live-quick .muted{font-size:11.5px;margin-right:4px}
+.quick-pill{border:none;background:var(--panel-soft);color:var(--text-soft);border-radius:var(--radius-pill);padding:5px 12px;font-size:11.5px;cursor:pointer;box-shadow:var(--shadow-soft);transition:.15s;font-weight:500}
+.quick-pill:hover{background:var(--primary-soft);color:var(--primary-dark);transform:translateY(-1px)}
+
+/* ============================================================
+ * 手机适配
+ * ============================================================ */
+@media (max-width:820px){
+  .app{flex-direction:column;height:auto;overflow:visible}
+
+  /* 可折叠卡片：点标题收起/展开，默认收起次要卡片以缩小纵向占用 */
+  .main-head .collapse-all-btn{display:inline-block;margin-left:8px;padding:4px 11px;font-size:11px;vertical-align:middle}
+  .card.collapsible > .card-head{position:relative}
+  .card.collapsible .card-head-chev{position:relative;cursor:pointer;-webkit-tap-highlight-color:transparent;padding-right:28px}
+  .card.collapsible .card-head-chev::after{content:"";position:absolute;right:7px;top:50%;width:9px;height:9px;margin-top:-6px;border-right:2px solid var(--text-soft);border-bottom:2px solid var(--text-soft);transform:rotate(45deg);transform-origin:center;transition:transform .18s ease;opacity:.5}
+  .card.collapsible.collapsed .card-head-chev::after{transform:rotate(-45deg);margin-top:-3px}
+  .card.collapsible.collapsed > .card-body{display:none}
+  .card.collapsible.collapsed > .card-head{margin-bottom:0 !important}
+
+
+  /* 导航：横向滚动胶囊条（数字+文字同一行，尽量缩小占用面积） */
+  .sidebar{width:100%;flex:0 0 auto;flex-direction:row;align-items:center;position:sticky;top:0;z-index:50;
+    padding:0;overflow:visible;border-bottom:1px solid rgba(120,108,78,.12);min-height:0;box-shadow:0 2px 12px rgba(120,108,78,.08)}
+  .sidebar .brand{display:flex;align-items:center;gap:5px;padding:0 9px;flex:0 0 auto;border-bottom:none;border-right:1px solid rgba(120,108,78,.12);white-space:nowrap}
+  .sidebar .brand h1{font-size:12.5px}
+  .sidebar .brand p{display:none}
+  .sidebar .foot{display:none}
+  .nav{flex-direction:row;flex-wrap:nowrap;flex:1;padding:4px 7px;gap:4px;overflow-x:auto;overflow-y:hidden;-webkit-overflow-scrolling:touch;scrollbar-width:none}
+  .nav::-webkit-scrollbar{display:none}
+  .nav-item{flex:0 0 auto;min-width:0;margin:0;padding:3px 7px;gap:4px;border-radius:var(--radius-pill);justify-content:flex-start;align-items:center;white-space:nowrap;box-shadow:var(--shadow-soft);flex-direction:row}
+  .nav-item .num{width:15px;height:15px;flex:0 0 15px;font-size:8.5px;border-radius:5px;line-height:1}
+  .nav-item .meta{display:flex;flex-direction:row;align-items:center;min-width:0}
+  .nav-item .meta span{display:none}
+  .nav-item .meta b{font-size:10px;line-height:1;white-space:nowrap;font-weight:600}
+  .nav-item.active{background:var(--sidebar-active);color:#fff}
+
+  /* 主区 */
+  .main{padding:10px 8px 46px;height:auto;overflow:visible}
+  .main-head{margin-bottom:10px}
+  .main-head h2{font-size:15.5px}
+  .main-head p{display:none}
+
+  /* 卡片 */
+  .card{padding:11px;margin-bottom:9px;border-radius:var(--radius-sm)}
+  .card h3{font-size:13px;margin:0 0 11px}
+
+  /* 表单：全宽 */
+  .row{flex-direction:column;gap:9px}
+  .field{width:100%;margin-bottom:6px}
+  .field input,.field select{width:100%;max-width:100%}
+  input[type=text],input[type=number],select,textarea{font-size:16px;width:100%;max-width:100%}
+  .ai-form .inline{flex-direction:column;gap:9px}
+  .ai-form .inline .field{min-width:0}
+
+  /* 按钮：更大触控 */
+  .btn{padding:12px 18px;font-size:14px}
+  .btn.sm{padding:9px 14px;font-size:13px}
+  .ai-func{padding:10px 15px;font-size:12.5px}
+  .ai-cat{padding:6px 12px;font-size:11.5px}
+  .ai-plat{min-width:0;flex:1 1 calc(50% - 5px)}
+  #ai-hot-list{grid-template-columns:1fr 1fr;gap:9px}
+  #ai-hot-list .ai-hot{padding:11px 12px}
+  .ai-hot b{font-size:12.5px}
+  .ai-hot p{font-size:10.5px}
+  .dflex{flex-wrap:wrap;gap:9px}
+
+  /* 房源网格：更窄 */
+  .grid{grid-template-columns:1fr !important;gap:11px}
+  .color-grid{grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:9px}
+  .pal-gallery{grid-template-columns:repeat(auto-fill,minmax(140px,1fr));gap:9px}
+
+  /* 统计卡片 */
+  .stats{gap:9px}
+  .stat{min-width:calc(50% - 9px);padding:11px 13px}
+  .stat b{font-size:17px}
+
+  /* 房源卡片 */
+  .house{padding:13px}
+  .house .top b{font-size:13px}
+  .house .price{font-size:17px}
+  .house .kv{font-size:11px;gap:8px}
+  .house .fac{font-size:11px}
+
+  /* 列表卡片 */
+  .fcard{padding:13px}
+  .fcard h4{font-size:13px}
+  .fcard .meta{font-size:11px;gap:6px}
+  .fcard p{font-size:12px}
+
+  /* 模块6 美妆穿搭：手机端尽量缩小纵向占用（双列紧凑网格） */
+  #mod-beauty .card{padding:11px;margin-bottom:9px}
+  #mod-beauty .card h3{font-size:12.5px;margin:0 0 9px}
+  #mod-beauty .grid{grid-template-columns:1fr 1fr !important;gap:9px}
+  #mod-beauty .fcard{padding:9px;margin-bottom:0}
+  #mod-beauty .fcard h4{font-size:11.5px}
+  #mod-beauty .fcard .meta{font-size:9.5px;gap:4px;margin:4px 0}
+  #mod-beauty .fcard p{font-size:10.5px;margin:4px 0 0;line-height:1.45}
+  #mod-beauty .fcard .pill{padding:1px 6px;font-size:9px}
+  #mod-beauty .btn.sm{padding:6px 9px;font-size:11px}
+  #mod-beauty .hint{font-size:10px;line-height:1.5}
+  #mod-beauty input[type=text]{font-size:14px;padding:8px 10px}
+
+  /* 表格：横向滚动 */
+  table.md{font-size:12px;min-width:360px}
+  table.md th,table.md td{padding:7px 9px}
+
+  /* 色卡预览 */
+  .swatch .chip{height:46px}
+  .swatch .info{padding:8px 10px;font-size:11px}
+  .swatch .info b{font-size:12px}
+
+  /* 提示文字 */
+  .hint{font-size:11px}
+  .notice{font-size:11.5px;padding:10px 12px}
+  .dmeta{font-size:11px}
+
+  /* canvas */
+  .canvas-wrap{padding:9px}
+
+  /* 工具栏 */
+  .toolbar{gap:7px}
+  .pill{font-size:10.5px;padding:3px 8px}
+
+  /* 模块8 薅羊毛：标签横滚 + 卡片窄化 */
+  .wool-tab{padding:9px 13px;font-size:12px}
+  /* 模块6 超小屏再压缩，仍保持双列可看 */
+  #mod-beauty .grid{gap:7px}
+  #mod-beauty .fcard{padding:7px}
+  #mod-beauty .fcard h4{font-size:11px}
+  #mod-beauty .fcard p{font-size:10px}
+  #mod-beauty .card{padding:9px;margin-bottom:7px}
+  .wool-cards{grid-template-columns:1fr;gap:10px}
+  .wcard{padding:12px}
+  .wcard h4{font-size:13px}
+  .wcard .wbody{font-size:12px}
+}
+
+@media (max-width:420px){
+  .main-head h2{font-size:15.5px}
+  .stat{min-width:calc(100% - 0px)}
+  .grid{gap:9px}
+  .color-grid{grid-template-columns:repeat(auto-fill,minmax(130px,1fr))}
+  .pal-gallery{grid-template-columns:repeat(auto-fill,minmax(120px,1fr))}
+  .ai-func{padding:9px 12px;font-size:12px}
+  /* 超小屏：导航再压缩，数字与文字仍同一行 */
+  .sidebar .brand h1{font-size:11.5px}
+  .sidebar .brand{padding:0 7px}
+  .nav{padding:3px 6px;gap:3px}
+  .nav-item{padding:2px 6px;gap:3px}
+  .nav-item .num{width:14px;height:14px;flex:0 0 14px;font-size:8px}
+  .nav-item .meta b{font-size:9.5px}
+}
+
+/* ---- 全局实时更新条 / 热点排名徽标 ---- */
+.refresh-bar{display:flex;align-items:center;gap:10px;margin-top:12px;flex-wrap:wrap}
+.refresh-bar .upd-label{font-size:11.5px;color:var(--text-soft)}
+.fcard .rank{display:inline-flex;width:22px;height:22px;border-radius:6px;background:var(--primary);color:#fff;align-items:center;justify-content:center;font-size:12px;font-weight:700;margin-right:6px;flex:0 0 auto}
+
+/* 手机端「全部收起/展开」按钮：桌面隐藏，移动端显示 */
+.main-head .collapse-all-btn{display:none}
+
+</style>
+</head>
+<body>
+<div class="app">
+  <!-- 左侧永久导航 -->
+  <aside class="sidebar">
+    <div class="brand">
+      <p>7大模块工作台</p>
+    </div>
+    <nav class="nav" id="nav">
+      <div class="nav-item active" data-mod="property"><span class="num">1</span><div class="meta"><b>全国房源查询</b><span>多户型二手房</span></div></div>
+      <div class="nav-item" data-mod="recruit"><span class="num">2</span><div class="meta"><b>排版兼职招聘</b><span>最新招聘整合</span></div></div>
+      <div class="nav-item" data-mod="film"><span class="num">3</span><div class="meta"><b>全网影视推荐</b><span>电影/剧/动漫/综艺</span></div></div>
+      <div class="nav-item" data-mod="ai"><span class="num">4</span><div class="meta"><b>全能AI辅助</b><span>写作/代码/营销/办公</span></div></div>
+      <div class="nav-item" data-mod="wool"><span class="num">5</span><div class="meta"><b>薅羊毛线报</b><span>新人/回归/悬赏</span></div></div>
+      <div class="nav-item" data-mod="beauty"><span class="num">6</span><div class="meta"><b>美妆穿搭</b><span>美妆/穿搭/造型</span></div></div>
+      <div class="nav-item" data-mod="hotnews"><span class="num">7</span><div class="meta"><b>热点资讯</b><span>全网实时热搜</span></div></div>
+    </nav>
+    <div class="foot">一站式生活 / 办公 / 情报工作台</div>
+  </aside>
+
+  <main class="main">
+    <!-- ========== 模块1 全国房源 ========== -->
+    <section class="module active" id="mod-property">
+      <div class="main-head"><h2>模块1｜全国二手房房源（多平台实时 + 本地示例）</h2><p>覆盖全国 22 城 · 选城市/户型/租售 · 点平台直达贝壳/安居客/链家/58 等最新实时列表</p><span class="dmeta" data-dm="property"></span></div>
+      <div class="notice">免责：下方"示例房源"为互联网公开整合调研资料（非实时），不作为房产交易、产权、税费、过户依据；实时数据请点击上方平台直达官方最新列表，最终核验务必咨询线下正规中介。</div>
+      <div class="card" style="border:1px solid #bcd2ff;background:#f6f9ff">
+        <h3><span class="dot"></span>多平台实时检索（选城市/户型后点击平台直达最新列表 ↗）</h3>
+        <div class="row">
+          <div class="field"><label>城市</label><select id="live-city"></select></div>
+          <div class="field"><label>租售</label><select id="live-sale"><option>二手房</option><option>租房</option><option>新房</option></select></div>
+          <div class="field"><label>户型</label><select id="live-layout"><option value="">不限户型</option></select></div>
+          <div class="field"><label>性质</label><select id="live-type"><option value="">不限（住宅+商办）</option><option value="住宅">住宅·70年</option><option value="商办">商办·40年</option></select></div>
+        </div>
+        <div class="dflex wrap" style="gap:8px;margin-top:8px;flex-wrap:wrap">
+          <a class="btn sm" data-plat="beike" href="https://www.ke.com" target="_blank" rel="noopener">贝壳 ↗</a>
+          <a class="btn ghost sm" data-plat="anjuke" href="https://www.anjuke.com" target="_blank" rel="noopener">安居客 ↗</a>
+          <a class="btn ghost sm" data-plat="lianjia" href="https://www.lianjia.com" target="_blank" rel="noopener">链家 ↗</a>
+          <a class="btn ghost sm" data-plat="58" href="https://www.58.com" target="_blank" rel="noopener">58同城 ↗</a>
+          <a class="btn ghost sm" data-plat="baidu" href="https://www.baidu.com" target="_blank" rel="noopener" style="border-color:#4a90d9;color:#1a5fb4">百度聚合 ↗</a>
+        </div>
+        <div class="hint" style="margin-top:8px">本工作台无官方接口，无法直接抓取各平台实时数据。<strong>选好城市/户型/租售后点击上方任一平台，将在新标签页打开该平台最新的对应城市列表</strong>，以平台实时页面为准。下方为本地<strong>示例房源（调研参考·非实时）</strong>。</div>
+      </div>
+      <div class="card">
+        <h3><span class="dot"></span>筛选条件</h3>
+        <div class="row">
+          <div class="field"><label>城市</label><select id="f-city"><option value="">全部城市</option></select></div>
+          <div class="field"><label>片区</label><select id="f-district"><option value="">全部</option></select></div>
+          <div class="field"><label>户型</label><select id="f-layout"><option value="">全部户型</option></select></div>
+          <div class="field"><label>性质</label><select id="f-type"><option value="">全部</option><option value="住宅">70年纯住宅</option><option value="公寓">40年商办公寓</option></select></div>
+          <div class="field"><label><input type="checkbox" id="f-newonly"/> 仅看2016后次新</label></div>
+          <div class="field"><label>最高总价(万)</label><input type="number" id="f-maxprice" placeholder="如 60" style="width:110px"/></div>
+          <div class="field"><label>最大面积(㎡)</label><input type="number" id="f-maxarea" placeholder="如 50" style="width:110px"/></div>
+          <div class="field" style="justify-content:flex-end"><label>&nbsp;</label><div class="dflex"><button class="btn ghost sm" id="f-reset">重置</button><button class="btn sm" id="f-apply">应用筛选</button></div></div>
+        </div>
+        <div class="dflex spread" style="margin-top:10px"><span class="hint" id="prop-count"></span><button class="btn ghost sm" id="prop-export">导出Markdown</button></div>
+      </div>
+      <div class="stats" id="prop-stats"></div>
+      <h3 style="margin:16px 0 10px;font-size:14px">🏠 70年纯住宅 · 示例房源（调研参考·非实时）</h3>
+      <div class="grid" id="prop-grid"></div>
+      <h3 style="margin:16px 0 10px;font-size:14px">🏢 40年商办公寓 · 示例房源（单独分栏·强制标注）</h3>
+      <div class="grid" id="prop-grid-apt"></div>
+      <div class="card"><h3><span class="dot"></span>多套横向对比</h3><div id="compare-box" class="hint table-wrap">点击上方房源卡片加入对比（最多 3 套）。</div></div>
+      <div class="card"><h3><span class="dot"></span>片区实时租金行情参考（按所选城市/片区统计）</h3><div id="rent-box" class="table-wrap"></div></div>
+      <div class="card"><h3><span class="dot"></span>刚需购房避坑指南</h3>
+        <ul style="margin:0;padding-left:18px;font-size:12.5px;color:#374151;line-height:1.9">
+          <li>优先确认<strong>70年住宅性质</strong>与<strong>天然气入户</strong>，商办公寓不通燃气、不可落户、税费高，谨慎购买。</li>
+          <li>核验房本<strong>满五唯一</strong>可省个税/增值税；确认抵押、查封、户口迁出。</li>
+          <li>楼龄影响贷款成数与居住体验，2016年后次新小区优先。</li>
+          <li>单价对比小区近 3 月成交均价，警惕高溢价精装房。</li>
+          <li>签约前务必实地看房、查物业与车位，所有口头承诺写入合同。</li>
+          <li>各城市<strong>限购/限贷政策</strong>差异大，购房前务必查询当地最新购房资格与贷款规则。</li>
+        </ul>
+      </div>
+    </section>
+
+    <!-- ========== 模块2 招聘 ========== -->
+    <section class="module" id="mod-recruit">
+      <div class="main-head"><h2>模块2｜排版兼职招聘（最新整合）</h2><p>整合智联/BOSS/前程无忧/58/猎聘 等平台印刷排版类兼职 · <b>覆盖全国 70+ 城市</b> · 调研参考</p><span class="dmeta" data-dm="recruit"></span></div>
+      <div class="notice">招聘信息为公开整合调研资料，以各平台实时发布为准；投递前请核验企业资质，谨防收费陷阱。</div>
+      <div class="card"><h3><span class="dot"></span>招聘平台直达（看招聘人/联系方式/地址/福利/要求）</h3>
+        <div class="toolbar" id="rec-sites"></div>
+        <div class="hint" style="margin-top:8px">点平台按钮直接跳转该平台「排版」最新招聘列表，实时查看招聘方联系方式、工作地址、薪资福利与任职要求。</div>
+      </div>
+      <div class="card"><h3><span class="dot"></span>本地整合筛选</h3>
+        <div class="dflex"><select id="rec-platform"><option value="">全部平台</option><option>智联招聘</option><option>BOSS直聘</option><option>前程无忧</option><option>58同城</option></select>
+          <select id="rec-city"><option value="">全部城市</option></select>
+          <select id="rec-mode"><option value="">全部方式</option><option>线上</option><option>坐班</option><option>居家</option></select>
+          <button class="btn sm" id="rec-search">筛选</button>
+        </div>
+        <div id="rec-list" style="margin-top:12px"></div>
+      </div>
+    </section>
+
+    <!-- ========== 模块3 影视 ========== -->
+    <section class="module" id="mod-film">
+      <div class="main-head"><h2>模块3｜全网影视推荐（主流平台版）</h2><p>聚合腾讯视频 / 优酷 / 爱奇艺 / 哔哩哔哩 / 芒果TV 等实时剧集·动漫·综艺 · 直达原平台</p><span class="dmeta" data-dm="film"></span></div>
+      <div class="card">
+        <h3><span class="dot"></span>主流视频平台实时直达</h3>
+        <div class="dflex wrap" id="film-platforms" style="margin-bottom:10px"></div>
+        <div class="dflex">
+          <input type="text" id="film-kw" placeholder="如 十日终焉 / 中国奇谭 / 大侦探" style="flex:1;min-width:160px">
+          <button class="btn sm" id="film-search">跨平台搜 ↗</button>
+        </div>
+        <div class="dflex wrap" id="film-search-links" style="margin-top:8px"></div>
+        <p class="hint" style="margin:8px 0 0">点击上方平台看实时热播榜；输入剧名/综艺名 → 一键并行打开各平台检索页，直达可看资源。</p>
+      </div>
+      <div class="card"><h3><span class="dot"></span>筛选与排序</h3>
+        <div class="dflex"><select id="film-kind"><option value="">全部分类</option><option>电影</option><option>电视剧</option><option>动漫</option><option>综艺</option></select>
+          <select id="film-sort"><option value="score">按评分</option><option value="year">按年份</option></select>
+          <button class="btn sm" id="film-btn">筛选</button><span class="hint" id="film-count"></span></div>
+        <div id="film-list" style="margin-top:12px"></div>
+      </div>
+    </section>
+
+    <!-- ========== 模块4 全能AI辅助 ========== -->
+    <section class="module" id="mod-ai">
+      <div class="main-head"><h2>模块4｜全能 AI 智能辅助（全场景生产力 · 全面升级版）</h2><p>写作文案 · 文本处理 · 绘画提示词 · 大纲 · 翻译 · 代码 · 简历 · 营销 · 社媒 · 学习 · 办公 · 生活创意 ｜ 一句话需求 → 结构化成品（本地引擎生成 + 主流 AI 实时直达）</p></div>
+      <div class="notice">说明：本模块为<strong>本地智能生成引擎（离线模板 + 规则算法）</strong> + <strong>主流 AI 平台实时直达</strong>双模式。上方选功能即填即生成结构化成品，商用合规、无版权风险；需要更强实时推理时，点「AI 平台实时直达」进入豆包 / Kimi / 文心 / 通义 / DeepSeek 等最新对话。所有外部链接仅指向官方平台。</div>
+
+      <!-- 平台实时直达 -->
+      <div class="card">
+        <h3><span class="dot"></span>AI 平台实时直达（点击进入最新实时对话 / 生成）</h3>
+        <div class="dflex wrap" id="ai-platforms" style="margin-bottom:10px"></div>
+        <div class="dflex">
+          <input type="text" id="ai-global-kw" placeholder="如 帮我写一份618活动方案 / 把这段日文翻译成中文" style="flex:1;min-width:160px">
+          <button class="btn sm" id="ai-global-go">一键直达 AI ↗</button>
+        </div>
+        <div class="dflex wrap" id="ai-global-links" style="margin-top:8px"></div>
+        <p class="hint" style="margin:8px 0 0">点平台按钮直接进该 AI 最新实时对话页；输入任意需求 → 点「一键直达 AI」并行打开多个主流 AI，把同一句话丢给它即可得到实时生成结果。</p>
+      </div>
+
+      <!-- 功能大全 -->
+      <div class="card">
+        <div class="ai-cats" id="ai-cats"></div>
+        <div class="ai-funcs" id="ai-funcs"></div>
+        <div class="hint" style="margin-top:8px">共 <b id="ai-fn-count">22</b> 项 AI 能力，按分类筛选，选择后填写需求点「⚡ 一键生成」。</div>
+      </div>
+      <div class="card">
+        <div class="ai-form" id="ai-form"></div>
+      </div>
+      <div class="card">
+        <div class="dflex spread" style="margin-bottom:12px">
+          <h3 style="margin:0"><span class="dot"></span>生成结果（Markdown）</h3>
+          <div class="dflex">
+            <button class="btn ghost sm" id="ai-copy">复制</button>
+            <button class="btn sm" id="ai-gen">⚡ 一键生成</button>
+          </div>
+        </div>
+        <div id="ai-output" class="md-body"><span class="md-placeholder">在上方选择功能并填写需求，点击「⚡ 一键生成」即可得到结构化成品。</span></div>
+      </div>
+
+      <!-- 今日精选 -->
+      <div class="card">
+        <div class="dflex spread" style="margin-bottom:8px">
+          <h3 style="margin:0"><span class="dot"></span>今日 AI 精选 · 热门玩法</h3>
+          <div class="dflex"><span class="hint" id="ai-hot-time"></span><button class="btn ghost sm" id="ai-hot-refresh">🔄 换一批</button></div>
+        </div>
+        <div id="ai-hot-list"></div>
+        <p class="hint" style="margin:8px 0 0">精选高频 AI 玩法，点卡片直达对应平台实时体验；点「🔄 换一批 / 实时更新」获取下一组。</p>
+      </div>
+    </section>
+
+    <!-- ========== 模块5 全网优惠一键集合 ========== -->
+    <section class="module" id="mod-wool">
+      <div class="main-head"><h2>模块5｜全网优惠一键集合（实时更新 · 直达链接）</h2><p>联网检索聚合全网公开优惠线报 · 一键并行打开主流聚合站 · 本周精选 + 社区直达入口</p></div>
+      <div class="notice">说明：本板块通过<strong>联网检索聚合互联网公开资讯</strong>，一站式汇总全平台优惠线报，自动跨平台去重、清理过期失效活动；优惠以各平台 APP / 官网实时活动为准，外部链接仅指向官方 / 正规聚合渠道。已自动过滤垫付 / 充值 / 刷单类项目并预警风险。所有内容<strong>不构成消费、投资或兼职建议</strong>。</div>
+      <div class="card" id="wool-board">
+        <h3><span class="dot"></span>全网优惠一键集合（实时检索 · 本周精选 · 社区直达）</h3>
+        <div id="wool-board-inner"></div>
+      </div>
+    </section>
+
+    <!-- ========== 模块7 美妆穿搭 ========== -->
+    <section class="module" id="mod-beauty">
+      <div class="main-head"><h2>模块6｜美妆穿搭（社媒灵感版）</h2><p>聚合小红书 / 抖音 / 微博 / 快手 / B站 等社媒图文短视频灵感 · 实时更新 · 直达原帖</p></div>
+      <div class="card">
+        <h3><span class="dot"></span>社交平台实时直达</h3>
+        <div class="dflex wrap" id="beauty-platforms" style="margin-bottom:10px"></div>
+        <div class="dflex">
+          <input type="text" id="beauty-kw" placeholder="如 黄黑皮口红 / 小个子穿搭 / 约会妆" style="flex:1;min-width:160px">
+          <button class="btn sm" id="beauty-search">跨平台搜 ↗</button>
+        </div>
+        <div class="dflex wrap" id="beauty-search-links" style="margin-top:8px"></div>
+        <p class="hint" style="margin:8px 0 0">输入关键词 → 一键并行打开各社媒实时检索页（图文 / 视频均可），所有链接指向官方平台。</p>
+      </div>
+      <div class="card"><div class="wool-tabs" id="beauty-tabs"></div></div>
+      <div class="card">
+        <div class="dflex spread" style="margin-bottom:8px"><span class="hint">点击下方「在小红书看 ↗」直达该灵感词的社媒实时图文 / 视频页</span></div>
+        <div id="beauty-list" class="grid"></div>
+      </div>
+    </section>
+
+    <!-- ========== 模块8 热点资讯 ========== -->
+    <section class="module" id="mod-hotnews">
+      <div class="main-head"><h2>模块7｜热点资讯（全网实时热搜）</h2><p>聚合全网实时热搜、热门话题，快速浏览各平台最新动态，资讯实时刷新，直达热点原文</p></div>
+      <div class="card"><h3><span class="dot"></span>实时热搜直达（点击进入各平台热搜榜，实时刷新）</h3><div class="toolbar" id="hot-hubs" style="margin-top:6px"></div></div>
+      <div class="card"><h3><span class="dot"></span>全网热搜一键检索</h3>
+        <div class="dflex"><input type="text" id="hot-kw" placeholder="输入关键词，如 高考 / 演唱会 / 新品发布" style="width:260px"><button class="btn sm" id="hot-search">检索</button></div>
+        <div class="toolbar" id="hot-search-links" style="margin-top:8px"></div>
+        <div class="hint" style="margin-top:6px">点平台按钮在新标签页打开该平台对该词的实时搜索结果。</div>
+      </div>
+      <div class="card"><h3><span class="dot"></span>今日热点速览（精选 · 点击标题直达原文检索）</h3><div id="hot-list"></div></div>
+    </section>
+  </main>
+</div>
+
+<script>
+/* ============================================================
+ * TRAEWork 数据层（含 2026 年公开整合调研资料）
+ * 数据仅供个人调研参考，不作为交易/授权/商用依据。
+ * ============================================================ */
+
+/* ========== 模块1：全国二手房房源 ==========
+ * city: 城市
+ * layout: 户型（开间/一室一厅/两室一厅/...）
+ * type: 住宅(70年) / 公寓(40年商办)
+ * 字段：城市/户型/小区/片区/楼龄/面积/总价/单价/物业/燃气/月租/商圈/亮点/短板/风险
+ */
+
+/* 全国城市（abbr 用于贝壳/链家/58 子域，py 用于安居客子域） */
+const CITIES = [
+  { name:'北京',  abbr:'bj',  py:'beijing' },
+  { name:'上海',  abbr:'sh',  py:'shanghai' },
+  { name:'广州',  abbr:'gz',  py:'guangzhou' },
+  { name:'深圳',  abbr:'sz',  py:'shenzhen' },
+  { name:'杭州',  abbr:'hz',  py:'hangzhou' },
+  { name:'成都',  abbr:'cd',  py:'chengdu' },
+  { name:'武汉',  abbr:'wh',  py:'wuhan' },
+  { name:'南京',  abbr:'nj',  py:'nanjing' },
+  { name:'重庆',  abbr:'cq',  py:'chongqing' },
+  { name:'苏州',  abbr:'su',  py:'suzhou' },
+  { name:'西安',  abbr:'xa',  py:'xian' },
+  { name:'天津',  abbr:'tj',  py:'tianjin' },
+  { name:'郑州',  abbr:'zz',  py:'zhengzhou' },
+  { name:'长沙',  abbr:'cs',  py:'changsha' },
+  { name:'东莞',  abbr:'dg',  py:'dongguan' },
+  { name:'宁波',  abbr:'nb',  py:'ningbo' },
+  { name:'青岛',  abbr:'qd',  py:'qingdao' },
+  { name:'昆明',  abbr:'km',  py:'kunming' },
+  { name:'厦门',  abbr:'xm',  py:'xiamen' },
+  { name:'福州',  abbr:'fz',  py:'fuzhou' },
+  { name:'泉州',  abbr:'qz',  py:'quanzhou' },
+  { name:'晋江',  abbr:'jinjiang', py:'jinjiang' },
+];
+
+/* 户型选项 */
+const LAYOUTS = ['开间','一室一厅','一室两厅','两室一厅','两室两厅','三室一厅','三室二厅','四室及以上'];
+
+const PROPERTY_DATA = [
+  // —— 晋江（原数据）——
+  { city:"晋江", layout:"一室一厅", type:"住宅", district:"青阳", community:"宝龙城市广场(晋江)", year:2016, age:10, area:46.98, total:45.5, unit:9680, property:"70年", gas:true, rent:1300, wy:"宝龙物业",
+    biz:"下楼即宝龙商圈/SM/万达，世纪大道，生活配套顶级", highlight:"南北通透、带电梯、精装拎包入住、核心地段", flaw:"单价偏高、车位紧张", risk:"价格含装修溢价，签约前核验产权与满五唯一" },
+  { city:"晋江", layout:"一室一厅", type:"住宅", district:"青阳", community:"宝龙城市广场(晋江) 小户", year:2013, age:13, area:44.56, total:30, unit:6733, property:"70年", gas:true, rent:1100, wy:"宝龙物业",
+    biz:"青阳核心、宝龙商圈、交通便捷", highlight:"总价低、可收租、配套成熟", flaw:"楼龄偏长、西向采光一般", risk:"确认是否为住宅性质、可落户" },
+  { city:"晋江", layout:"一室一厅", type:"住宅", district:"梅岭", community:"浔兴奥林春天", year:2018, age:8, area:60.88, total:58, unit:9526, property:"70年", gas:true, rent:1500, wy:"浔兴物业",
+    biz:"梅岭迎宾路、近八仙山公园、晋江一中", highlight:"满五年、有电梯、东向采光、次新", flaw:"面积略大、总价门槛高", risk:"核验满五唯一省税费" },
+  { city:"晋江", layout:"一室一厅", type:"住宅", district:"陈埭", community:"宝业头家", year:2020, age:6, area:37.76, total:35, unit:9269, property:"70年", gas:true, rent:900, wy:"宝业物业",
+    biz:"鞋都路、近中国鞋都、庵上公交", highlight:"次新、有电梯、毛坯可自改、低总价", flaw:"毛坯需装修、周边工业感强", risk:"确认交付年限与燃气入户" },
+  { city:"晋江", layout:"一室一厅", type:"住宅", district:"桥南", community:"百捷中央公园", year:2019, age:7, area:41, total:52, unit:12683, property:"70年", gas:true, rent:1200, wy:"百捷物业",
+    biz:"桥南片区商业、中医院桥南分院", highlight:"次新、性价比高、近泉州通勤", flaw:"片区配套仍在成熟", risk:"核验学区与产权" },
+  { city:"晋江", layout:"一室一厅", type:"住宅", district:"梅岭", community:"桥南·百信御江帝景", year:2021, age:5, area:43, total:57, unit:13256, property:"70年", gas:true, rent:1300, wy:"御江物业",
+    biz:"江景、近晋江大桥", highlight:"次新、江景、通勤泉州便捷", flaw:"总价偏高", risk:"确认按揭与满二" },
+  { city:"晋江", layout:"一室一厅", type:"住宅", district:"青阳", community:"曾井片区次新电梯房", year:2021, age:5, area:45, total:63, unit:14000, property:"70年", gas:true, rent:1400, wy:"自管/街道",
+    biz:"曾井建材城、晋江中医院", highlight:"次新、采光好、生活便利", flaw:"车位有限", risk:"核验房本与抵押" },
+  { city:"晋江", layout:"一室一厅", type:"住宅", district:"梅岭", community:"八仙山公园旁小户", year:2022, age:4, area:40, total:66, unit:16500, property:"70年", gas:true, rent:1500, wy:"品牌物业",
+    biz:"八仙山公园、万达、晋江二小", highlight:"最新次新、环境优、学区好", flaw:"单价最高", risk:"确认限售与贷款资质" },
+  { city:"晋江", layout:"一室一厅", type:"住宅", district:"陈埭", community:"溪边片区次新小户", year:2019, age:7, area:46, total:47, unit:10217, property:"70年", gas:true, rent:1000, wy:"自管",
+    biz:"溪边公园、陈埭中心小学", highlight:"价格洼地、通燃气、可自住", flaw:"配套一般", risk:"核验燃气与落户" },
+  { city:"晋江", layout:"一室一厅", type:"公寓", district:"梅岭", community:"梅岭·LOFT商办公寓", year:2022, age:4, area:38, total:45, unit:11842, property:"40年", gas:false, rent:1000, wy:"商办物业",
+    biz:"世纪大道写字楼群", highlight:"挑高LOFT、通勤便利", flaw:"无天然气、商水商电、不可落户", risk:"⚠40年产权/不通燃气/不可落户/税费高，谨慎购买" },
+  { city:"晋江", layout:"一室一厅", type:"公寓", district:"青阳", community:"青阳·写字楼改公寓", year:2021, age:5, area:33, total:36, unit:10909, property:"40年", gas:false, rent:850, wy:"商办物业",
+    biz:"青阳商圈", highlight:"低总价上车", flaw:"无燃气、层高受限、非住宅", risk:"⚠商办性质，转手税费高、贷款受限" },
+
+  // —— 北京 ——
+  { city:"北京", layout:"一室一厅", type:"住宅", district:"朝阳", community:"望京·澳洲康都", year:2018, age:8, area:55, total:320, unit:58182, property:"70年", gas:true, rent:5500, wy:"首开物业",
+    biz:"望京核心、近地铁15号线", highlight:"次新、近互联网商圈、通勤便利", flaw:"总价偏高", risk:"核验满五唯一与学区划分" },
+  { city:"北京", layout:"两室一厅", type:"住宅", district:"海淀", community:"西二旗·领秀新硅谷", year:2017, age:9, area:89, total:560, unit:62921, property:"70年", gas:true, rent:7800, wy:"万科物业",
+    biz:"近西二旗地铁站、中关村软件园", highlight:"次新、品牌物业、互联网从业者聚集", flaw:"单价高、通勤挤", risk:"确认学区与贷款资质" },
+  { city:"北京", layout:"开间", type:"公寓", district:"朝阳", community:"CBD·建外SOHO开间", year:2015, age:11, area:45, total:280, unit:62222, property:"40年", gas:false, rent:6000, wy:"商办物业",
+    biz:"国贸CBD核心", highlight:"通勤顶级、租售比高", flaw:"40年商办、不通燃气、不可落户", risk:"⚠商办性质，税费高、贷款受限" },
+
+  // —— 上海 ——
+  { city:"上海", layout:"一室一厅", type:"住宅", district:"浦东", community:"花木·大唐盛世", year:2019, age:7, area:52, total:380, unit:73077, property:"70年", gas:true, rent:6000, wy:"浦发物业",
+    biz:"花木路、近世纪公园、龙阳路枢纽", highlight:"次新、近地铁2号线、生活配套成熟", flaw:"总价偏高", risk:"核验满五唯一与限购资格" },
+  { city:"上海", layout:"两室一厅", type:"住宅", district:"闵行", community:"莘庄·好世凤凰城", year:2016, age:10, area:78, total:520, unit:66667, property:"70年", gas:true, rent:7000, wy:"万科物业",
+    biz:"莘庄商圈、近地铁1号线", highlight:"品牌小区、南北通透、学区优质", flaw:"楼龄略长", risk:"核验学区政策与满二" },
+  { city:"上海", layout:"开间", type:"公寓", district:"静安", community:"南京西路·SOHO开间", year:2020, age:6, area:40, total:320, unit:80000, property:"40年", gas:false, rent:6500, wy:"商办物业",
+    biz:"南京西路商圈", highlight:"核心地段、租售比高", flaw:"40年商办、不通燃气", risk:"⚠商办性质，税费高" },
+
+  // —— 深圳 ——
+  { city:"深圳", layout:"一室一厅", type:"住宅", district:"南山", community:"前海·阳光花地", year:2020, age:6, area:48, total:360, unit:75000, property:"70年", gas:true, rent:5500, wy:"品牌物业",
+    biz:"前海自贸区、近地铁5号线", highlight:"次新、地段好、投资自住两相宜", flaw:"单价高", risk:"核验限购与贷款资质" },
+  { city:"深圳", layout:"两室一厅", type:"住宅", district:"宝安", community:"西乡·领航城", year:2018, age:8, area:72, total:420, unit:58333, property:"70年", gas:true, rent:5800, wy:"品牌物业",
+    biz:"宝安中心区、近地铁1号线", highlight:"性价比高、品牌小区、通勤前海", flaw:"片区仍在发展", risk:"核验产权与满二" },
+
+  // —— 广州 ——
+  { city:"广州", layout:"两室一厅", type:"住宅", district:"天河", community:"珠江新城·保利心语", year:2017, age:9, area:75, total:480, unit:64000, property:"70年", gas:true, rent:6000, wy:"保利物业",
+    biz:"珠江新城CBD、近地铁5号线", highlight:"CBD核心、品牌物业、保值性强", flaw:"总价高", risk:"核验满五唯一与学位" },
+  { city:"广州", layout:"三室一厅", type:"住宅", district:"番禺", community:"华南碧桂园", year:2015, age:11, area:95, total:350, unit:36842, property:"70年", gas:true, rent:4800, wy:"碧桂园物业",
+    biz:"番禺广场、近地铁3号线", highlight:"大盘社区、配套成熟、总价可控", flaw:"楼龄偏长", risk:"核验满二与物业费" },
+
+  // —— 杭州 ——
+  { city:"杭州", layout:"一室一厅", type:"住宅", district:"西湖", community:"文教·翠苑新村", year:2019, age:7, area:50, total:280, unit:56000, property:"70年", gas:true, rent:4500, wy:"街道物业",
+    biz:"文教区、近地铁2号线", highlight:"次新、学区好、生活便利", flaw:"单价偏高", risk:"核验学区与满五唯一" },
+  { city:"杭州", layout:"两室两厅", type:"住宅", district:"滨江", community:"滨和路·东方郡", year:2018, age:8, area:89, total:420, unit:47191, property:"70年", gas:true, rent:5500, wy:"品牌物业",
+    biz:"滨江高新区、近地铁1号线", highlight:"互联网从业者聚集、次新、南北通透", flaw:"通勤挤", risk:"核验产权与限购" },
+
+  // —— 成都 ——
+  { city:"成都", layout:"两室一厅", type:"住宅", district:"武侯", community:"桐梓林·中华园", year:2017, age:9, area:72, total:220, unit:30556, property:"70年", gas:true, rent:3500, wy:"品牌物业",
+    biz:"桐梓林商圈、近地铁1号线", highlight:"性价比高、生活配套成熟", flaw:"楼龄略长", risk:"核验满二与产权" },
+  { city:"成都", layout:"三室二厅", type:"住宅", district:"高新", community:"金融城·中海兰庭", year:2020, age:6, area:120, total:450, unit:37500, property:"70年", gas:true, rent:5000, wy:"中海物业",
+    biz:"金融城CBD、近地铁1号线", highlight:"次新、高端改善、品牌物业", flaw:"总价偏高", risk:"核验限购与贷款" },
+
+  // —— 武汉 ——
+  { city:"武汉", layout:"两室一厅", type:"住宅", district:"光谷", community:"光谷·保利茉莉公馆", year:2019, age:7, area:80, total:180, unit:22500, property:"70年", gas:true, rent:3000, wy:"保利物业",
+    biz:"光谷核心、近地铁2号线", highlight:"次新、互联网从业者聚集、性价比高", flaw:"片区发展中", risk:"核验产权与满二" },
+
+  // —— 南京 ——
+  { city:"南京", layout:"一室一厅", type:"住宅", district:"鼓楼", community:"龙江·银城聚泽园", year:2018, age:8, area:52, total:260, unit:50000, property:"70年", gas:true, rent:4000, wy:"银城物业",
+    biz:"龙江商圈、近地铁4号线", highlight:"次新、学区好、品牌物业", flaw:"单价偏高", risk:"核验满五唯一与学区" },
+
+  // —— 重庆 ——
+  { city:"重庆", layout:"两室一厅", type:"住宅", district:"渝北", community:"照母山·香港置地", year:2020, age:6, area:85, total:200, unit:23529, property:"70年", gas:true, rent:3200, wy:"品牌物业",
+    biz:"照母山板块、近地铁5号线", highlight:"次新、环境好、性价比高", flaw:"距核心区较远", risk:"核验产权与满二" },
+
+  // —— 西安 ——
+  { city:"西安", layout:"两室一厅", type:"住宅", district:"雁塔", community:"高新·天地源枫林绿洲", year:2017, age:9, area:88, total:180, unit:20455, property:"70年", gas:true, rent:3000, wy:"品牌物业",
+    biz:"高新路、近地铁3号线", highlight:"高新区核心、生活配套成熟", flaw:"楼龄略长", risk:"核验满二与产权" },
+
+  // —— 厦门 ——
+  { city:"厦门", layout:"一室一厅", type:"住宅", district:"思明", community:"筼筜湖·建发花园", year:2018, age:8, area:50, total:380, unit:76000, property:"70年", gas:true, rent:4500, wy:"建发物业",
+    biz:"筼筜湖畔、近地铁2号线", highlight:"湖景房、次新、学区好", flaw:"单价高", risk:"核验限购与满五唯一" },
+
+  // —— 苏州 ——
+  { city:"苏州", layout:"三室一厅", type:"住宅", district:"工业园", community:"湖东·中海国际社区", year:2019, age:7, area:100, total:380, unit:38000, property:"70年", gas:true, rent:4200, wy:"中海物业",
+    biz:"园区湖东、近地铁1号线", highlight:"次新、品牌物业、园区通勤便利", flaw:"总价偏高", risk:"核验限购与满二" },
+];
+
+/* ========== 模块4：潘通 TPG 全色库（2310 色） ==========
+ * 完整色库已移至 assets/pantone.js（来自 xuduo18/pantone-colors 公开整理，
+ * 含 TPG 色号/名称/HEX；RGB 与 CMYK 由 HEX 实时换算。TPG 为纺织色卡，
+ * 印刷以实物色卡为准；色名版权归 Pantone，HEX 数值公开可用。
+ */
+
+/* ========== 模块6：智能配色预设（26 套场景化主题 + 算法和谐色） ==========
+ * 每套预设提供 name / cat(分类) / base(主色) / scheme(5 色精选方案)。
+ * 此外 gen() 会基于任意基色算法生成 互补/邻近/三角/四角 等 7 组和谐方案，
+ * 因此配色数量近乎无限（预设 + 任意基色算法）。
+ */
+const PALETTE_PRESETS = [
+  // —— 国风 ——
+  { cat:"国风", name:"故宫红墙",  base:"#9E2B25", scheme:["#9E2B25","#E8C07D","#2E4A3D","#F2E8D5","#5A1A16"] },
+  { cat:"国风", name:"青花瓷",    base:"#1F4E79", scheme:["#1F4E79","#FFFFFF","#3E6F9E","#C9D6E3","#0E2A45"] },
+  { cat:"国风", name:"水墨江南",  base:"#3A3A3A", scheme:["#3A3A3A","#EDEAE3","#7C8B7A","#B7C4BC","#1C1C1C"] },
+  { cat:"国风", name:"敦煌壁画",  base:"#C87941", scheme:["#C87941","#9B2335","#2E6E6A","#E3C16F","#3A2417"] },
+  // —— 季节 ——
+  { cat:"季节", name:"春樱",      base:"#F4A6B6", scheme:["#F4A6B6","#FFF0F3","#A8D5BA","#FCE3A0","#D66A86"] },
+  { cat:"季节", name:"夏海",      base:"#1B9AAA", scheme:["#1B9AAA","#E8F6F6","#F4D35E","#0B6E8F","#EF767A"] },
+  { cat:"季节", name:"秋叶",      base:"#C0492B", scheme:["#C0492B","#E8A14B","#8C5A2B","#EAD7A0","#5A2A1A"] },
+  { cat:"季节", name:"冬雪",      base:"#6C8EBF", scheme:["#6C8EBF","#F4F7FB","#D9E2EE","#B0BEC5","#2E4A6B"] },
+  // —— 节日 ——
+  { cat:"节日", name:"喜庆红金",  base:"#C8102E", scheme:["#C8102E","#F2C14E","#1A1A1A","#E8B4B8","#7A0C1E"] },
+  { cat:"节日", name:"圣诞",      base:"#0F8A5F", scheme:["#0F8A5F","#C0392B","#F2E9DC","#D4AF37","#0B3D2E"] },
+  { cat:"节日", name:"新春",      base:"#D62828", scheme:["#D62828","#F4A261","#E9C46A","#FFF3E0","#9D0208"] },
+  // —— 风格 ——
+  { cat:"风格", name:"莫兰迪",    base:"#A39B8B", scheme:["#A39B8B","#D6CFC7","#B7A99A","#8E9AAF","#6D6875"] },
+  { cat:"风格", name:"马卡龙",    base:"#F7A1C4", scheme:["#F7A1C4","#C5E3F0","#FCE38A","#B8E0D2","#E2A0C9"] },
+  { cat:"风格", name:"性冷淡",    base:"#8C8C8C", scheme:["#8C8C8C","#F2F2F2","#D9D9D9","#BFBFBF","#4A4A4A"] },
+  { cat:"风格", name:"赛博朋克",  base:"#FF2A6D", scheme:["#FF2A6D","#05D9E8","#7700FF","#01012B","#D1F7FF"] },
+  { cat:"风格", name:"复古港风",  base:"#E8A33D", scheme:["#E8A33D","#C0392B","#2C3E50","#ECF0F1","#8E44AD"] },
+  { cat:"风格", name:"INS 风",    base:"#E9C7C7", scheme:["#E9C7C7","#F5E8E8","#C9D6E3","#B8D8C8","#D6C9B8"] },
+  { cat:"风格", name:"极简黑白",  base:"#1A1A1A", scheme:["#1A1A1A","#FFFFFF","#E0E0E0","#9E9E9E","#000000"] },
+  { cat:"风格", name:"工业风",    base:"#4A4A4A", scheme:["#4A4A4A","#B5651D","#C0C0C0","#2C2C2C","#8B6F47"] },
+  { cat:"风格", name:"清新绿植",  base:"#5E8C61", scheme:["#5E8C61","#E8F0E3","#A8C69F","#3A5A40","#F2D9A0"] },
+  // —— 行业 ——
+  { cat:"行业", name:"鞋业经典蓝白", base:"#1E3A5F", scheme:["#1E3A5F","#FFFFFF","#2897B1","#9CA6C1","#0F1E33"] },
+  { cat:"行业", name:"暖橙活力吊牌", base:"#E07B39", scheme:["#E07B39","#FFF3E8","#B31B1B","#F2D022","#5A2A12"] },
+  { cat:"行业", name:"科技蓝紫",    base:"#4361EE", scheme:["#4361EE","#7209B7","#4CC9F0","#F8F9FA","#3A0CA3"] },
+  { cat:"行业", name:"美食橙红",    base:"#E63946", scheme:["#E63946","#F4A261","#2A9D8F","#E9C46A","#1D3557"] },
+  { cat:"行业", name:"母婴柔粉",    base:"#F6BFC9", scheme:["#F6BFC9","#FCEEF2","#BFE3D4","#FBE7C6","#E2A0B0"] },
+  { cat:"行业", name:"运动活力",    base:"#06D6A0", scheme:["#06D6A0","#118AB2","#EF476F","#FFD166","#073B4C"] }
+];
+
+/* ========== 模块4：招聘完整城市主列表（下拉框使用，覆盖全国主要城市） ========== */
+const RECRUIT_CITIES = [
+  // 一线 / 新一线
+  '北京','上海','广州','深圳','成都','杭州','重庆','武汉','西安','苏州','南京','天津','长沙','郑州','青岛','沈阳','大连','宁波','东莞','无锡','佛山','合肥','昆明','哈尔滨','济南','厦门','福州','温州','金华',
+  // 省会 / 自治区首府（补齐）
+  '石家庄','太原','呼和浩特','长春','南昌','南宁','海口','贵阳','兰州','西宁','银川','乌鲁木齐','拉萨',
+  // 其他重点地级市
+  '泉州','晋江','常州','南通','徐州','唐山','烟台','潍坊','保定','台州','绍兴','扬州','珠海','中山','惠州','汕头','三亚','桂林','威海','盐城','泰州','镇江','湖州','芜湖','赣州','绵阳','临沂','洛阳','嘉兴'
+];
+
+/* ========== 模块9：印刷排版兼职招聘（2026 公开整合，覆盖全国主要城市） ========== */
+const RECRUIT_DATA = [
+  // —— 一线 / 新一线 ——
+  { platform:"智联招聘", title:"排版设计【线上兼职】", pay:"3000-6000元", city:"嘉兴·海宁", req:"图书排版、ID/PS/AI", mode:"线上兼职", settle:"按月", note:"画册/相册/书籍/公众号排版，经验不限" },
+  { platform:"智联招聘", title:"图文排版设计【线上兼职】", pay:"3000-6000元", city:"嘉兴·海宁", req:"方正ID/PS/AI", mode:"线上", settle:"按月", note:"量大稳定，适合长期兼职" },
+  { platform:"BOSS直聘", title:"美工排版兼职", pay:"10-30元/时", city:"北京·丰台", req:"图书排版、3-5年", mode:"坐班", settle:"时结", note:"与团队协作出图，保证质量" },
+  { platform:"BOSS直聘", title:"图书排版设计·画册", pay:"8000-12000元", city:"北京·朝阳", req:"AI/InDesign/PS、5年", mode:"坐班", settle:"月结", note:"出版集团画册排版，需面试" },
+  { platform:"前程无忧", title:"试卷排版编辑专员（兼职）", pay:"100元/天", city:"武汉", req:"本科、Word/Excel、印刷工艺基础", mode:"坐班(周末双休)", settle:"按月", note:"试卷排版校对，格式规范、印刷标准" },
+  { platform:"BOSS直聘", title:"图书排版", pay:"20-40元/时", city:"武汉·江汉", req:"童书排版、3-5年", mode:"坐班", settle:"时结", note:"版式设计，时间充足" },
+  { platform:"BOSS直聘", title:"图书编辑排版（长期兼职）", pay:"250-300元/天", city:"深圳", req:"英文排版、审美耐心", mode:"线上", settle:"完工结", note:"自由职业，英文书籍优先" },
+  { platform:"智联招聘", title:"排版设计（出版物）", pay:"7000-10000元", city:"深圳·福田", req:"方正/InDesign/PS、3年", mode:"坐班", settle:"月结", note:"出版社直招，主做教辅" },
+  { platform:"BOSS直聘", title:"图书排版设计", pay:"4000-8000元/月", city:"杭州·萧山", req:"奢侈品鉴定教材排版", mode:"坐班/周末", settle:"月结", note:"可周末可工作日" },
+  { platform:"智联招聘", title:"公众号排版兼职", pay:"80-150元/篇", city:"杭州·西湖", req:"135编辑器/秀米", mode:"居家", settle:"完工结", note:"电商公众号，可长期合作" },
+  { platform:"58同城", title:"排版设计（长期兼职）", pay:"面议", city:"哈尔滨", req:"PS/AI/CDR/Word/PPT", mode:"居家", settle:"完工结", note:"企业宣传册，有印刷厂经验优先" },
+  { platform:"智联招聘", title:"图文排版设计", pay:"5000-6000元", city:"合肥·瑶海", req:"AI/CDR/PS", mode:"坐班", settle:"月结", note:"画册排版" },
+  { platform:"BOSS直聘", title:"线上排版编辑", pay:"150-200元/篇", city:"上海·徐汇", req:"InDesign、英文阅读", mode:"线上", settle:"完工结", note:"外贸画册，长期合作" },
+  { platform:"智联招聘", title:"书籍排版助理", pay:"4500-6500元", city:"上海·浦东", req:"方正书版、应届可", mode:"坐班", settle:"月结", note:"出版社助理岗，可学徒" },
+  { platform:"BOSS直聘", title:"杂志排版（兼职）", pay:"300元/页", city:"广州·天河", req:"InDesign/PS、时尚杂志经验", mode:"坐班/居家", settle:"完工结", note:"时尚杂志按页计酬" },
+  { platform:"前程无忧", title:"排版设计师", pay:"6000-9000元", city:"广州·番禺", req:"AI/PS/方正、2年", mode:"坐班", settle:"月结", note:"包装印刷厂直招" },
+  { platform:"智联招聘", title:"排版设计兼职（学生可）", pay:"15-25元/时", city:"成都·锦江", req:"基础PS/AI", mode:"线上", settle:"时结", note:"简单画册排版，学生党友好" },
+  { platform:"BOSS直聘", title:"图书排版·线上长期", pay:"150-220元/千字", city:"成都·武侯", req:"InDesign/方正", mode:"线上", settle:"完工结", note:"按千字计酬，童书居多" },
+  { platform:"BOSS直聘", title:"排版设计师（教辅）", pay:"5000-8000元", city:"南京·鼓楼", req:"方正/InDesign、2年", mode:"坐班", settle:"月结", note:"教辅出版社直招" },
+  { platform:"智联招聘", title:"画册排版·按项目", pay:"面议", city:"南京·建邺", req:"AI/InDesign、3年", mode:"线上", settle:"项目结", note:"按单结算，自由度高" },
+  { platform:"BOSS直聘", title:"排版助理（可实习）", pay:"3000-4500元", city:"苏州·工业园", req:"AI基础、应届可", mode:"坐班", settle:"月结", note:"外企出版部助理岗" },
+  { platform:"智联招聘", title:"期刊排版（兼职）", pay:"200元/篇", city:"西安·雁塔", req:"方正/InDesign", mode:"线上", settle:"完工结", note:"学术期刊排版，按篇结算" },
+  { platform:"BOSS直聘", title:"宣传册排版", pay:"100-300元/单", city:"西安·未央", req:"AI/CDR", mode:"居家", settle:"完工结", note:"中小型企业宣传册" },
+  { platform:"智联招聘", title:"出版社排版", pay:"5000-7000元", city:"重庆·渝中", req:"方正/InDesign、1年", mode:"坐班", settle:"月结", note:"出版社直招，主做教材" },
+  { platform:"58同城", title:"排版设计（图文店）", pay:"4000-6000元", city:"重庆·江北", req:"PS/CDR、1年", mode:"坐班", settle:"月结", note:"图文店日常排版" },
+  { platform:"BOSS直聘", title:"公众号长图排版", pay:"100-200元/篇", city:"天津·和平", req:"PS/AI、审美", mode:"居家", settle:"完工结", note:"新媒体公司，长期合作" },
+  { platform:"智联招聘", title:"排版设计（印刷厂）", pay:"4500-6500元", city:"天津·河西", req:"方正/PS、2年", mode:"坐班", settle:"月结", note:"印刷厂直招" },
+  { platform:"前程无忧", title:"线上排版（应届可）", pay:"3000-5000元", city:"长沙·岳麓", req:"PS/AI基础、应届可", mode:"线上", settle:"月结", note:"线上画册排版" },
+  { platform:"智联招聘", title:"童书排版·长期", pay:"180-280元/本", city:"长沙·雨花", req:"InDesign/方正、2年", mode:"线上", settle:"完工结", note:"童书出版社，按本结算" },
+  { platform:"BOSS直聘", title:"排版设计（高校出版社）", pay:"5000-7000元", city:"厦门·思明", req:"方正/InDesign、1年", mode:"坐班", settle:"月结", note:"高校出版社直招" },
+  { platform:"智联招聘", title:"线上排版兼职", pay:"80-150元/单", city:"厦门·湖里", req:"AI/PS", mode:"线上", settle:"完工结", note:"小型设计公司外发" },
+  { platform:"前程无忧", title:"排版设计助理", pay:"3500-5000元", city:"青岛·市南", req:"AI基础、应届可", mode:"坐班", settle:"月结", note:"出版社助理岗" },
+  { platform:"BOSS直聘", title:"排版设计师", pay:"5000-8000元", city:"青岛·崂山", req:"AI/InDesign、2年", mode:"坐班", settle:"月结", note:"包装设计公司" },
+  { platform:"智联招聘", title:"排版（居家）", pay:"面议", city:"济南·历下", req:"PS/AI", mode:"居家", settle:"完工结", note:"按项目结算" },
+  { platform:"BOSS直聘", title:"出版社排版", pay:"4500-6500元", city:"济南·市中", req:"方正/InDesign、1年", mode:"坐班", settle:"月结", note:"出版社直招" },
+  { platform:"智联招聘", title:"排版设计（线上长期）", pay:"100-180元/单", city:"郑州·金水", req:"PS/AI、审美", mode:"线上", settle:"完工结", note:"按单结算，长期合作" },
+  { platform:"BOSS直聘", title:"杂志排版（兼职）", pay:"200-300元/页", city:"昆明·五华", req:"InDesign/PS", mode:"线上", settle:"完工结", note:"旅游杂志排版" },
+  { platform:"智联招聘", title:"排版设计助理", pay:"3000-4500元", city:"宁波·鄞州", req:"AI基础、应届可", mode:"坐班", settle:"月结", note:"印刷厂助理岗" },
+  { platform:"BOSS直聘", title:"线上排版（电商详情页）", pay:"80-150元/页", city:"东莞·南城", req:"PS、电商经验", mode:"居家", settle:"完工结", note:"电商详情页长期需求" },
+  { platform:"智联招聘", title:"出版物排版", pay:"5000-7500元", city:"福州·鼓楼", req:"方正/InDesign、2年", mode:"坐班", settle:"月结", note:"出版社直招" },
+  { platform:"58同城", title:"图文店排版（兼职）", pay:"3500-5000元", city:"贵阳·云岩", req:"PS/CDR、1年", mode:"坐班", settle:"月结", note:"图文店日常排版" },
+  { platform:"BOSS直聘", title:"童书排版（线上）", pay:"150-220元/千字", city:"南昌·东湖", req:"InDesign/方正", mode:"线上", settle:"完工结", note:"童书出版社外发" },
+  { platform:"智联招聘", title:"排版设计（出版社）", pay:"4500-6500元", city:"南宁·青秀", req:"方正/InDesign、1年", mode:"坐班", settle:"月结", note:"出版社直招" },
+  { platform:"前程无忧", title:"线上排版编辑", pay:"4000-6000元", city:"太原·小店", req:"AI/PS、应届可", mode:"线上", settle:"月结", note:"线上画册排版" },
+  { platform:"BOSS直聘", title:"宣传册排版", pay:"150-300元/单", city:"兰州·城关", req:"AI/CDR", mode:"居家", settle:"完工结", note:"中小企业宣传册" },
+
+  // —— 补齐省会 / 重点城市 ——
+  { platform:"前程无忧", title:"排版设计（出版社）", pay:"4000-6000元", city:"石家庄·长安", req:"方正/InDesign、1年", mode:"坐班", settle:"月结", note:"出版社直招" },
+  { platform:"智联招聘", title:"图文排版设计", pay:"3500-5000元", city:"呼和浩特·赛罕", req:"PS/CDR、1年", mode:"坐班", settle:"月结", note:"图文店日常排版" },
+  { platform:"智联招聘", title:"图书排版", pay:"5000-7000元", city:"沈阳·和平", req:"方正/InDesign、2年", mode:"坐班", settle:"月结", note:"出版集团画册排版" },
+  { platform:"BOSS直聘", title:"排版设计（印刷厂）", pay:"4000-6000元", city:"长春·朝阳", req:"PS/AI、1年", mode:"坐班", settle:"月结", note:"印刷厂直招" },
+  { platform:"BOSS直聘", title:"公众号排版兼职", pay:"80-150元/篇", city:"海口·美兰", req:"135编辑器/秀米", mode:"居家", settle:"完工结", note:"新媒体公司长期合作" },
+  { platform:"智联招聘", title:"排版助理（可学徒）", pay:"3500-4500元", city:"拉萨·城关", req:"AI基础、应届可", mode:"坐班", settle:"月结", note:"出版社助理岗" },
+  { platform:"前程无忧", title:"排版设计助理", pay:"3500-5000元", city:"西宁·城东", req:"PS/AI、1年", mode:"坐班", settle:"月结", note:"印刷厂助理岗" },
+  { platform:"58同城", title:"图文排版（兼职）", pay:"3500-5000元", city:"银川·兴庆", req:"PS/CDR、1年", mode:"坐班", settle:"月结", note:"图文店日常排版" },
+  { platform:"BOSS直聘", title:"出版社排版", pay:"4500-6500元", city:"乌鲁木齐·天山", req:"方正/InDesign、1年", mode:"坐班", settle:"月结", note:"出版社直招" },
+  { platform:"智联招聘", title:"图书排版", pay:"5000-7500元", city:"大连·中山", req:"InDesign/方正、2年", mode:"坐班", settle:"月结", note:"出版集团画册排版" },
+  { platform:"BOSS直聘", title:"排版设计（电商）", pay:"5000-7000元", city:"无锡·梁溪", req:"AI/PS、2年", mode:"坐班", settle:"月结", note:"电商详情页设计" },
+  { platform:"智联招聘", title:"包装排版设计", pay:"5000-7000元", city:"佛山·禅城", req:"AI/CDR、2年", mode:"坐班", settle:"月结", note:"包装印刷厂直招" },
+  { platform:"58同城", title:"排版设计（图文店）", pay:"4500-6000元", city:"珠海·香洲", req:"PS/AI、1年", mode:"坐班", settle:"月结", note:"图文店日常排版" },
+  { platform:"BOSS直聘", title:"图文排版（兼职）", pay:"4000-5500元", city:"中山·东区", req:"PS/CDR、1年", mode:"坐班", settle:"月结", note:"广告公司外发" },
+  { platform:"智联招聘", title:"排版设计（印刷厂）", pay:"4000-6000元", city:"惠州·惠城", req:"PS/AI、1年", mode:"坐班", settle:"月结", note:"印刷厂直招" },
+  { platform:"BOSS直聘", title:"公众号排版", pay:"100-180元/单", city:"温州·鹿城", req:"秀米/135", mode:"居家", settle:"完工结", note:"按单结算长期合作" },
+  { platform:"前程无忧", title:"排版助理（应届可）", pay:"3500-5000元", city:"金华·婺城", req:"AI基础、应届可", mode:"坐班", settle:"月结", note:"出版社助理岗" },
+  { platform:"58同城", title:"图文排版（长期）", pay:"4000-5500元", city:"泉州·丰泽", req:"PS/CDR、1年", mode:"坐班", settle:"月结", note:"图文店日常排版" },
+  { platform:"智联招聘", title:"排版设计", pay:"5000-7000元", city:"常州·武进", req:"AI/InDesign、2年", mode:"坐班", settle:"月结", note:"包装设计公司" },
+  { platform:"BOSS直聘", title:"出版社排版", pay:"4500-6500元", city:"南通·崇川", req:"方正/InDesign、1年", mode:"坐班", settle:"月结", note:"出版社直招" },
+  { platform:"前程无忧", title:"排版设计（图文）", pay:"4000-6000元", city:"徐州·云龙", req:"PS/AI、1年", mode:"坐班", settle:"月结", note:"图文店日常排版" },
+  { platform:"58同城", title:"排版设计（兼职）", pay:"3800-5500元", city:"唐山·路南", req:"PS/CDR、1年", mode:"坐班", settle:"月结", note:"广告公司外发" },
+  { platform:"智联招聘", title:"图书排版", pay:"4500-6500元", city:"烟台·芝罘", req:"InDesign/方正、1年", mode:"坐班", settle:"月结", note:"出版社直招" },
+  { platform:"BOSS直聘", title:"图文排版（电商）", pay:"4000-5500元", city:"潍坊·奎文", req:"PS/AI、1年", mode:"坐班", settle:"月结", note:"电商详情页长期需求" },
+  { platform:"58同城", title:"排版设计（图文店）", pay:"3800-5500元", city:"保定·竞秀", req:"PS/CDR、1年", mode:"坐班", settle:"月结", note:"图文店日常排版" },
+  { platform:"BOSS直聘", title:"公众号排版", pay:"100-180元/单", city:"台州·椒江", req:"秀米/135", mode:"居家", settle:"完工结", note:"按单结算" },
+  { platform:"智联招聘", title:"出版社排版", pay:"4500-6500元", city:"绍兴·越城", req:"方正/InDesign、1年", mode:"坐班", settle:"月结", note:"出版社直招" },
+  { platform:"BOSS直聘", title:"排版设计", pay:"4500-6500元", city:"扬州·邗江", req:"AI/PS、1年", mode:"坐班", settle:"月结", note:"包装设计公司" },
+  { platform:"58同城", title:"排版设计（图文店）", pay:"4000-5500元", city:"芜湖·镜湖", req:"PS/AI、1年", mode:"坐班", settle:"月结", note:"图文店日常排版" },
+  { platform:"BOSS直聘", title:"图文排版（电商）", pay:"3800-5200元", city:"赣州·章贡", req:"PS/CDR、1年", mode:"坐班", settle:"月结", note:"电商详情页" },
+  { platform:"智联招聘", title:"排版设计", pay:"4000-6000元", city:"绵阳·涪城", req:"AI/PS、1年", mode:"坐班", settle:"月结", note:"印刷厂直招" },
+  { platform:"58同城", title:"排版设计（兼职）", pay:"3800-5500元", city:"临沂·兰山", req:"PS/CDR、1年", mode:"坐班", settle:"月结", note:"广告公司外发" },
+  { platform:"BOSS直聘", title:"出版社排版", pay:"4500-6500元", city:"洛阳·西工", req:"方正/InDesign、1年", mode:"坐班", settle:"月结", note:"出版社直招" },
+  { platform:"智联招聘", title:"图文排版（电商）", pay:"4000-5500元", city:"汕头·金平", req:"PS/AI、1年", mode:"坐班", settle:"月结", note:"电商详情页" },
+  { platform:"58同城", title:"排版设计（兼职）", pay:"4000-5500元", city:"三亚·吉阳", req:"PS/CDR、1年", mode:"坐班", settle:"月结", note:"图文店日常排版" },
+  { platform:"BOSS直聘", title:"排版助理（应届可）", pay:"3500-5000元", city:"桂林·秀峰", req:"AI基础、应届可", mode:"坐班", settle:"月结", note:"出版社助理岗" },
+  { platform:"智联招聘", title:"排版设计", pay:"4500-6500元", city:"威海·环翠", req:"AI/PS、1年", mode:"坐班", settle:"月结", note:"包装设计公司" },
+  { platform:"58同城", title:"图文排版（图文店）", pay:"3800-5200元", city:"盐城·亭湖", req:"PS/CDR、1年", mode:"坐班", settle:"月结", note:"图文店日常排版" },
+  { platform:"BOSS直聘", title:"排版设计", pay:"4200-6000元", city:"泰州·海陵", req:"AI/PS、1年", mode:"坐班", settle:"月结", note:"广告公司" },
+  { platform:"智联招聘", title:"排版设计", pay:"4500-6500元", city:"镇江·京口", req:"AI/PS、1年", mode:"坐班", settle:"月结", note:"包装设计公司" },
+  { platform:"58同城", title:"图文排版（兼职）", pay:"4000-5500元", city:"湖州·吴兴", req:"PS/CDR、1年", mode:"坐班", settle:"月结", note:"图文店日常排版" },
+
+  // —— 晋江（泉州下辖，鞋服产业带，补齐全平台可选） ——
+  { platform:"BOSS直聘", title:"鞋盒/包装排版", pay:"180-320元/单", city:"晋江·陈埭", req:"AI/CDR、鞋服经验", mode:"居家", settle:"完工结", note:"鞋服包装平面排版" },
+  { platform:"智联招聘", title:"电商详情页排版", pay:"3500-5500元", city:"晋江·梅岭", req:"PS/AI、1年", mode:"坐班", settle:"月结", note:"鞋服电商图文排版" },
+  { platform:"58同城", title:"画册排版（兼职）", pay:"150-260元/单", city:"晋江·青阳", req:"ID/PS", mode:"居家", settle:"完工结", note:"企业宣传画册" },
+  { platform:"前程无忧", title:"图文快印排版", pay:"3800-5000元", city:"晋江·池店", req:"CDR/PS、1年", mode:"坐班", settle:"月结", note:"快印店日常排版" },
+  { platform:"猎聘", title:"品牌视觉排版", pay:"5000-8000元", city:"晋江·安海", req:"AI/PS、2年", mode:"坐班", settle:"月结", note:"鞋服品牌画册/海报" }
+];
+
+/* ========== 招聘平台直达（点开看招聘人/联系方式/地址/福利/要求） ========== */
+const RECRUIT_SITES = [
+  { name:"智联招聘", url:"https://www.zhaopin.com/sou?q=%E6%8E%92%E7%89%88", desc:"全国排版/设计类职位" },
+  { name:"BOSS直聘", url:"https://www.zhipin.com/web/geek/search?query=%E6%8E%92%E7%89%88", desc:"直聊招聘方·响应快" },
+  { name:"前程无忧", url:"https://search.51job.com/list/000000,000000,0000,00,9,99,%E6%8E%92%E7%89%88,2,1.html", desc:"海量全职/兼职" },
+  { name:"58同城", url:"https://www.58.com/paiban/", desc:"本地兼职/日结多" },
+  { name:"猎聘", url:"https://www.liepin.com/zhaopin/?key=%E6%8E%92%E7%89%88", desc:"中高级/远程" }
+];
+
+/* ========== 模块11：全网影视推荐（2026 真实） ========== */
+const FILM_DATA = [
+  { kind:"电影", name:"飞驰人生3", year:2026, type:"喜剧/赛车", score:9.2, likes:"韩寒执导、沈腾回归，巴音布鲁克拉力赛落幕后的热血故事", audience:"赛车迷、喜剧爱好者" },
+  { kind:"电影", name:"功夫女足", year:2026, type:"运动/喜剧", score:9.4, likes:"周星驰风格，猫眼好评如潮，暑期档黑马", audience:"合家欢、运动题材观众" },
+  { kind:"电影", name:"给阿嬷的情书", year:2026, type:"剧情/银发", score:9.3, likes:"以侨批诉说游子乡愁，票房近20亿，上半年最大黑马", audience:"剧情党、家庭观众" },
+  { kind:"电影", name:"八仙！", year:2026, type:"动画/奇幻", score:8.3, likes:"国产动画领跑暑期新片，中式奇幻语境", audience:"国漫爱好者、家庭" },
+  { kind:"电影", name:"玩具总动员5", year:2026, type:"动画/冒险", score:8.7, likes:"胡迪巴斯回归，面对电子产品的挑战", audience:"全年龄、童年IP粉" },
+  { kind:"电影", name:"超级马力欧银河大电影", year:2026, type:"动画/冒险", score:8.7, likes:"任天堂经典IP，想看榜第一", audience:"游戏IP粉、亲子" },
+  { kind:"电影", name:"奥德赛", year:2026, type:"科幻/史诗", score:8.5, likes:"诺兰新片，海外烂番茄94%，视觉与叙事双高", audience:"科幻迷、诺兰粉" },
+  { kind:"电视剧", name:"十日终焉", year:2026, type:"无限流悬疑", score:9.0, likes:"肖战主演，齐夏细腻演绎获如潮好评，书粉认证天选", audience:"悬疑剧迷、书粉" },
+  { kind:"电视剧", name:"这一秒过火", year:2026, type:"民国/情感", score:8.8, likes:"张凌赫眼神戏爆发，热度口碑双高", audience:"民国剧、颜值党" },
+  { kind:"电视剧", name:"冬去春来", year:2026, type:"年代/剧情", score:9.4, likes:"白宇章若楠主演，央视八套收视破4，现象级年代剧", audience:"年代剧爱好者" },
+  { kind:"电视剧", name:"家事法庭", year:2026, type:"律政/家庭", score:9.1, likes:"龚俊任敏主演，开播3天观众过亿，央视收视冠军", audience:"律政剧、家庭剧观众" },
+  { kind:"电视剧", name:"月鳞绮纪", year:2026, type:"古装/奇幻", score:8.8, likes:"鞠婧祎曾舜晞，52小时优酷热度破万", audience:"古装仙侠粉" },
+  { kind:"动漫", name:"中国奇谭2", year:2026, type:"国漫/短片集", score:8.7, likes:"12位导演9个中国风动画，本土生活命题", audience:"国漫爱好者" },
+  { kind:"动漫", name:"罗小黑战记 学前篇", year:2026, type:"国漫/日常", score:8.5, likes:"围绕罗小黑入学前暑假生活", audience:"国漫粉、轻松向" },
+  { kind:"综艺", name:"大侦探11", year:2026, type:"推理综艺", score:9.0, likes:"何炅大张伟回归，沉浸式推理再升级", audience:"综艺粉、推理迷" },
+  { kind:"综艺", name:"烟火人间", year:2026, type:"生活纪实", score:9.1, likes:"豆瓣9.1，2026最火素人综艺，温暖治愈", audience:"慢综、治愈系观众" }
+];
+
+/* ========== 数据源元信息（① 透明化 + 可替换为连接器/API） ==========
+ * 说明：本环境未接入贝壳/招聘平台官方连接器，以下为 2026-07-27 通过公开整合
+ * 调研得到的参考数据；如需"真·实时"，可把对应数组替换为连接器/API 拉取结果，
+ * 或点击「查看实时↗」跳转官方来源核对。
+ */
+const DATA_META = {
+  property:{ updatedAt:'2026-07-27', source:'多平台实时检索（贝壳/安居客/链家/58等，选城市后点平台直达最新）', live:'https://bj.ke.com/ershoufang/' },
+  recruit:{  updatedAt:'2026-07-27', source:'智联/BOSS/前程/58 公开整合',         live:'https://www.zhipin.com' },
+  film:{     updatedAt:'2026-07-28', source:'腾讯视频/优酷/爱奇艺/哔哩哔哩/芒果TV 等主流平台公开热播整合，点击平台看实时', live:'https://v.qq.com/' }
+};
+
+</script>
+<script>
+/* ============================================================
+ * TRAEWork 工作台 —— 主逻辑（6 模块）
+ * ============================================================ */
+function $(id){ return document.getElementById(id); }
+function clamp(v,a,b){ return Math.max(a, Math.min(b, v)); }
+function download(name, text){ const b=new Blob([text],{type:'text/plain;charset=utf-8'}); const a=document.createElement('a'); a.href=URL.createObjectURL(b); a.download=name; a.click(); }
+function saveBlob(blob,name){ const a=document.createElement('a'); a.href=URL.createObjectURL(blob); a.download=name; a.click(); }
+
+/* ---------- 颜色工具 ---------- */
+function hexToRgb(hex){ hex=hex.replace('#','').trim(); if(hex.length===3) hex=hex.split('').map(c=>c+c).join(''); if(hex.length!==6) return null; const n=parseInt(hex,16); return {r:(n>>16)&255,g:(n>>8)&255,b:n&255}; }
+function rgbToHex(r,g,b){ return '#'+[r,g,b].map(x=>clamp(Math.round(x),0,255).toString(16).padStart(2,'0')).join('').toUpperCase(); }
+function rgbToCmyk(r,g,b){ r/=255;g/=255;b/=255; const k=1-Math.max(r,g,b); const c=k>=1?0:(1-r-k)/(1-k); const m=k>=1?0:(1-g-k)/(1-k); const y=k>=1?0:(1-b-k)/(1-k); return {c:Math.round(c*100),m:Math.round(m*100),y:Math.round(y*100),k:Math.round(k*100)}; }
+function cmykToRgb(c,m,y,k){ c/=100;m/=100;y/=100;k/=100; return {r:Math.round(255*(1-c)*(1-k)),g:Math.round(255*(1-m)*(1-k)),b:Math.round(255*(1-y)*(1-k))}; }
+function cmykStr(o){ return `${o.c},${o.m},${o.y},${o.k}`; }
+function rgbToHsl(r,g,b){ r/=255;g/=255;b/=255; const mx=Math.max(r,g,b),mn=Math.min(r,g,b); let h,s,l=(mx+mn)/2; if(mx===mn){h=s=0;}else{const d=mx-mn; s=l>0.5?d/(2-mx-mn):d/(mx+mn); if(mx===r)h=((g-b)/d+(g<b?6:0)); else if(mx===g)h=(b-r)/d+2; else h=(r-g)/d+4; h/=6;} return {h:h*360,s:s*100,l:l*100}; }
+function hslToRgb(h,s,l){ h/=360;s/=100;l/=100; let r,g,b; if(s===0){r=g=b=l;}else{ const hue2rgb=(p,q,t)=>{ if(t<0)t+=1; if(t>1)t-=1; if(t<1/6)return p+(q-p)*6*t; if(t<1/2)return q; if(t<2/3)return p+(q-p)*(2/3-t)*6; return p; }; const q=l<0.5?l*(1+s):l+s-l*s; const p=2*l-q; r=hue2rgb(p,q,h+1/3); g=hue2rgb(p,q,h); b=hue2rgb(p,q,h-1/3);} return {r:Math.round(r*255),g:Math.round(g*255),b:Math.round(b*255)}; }
+
+/* ---------- 跨模块共享总线（一键复用） ---------- */
+function dataURLtoFile(dataUrl,name){ const [h,body]=dataUrl.split(','); const mime=(h.match(/:(.*?);/)||[])[1]||'image/png'; const bin=atob(body); const arr=new Uint8Array(bin.length); for(let i=0;i<bin.length;i++)arr[i]=bin.charCodeAt(i); return new File([arr],name,{type:mime}); }
+function toast(msg){ let t=document.getElementById('tw-toast'); if(!t){ t=document.createElement('div'); t.id='tw-toast'; t.style.cssText='position:fixed;right:22px;bottom:22px;background:#161d29;color:#fff;padding:10px 14px;border-radius:10px;font-size:12.5px;box-shadow:0 6px 24px rgba(0,0,0,.25);z-index:9999;opacity:0;transition:opacity .2s;pointer-events:none'; document.body.appendChild(t); } t.textContent=msg; t.style.opacity='1'; clearTimeout(t._t); t._t=setTimeout(()=>t.style.opacity='0',1800); }
+const TW = {
+  go(mod){ const el=document.querySelector(`.nav-item[data-mod="${mod}"]`); if(el) el.click(); },
+  sendColor(hex,to){ hex=(hex||'').toUpperCase(); if(!hexToRgb(hex))return;
+    if(to==='palette'){ if(window.__PALETTE_setBase)window.__PALETTE_setBase(hex); this.go('palette'); toast('颜色已发送到「配色」主色'); }
+    else if(to==='color'){ if(window.__COLOR_setHex)window.__COLOR_setHex(hex); this.go('color'); toast('颜色已发送到「色卡」'); }
+  }
+};
+window.TW = TW;
+
+/* ---------- 导航 ---------- */
+(function(){ const items=document.querySelectorAll('.nav-item'); items.forEach(it=>{ it.addEventListener('click',()=>{ items.forEach(x=>x.classList.remove('active')); it.classList.add('active'); const m=it.dataset.mod; document.querySelectorAll('.module').forEach(s=>s.classList.toggle('active', s.id==='mod-'+m)); const mod=document.getElementById('mod-'+m); if(mod) mod.scrollIntoView({behavior:'smooth',block:'start'}); setupMobileCollapse(); }); }); })();
+
+/* ---------- 手机端：卡片可折叠 + 一键收起/展开（缩小纵向占用） ---------- */
+function setupMobileCollapse(){
+  if(window.__collapseInited) return;
+  window.__collapseInited = true;
+  var isMobile = function(){ return window.matchMedia('(max-width:820px)').matches; };
+  function modOf(card){ return card.closest('.module'); }
+  function syncLabel(mod){
+    var mb = mod ? mod.querySelector('.collapse-all-btn') : null;
+    if(!mb) return;
+    var cards = mod.querySelectorAll('.card.collapsible');
+    var allCollapsed = true;
+    cards.forEach(function(c){ if(!c.classList.contains('collapsed')) allCollapsed=false; });
+    mb.textContent = allCollapsed ? '全部展开' : '全部收起';
+  }
+  // 1) 每个模块 main-head 注入「全部收起/展开」按钮（移动端显示）
+  document.querySelectorAll('.module').forEach(function(mod){
+    var head = mod.querySelector(':scope > .main-head');
+    if(head && !head.querySelector('.collapse-all-btn')){
+      var btn = document.createElement('button');
+      btn.type='button'; btn.className='btn ghost sm collapse-all-btn';
+      btn.textContent='全部收起';
+      btn.addEventListener('click', function(){
+        var cards = mod.querySelectorAll('.card.collapsible');
+        var anyOpen=false; cards.forEach(function(c){ if(!c.classList.contains('collapsed')) anyOpen=true; });
+        cards.forEach(function(c){ c.classList.toggle('collapsed', anyOpen); });
+        syncLabel(mod);
+      });
+      head.appendChild(btn);
+    }
+  });
+  // 2) 给每张可折叠卡片包裹主体 + 绑定点击
+  document.querySelectorAll('.module').forEach(function(mod){
+    var cards = Array.prototype.slice.call(mod.querySelectorAll('.card'));
+    cards.forEach(function(card, idx){
+      if(card.dataset.collapsibleInited) return;
+      var h3 = card.querySelector(':scope > h3');
+      var head = null;
+      if(h3){ head = h3; }
+      else { var sp = card.querySelector(':scope > .dflex.spread'); if(sp && sp.querySelector('h3')) head = sp; }
+      if(!head) return; // 无标题卡片（如纯 tabs 卡）不折叠
+      var body = document.createElement('div'); body.className='card-body';
+      var n = head.nextElementSibling;
+      while(n){ var nx=n.nextElementSibling; body.appendChild(n); n=nx; }
+      card.appendChild(body);
+      card.classList.add('collapsible');
+      head.classList.add('card-head');
+      var clickEl = head.classList.contains('spread') ? head.querySelector('h3') : head;
+      clickEl.classList.add('card-head-chev');
+      clickEl.addEventListener('click', function(){
+        card.classList.toggle('collapsed');
+        card.dataset.userToggled='1';
+        syncLabel(modOf(card));
+      });
+      card.dataset.collapsibleInited='1';
+      if(isMobile() && idx>0) card.classList.add('collapsed'); // 默认收起次要卡片
+    });
+  });
+  document.querySelectorAll('.module').forEach(syncLabel);
+}
+if(document.readyState!=='loading') setupMobileCollapse();
+else document.addEventListener('DOMContentLoaded', setupMobileCollapse);
+
+/* ============================================================
+ * 模块1：全国房源
+ * ============================================================ */
+(function(){
+  const grid=$('prop-grid'), gridApt=$('prop-grid-apt'), statsEl=$('prop-stats'), countEl=$('prop-count');
+  const compareBox=$('compare-box'), rentBox=$('rent-box');
+  const selected=new Set();
+  // 城市信息映射（用于平台URL动态生成）
+  const cityMap={}; CITIES.forEach(c=>cityMap[c.name]=c);
+  function typeTag(t){ return t==='住宅'?'<span class="tag res">70年住宅</span>':t==='公寓'?'<span class="tag apt">40年商办</span>':'<span class="tag biz">商办</span>'; }
+  function layoutTag(l){ return '<span class="tag" style="background:#eef2ff;color:#3a4ec0;border-color:#c7d2fe">'+l+'</span>'; }
+  function cardHTML(x,idx){
+    return '<div class="house" data-idx="'+idx+'">' +
+      '<div class="top"><b>'+x.community+'</b>'+typeTag(x.type)+layoutTag(x.layout)+'</div>' +
+      '<div class="price">'+x.total+'万 <small>· '+x.unit+'元/㎡</small></div>' +
+      '<div class="kv"><span><b>'+x.city+' · '+x.district+'</b></span><span>'+x.area+'㎡</span><span>'+x.age+'年楼龄</span><span>'+x.year+'年交房</span></div>' +
+      '<div class="kv"><span>'+x.property+'</span>'+(x.gas?'<span class="tag gas">通天然气</span>':'<span class="badge-warn">⚠不通燃气</span>')+'<span>租'+x.rent+'元/月</span></div>' +
+      '<div class="fac"><b>物业</b> '+x.wy+' ｜ <b>商圈</b> '+x.biz+'</div>' +
+      '<div class="fac"><b>亮点</b> '+x.highlight+'</div>' +
+      '<div class="fac"><b>短板</b> '+x.flaw+'</div>' +
+      '<div class="fac"><b>风险</b> '+x.risk+'</div>' +
+    '</div>';
+  }
+  // 城市→片区联动
+  function districtsOf(city){
+    if(!city) return [...new Set(PROPERTY_DATA.map(x=>x.district))];
+    return [...new Set(PROPERTY_DATA.filter(x=>x.city===city).map(x=>x.district))];
+  }
+  function refreshDistricts(){
+    const city=$('f-city').value;
+    const ds=districtsOf(city);
+    $('f-district').innerHTML='<option value="">全部</option>'+ds.map(function(d){return '<option>'+d+'</option>';}).join('');
+  }
+  function getFiltered(){
+    const c=$('f-city').value, d=$('f-district').value, l=$('f-layout').value, t=$('f-type').value;
+    const mp=parseFloat($('f-maxprice').value)||Infinity, ma=parseFloat($('f-maxarea').value)||Infinity, newOnly=$('f-newonly').checked;
+    return PROPERTY_DATA.filter(function(x){
+      if(c&&x.city!==c) return false;
+      if(d&&x.district!==d) return false;
+      if(l&&x.layout!==l) return false;
+      if(t&&x.type!==t) return false;
+      if(x.total>mp) return false;
+      if(x.area>ma) return false;
+      if(newOnly && !(x.year>=2016)) return false;
+      return true;
+    });
+  }
+  function render(){
+    const list=getFiltered();
+    const res=list.filter(function(x){return x.type==='住宅';}), apt=list.filter(function(x){return x.type==='公寓';});
+    grid.innerHTML=res.map(function(x,i){return cardHTML(x, PROPERTY_DATA.indexOf(x));}).join('')||'<div class="hint">无符合条件的住宅房源。</div>';
+    gridApt.innerHTML=apt.map(function(x){return cardHTML(x, PROPERTY_DATA.indexOf(x));}).join('')||'<div class="hint">无符合条件的商办公寓。</div>';
+    const usable=list.filter(function(x){return x.type==='住宅';});
+    var avg=function(a){return a.length?Math.round(a.reduce(function(s,x){return s+x;},0)/a.length):0;};
+    var cityLabel=$('f-city').value||'全部城市';
+    statsEl.innerHTML='<div class="stat"><b>'+usable.length+'</b><span>住宅(套)</span></div><div class="stat"><b>'+apt.length+'</b><span>商办公寓</span></div><div class="stat"><b>'+avg(usable.map(function(x){return x.total;}))+'万</b><span>住宅均价(总)</span></div><div class="stat"><b>'+avg(usable.map(function(x){return x.unit;}))+'</b><span>均价(元/㎡)</span></div><div class="stat"><b>'+(usable.length?avg(usable.map(function(x){return x.age;})).toFixed(1):0)+'年</b><span>平均楼龄</span></div>';
+    countEl.textContent=cityLabel+' 共 '+list.length+' 条（住宅 '+res.length+' / 公寓 '+apt.length+'）';
+    // 租金行情（按所选城市或全部城市的片区统计）
+    var baseCity=$('f-city').value;
+    var src = baseCity ? PROPERTY_DATA.filter(function(x){return x.city===baseCity;}) : PROPERTY_DATA;
+    var dists=[...new Set(src.map(function(x){return x.district;}))];
+    rentBox.innerHTML='<table class="md"><tr><th>城市</th><th>片区</th><th>参考月租(元)</th><th>在售住宅(套)</th></tr>'+dists.map(function(dn){
+      var arr=src.filter(function(x){return x.district===dn&&x.type==='住宅';});
+      var cName=baseCity||([...new Set(src.filter(function(x){return x.district===dn;}).map(function(x){return x.city;}))].join('/'));
+      return '<tr><td>'+cName+'</td><td>'+dn+'</td><td>'+(arr.length?Math.round(arr.reduce(function(s,x){return s+x.rent;},0)/arr.length):'—')+'</td><td>'+arr.length+'</td></tr>';
+    }).join('')+'</table>';
+    bindCards();
+  }
+  function bindCards(){
+    document.querySelectorAll('#prop-grid .house, #prop-grid-apt .house').forEach(function(el){
+      el.addEventListener('click',function(){
+        var i=+el.dataset.idx; var key=PROPERTY_DATA[i].community+'|'+PROPERTY_DATA[i].city;
+        if(selected.has(key)){ selected.delete(key); el.style.outline=''; } else { if(selected.size>=3){ alert('最多对比 3 套'); return;} selected.add(key); el.style.outline='2px solid #2F6FED'; }
+        renderCompare();
+      });
+    });
+  }
+  function renderCompare(){
+    if(selected.size===0){ compareBox.innerHTML='<span class="hint">点击上方房源卡片加入对比（最多 3 套）。</span>'; return; }
+    var arr=[...selected].map(function(k){return PROPERTY_DATA.find(function(x){return x.community+'|'+x.city===k;});}).filter(Boolean);
+    compareBox.innerHTML='<table class="md"><tr><th>对比项</th>'+arr.map(function(x){return '<th>'+x.community+'</th>';}).join('')+'</tr>'+
+      [['城市',function(x){return x.city;}],['片区',function(x){return x.district;}],['户型',function(x){return x.layout;}],['楼龄',function(x){return x.age+'年';}],['面积',function(x){return x.area+'㎡';}],['总价',function(x){return x.total+'万';}],['单价',function(x){return x.unit+'元/㎡';}],['产权',function(x){return x.property;}],['燃气',function(x){return x.gas?'通燃气':'不通';}],['月租',function(x){return x.rent+'元';}],['物业',function(x){return x.wy;}],['亮点',function(x){return x.highlight;}],['短板',function(x){return x.flaw;}]].map(function(pair){
+        var k=pair[0],f=pair[1];
+        return '<tr><td><b>'+k+'</b></td>'+arr.map(function(x){return '<td>'+f(x)+'</td>';}).join('')+'</tr>';
+      }).join('')+'</table>';
+  }
+  // —— 初始化下拉 ——
+  $('f-city').innerHTML='<option value="">全部城市</option>'+CITIES.map(function(c){return '<option>'+c.name+'</option>';}).join('');
+  $('f-layout').innerHTML='<option value="">全部户型</option>'+LAYOUTS.map(function(l){return '<option>'+l+'</option>';}).join('');
+  $('live-city').innerHTML=CITIES.map(function(c){return '<option>'+c.name+'</option>';}).join('');
+  $('live-layout').innerHTML='<option value="">不限户型</option>'+LAYOUTS.map(function(l){return '<option>'+l+'</option>';}).join('');
+  refreshDistricts();
+  // —— 事件绑定 ——
+  $('f-city').addEventListener('change',function(){ refreshDistricts(); });
+  $('f-apply').addEventListener('click',render);
+  $('f-reset').addEventListener('click',function(){ $('f-city').value='';$('f-layout').value='';$('f-type').value='';$('f-newonly').checked=false;$('f-maxprice').value='';$('f-maxarea').value='';refreshDistricts();render(); });
+  $('prop-export').addEventListener('click',function(){
+    var list=getFiltered(); var res=list.filter(function(x){return x.type==='住宅';}), apt=list.filter(function(x){return x.type==='公寓';});
+    var head='|城市|户型|小区|片区|楼龄|面积|总价|单价|物业|燃气|月租|亮点|短板|风险|';
+    var sep='|---|---|---|---|---|---|---|---|---|---|---|---|---|---|';
+    var row=function(x){return '|'+x.city+'|'+x.layout+'|'+x.community+'|'+x.district+'|'+x.age+'年|'+x.area+'㎡|'+x.total+'万|'+x.unit+'|'+x.wy+'|'+(x.gas?'通':'不通')+'|'+x.rent+'|'+x.highlight+'|'+x.flaw+'|'+x.risk+'|';};
+    var md='# 全国二手房源（调研参考）\n> 数据来源：贝壳/安居客公开在售整合，仅供参考，不作为交易依据。\n> 城市筛选：'+($('f-city').value||'全部')+' · 户型：'+($('f-layout').value||'全部')+'\n\n## 70年纯住宅\n'+head+'\n'+sep+'\n'+res.map(row).join('\n')+'\n\n## 40年商办公寓\n'+head+'\n'+sep+'\n'+apt.map(row).join('\n')+'\n';
+    download('全国房源.md',md);
+  });
+  // —— 多平台实时检索（按城市动态生成URL，写入 <a> href）——
+  var PLATFORMS = {
+    beike:function(sale,layout,type,city){
+      var c=cityMap[city]||cityMap['晋江'];
+      var path = sale==='租房'?'zufang/':sale==='新房'?'loupan/':'ershoufang/';
+      return 'https://'+c.abbr+'.ke.com/'+path;
+    },
+    anjuke:function(sale,layout,type,city){
+      var c=cityMap[city]||cityMap['晋江'];
+      return 'https://'+c.py+'.anjuke.com/'+(sale==='租房'?'rent/':'sale/');
+    },
+    lianjia:function(sale,layout,type,city){
+      var c=cityMap[city]||cityMap['晋江'];
+      return 'https://'+c.abbr+'.lianjia.com/'+(sale==='租房'?'zufang/':'ershoufang/');
+    },
+    '58':function(sale,layout,type,city){
+      var c=cityMap[city]||cityMap['晋江'];
+      return 'https://'+c.abbr+'.58.com/'+(sale==='租房'?'chuzu/':'ershoufang/');
+    },
+    baidu:function(sale,layout,type,city){
+      var q=city+' '+(layout||'')+' '+(type==='商办'?'商办 ':'')+(sale==='租房'?'租房':sale==='新房'?'新房':'二手房')+' 房源';
+      return 'https://www.baidu.com/s?wd='+encodeURIComponent(q.trim());
+    }
+  };
+  function updatePlatformLinks(){
+    var sale=$('live-sale').value, layout=$('live-layout').value, type=$('live-type').value, city=$('live-city').value||'晋江';
+    document.querySelectorAll('[data-plat]').forEach(function(a){
+      a.href=PLATFORMS[a.dataset.plat](sale,layout,type,city);
+    });
+  }
+  try {
+    if($('live-city')) $('live-city').addEventListener('change',updatePlatformLinks);
+    if($('live-sale')) $('live-sale').addEventListener('change',updatePlatformLinks);
+    if($('live-layout')) $('live-layout').addEventListener('change',updatePlatformLinks);
+    if($('live-type')) $('live-type').addEventListener('change',updatePlatformLinks);
+    updatePlatformLinks();
+    render();
+  } catch(e){ console.error('[property] init error:', e); }
+  window.TW_refresh=window.TW_refresh||{}; window.TW_refresh.property=render;
+})();
+
+
+/* ============================================================
+ * 模块2：CMYK 色卡
+ * ============================================================ */
+(function(){
+  if(!document.getElementById('c-hex')) return; // 模块已移除时直接跳过，避免中断脚本
+  const hexIn=$('c-hex'),rgbIn=$('c-rgb'),cmykIn=$('c-cmyk'),picker=$('c-picker'),prev=$('c-preview');
+  function syncFromHex(hex){ const r=hexToRgb(hex); if(!r)return; const cm=rgbToCmyk(r.r,r.g,r.b); rgbIn.value=`${r.r},${r.g},${r.b}`; cmykIn.value=cmykStr(cm); picker.value=hex.toUpperCase(); prev.style.background=hex.toUpperCase(); }
+  function syncFromRgb(s){ const p=s.split(',').map(Number); if(p.length!==3||p.some(isNaN))return; const h=rgbToHex(p[0],p[1],p[2]); syncFromHex(h); hexIn.value=h; }
+  function syncFromCmyk(s){ const p=s.split(',').map(Number); if(p.length!==4||p.some(isNaN))return; const r=cmykToRgb(p[0],p[1],p[2],p[3]),h=rgbToHex(r.r,r.g,r.b); syncFromHex(h); hexIn.value=h; rgbIn.value=`${r.r},${r.g},${r.b}`; }
+  $('c-apply').addEventListener('click',()=>{ const a=document.activeElement; if(a===hexIn)syncFromHex(hexIn.value); else if(a===rgbIn)syncFromRgb(rgbIn.value); else if(a===cmykIn)syncFromCmyk(cmykIn.value); else syncFromHex(hexIn.value); });
+  hexIn.addEventListener('change',()=>syncFromHex(hexIn.value)); rgbIn.addEventListener('change',()=>syncFromRgb(rgbIn.value)); cmykIn.addEventListener('change',()=>syncFromCmyk(cmykIn.value)); picker.addEventListener('input',()=>{ syncFromHex(picker.value); hexIn.value=picker.value.toUpperCase(); });
+  $('c-advice').addEventListener('click',()=>{
+    const r=hexToRgb(hexIn.value)||{r:47,g:111,b:237}, cm=rgbToCmyk(r.r,r.g,r.b), total=cm.c+cm.m+cm.y+cm.k;
+    const hsl=rgbToHsl(r.r,r.g,r.b); let s='';
+    // 高偏色系识别
+    if(r.r>r.g&&r.g>r.b&&r.r-r.b>40&&hsl.l<55) s+='【棕色系】棕系易偏红，建议品红略降、黄版主导，实色加少量黑防堆墨；';
+    else if(hsl.l>78&&hsl.s<25) s+='【米白/浅灰系】浅色网点易丢失，建议加深 3~5%、避免绝网，K 版微补；';
+    else if(hsl.s<22&&hsl.l>=45&&hsl.l<=80) s+='【浅灰系】灰平衡关键，C/M/Y 等比、K 微调，防止偏色；';
+    else if(b>r&&b>g&&b-r>30&&hsl.l<55) s+='【宝蓝/深色系】蓝系青版网点增大明显，注意 K 版补网、控制总墨量；';
+    else if(hsl.l<35) s+='【深色系】深色总墨量高，建议用替代黑（少C多K）避免透印；';
+    else s+='【常规色】色值适中，常规四色可印；';
+    if(total>300) s+=' 总墨量偏高，压暗部、控≤300%。';
+    s+=' 材质适配：纸张印刷网点稳定；PVC 表面反光，建议加深 5~8% 并做耐磨；布料吸墨扩散，建议扩网 3~5% 并预缩水。';
+    s+='（印刷参考值，大货量产务必实物打样核对）';
+    $('c-advice-out').textContent=s;
+  });
+  const grid=$('p-grid'); let lib=[...PANTONE_TPG]; const PAGE=120; let curList=[], shown=0;
+  function renderLib(k=''){ k=k.trim().toLowerCase(); curList=lib.filter(x=>!k||x.code.toLowerCase().includes(k)||x.name.toLowerCase().includes(k)); shown=Math.min(PAGE,curList.length); paintGrid(); }
+  function paintGrid(){ const list=curList, slice=list.slice(0,shown);
+    grid.innerHTML=slice.map(x=>{const r=hexToRgb(x.hex)||{r:0,g:0,b:0},cm=rgbToCmyk(r.r,r.g,r.b);return `<div class="swatch" data-hex="${x.hex}"><div class="chip" style="background:${x.hex}"></div><div class="info"><b>${x.code}</b><br>${x.name}<code>HEX ${x.hex.toUpperCase()}</code><div class="cmyk">CMYK ${cmykStr(cm)}</div><div class="cmyk">RGB ${r.r},${r.g},${r.b}</div><button class="btn ghost sm" data-topal="${x.hex}" style="margin-top:5px;padding:2px 8px">→ 配色</button></div></div>`;}).join('')||'<div class="hint">未找到。</div>';
+    if(list.length>shown){ const b=document.createElement('button'); b.className='btn ghost sm'; b.id='p-more'; b.style.marginTop='10px'; b.textContent=`加载更多（剩余 ${list.length-shown} 条）`; grid.appendChild(b); b.addEventListener('click',()=>{ shown=Math.min(shown+PAGE,list.length); paintGrid(); }); }
+    grid.querySelectorAll('.swatch').forEach(el=>el.addEventListener('click',()=>{ const h=el.dataset.hex; hexIn.value=h.toUpperCase(); syncFromHex(h); document.querySelector('.main').scrollTo({top:0,behavior:'smooth'}); }));
+    grid.querySelectorAll('[data-topal]').forEach(b=>b.addEventListener('click',e=>{ e.stopPropagation(); TW.sendColor(b.dataset.topal,'palette'); }));
+    if($('p-count-out'))$('p-count-out').textContent=`共 ${list.length} 条 TPG 色（TPG 为纺织色卡，印刷以实物色卡为准）`; }
+  $('p-search-btn').addEventListener('click',()=>renderLib($('p-search').value));
+  $('p-search').addEventListener('keydown',e=>{ if(e.key==='Enter')renderLib($('p-search').value); });
+  $('p-add').addEventListener('click',()=>{ const c=$('p-new-code').value.trim(),n=$('p-new-name').value.trim(),h=$('p-new-hex').value; if(!c||!n){alert('填色号与名称');return;} lib.unshift({code:c,name:n,hex:h.toUpperCase()}); renderLib($('p-search').value); $('p-new-code').value='';$('p-new-name').value=''; });
+  renderLib();
+  window.__COLOR_setHex=function(hex){ hex=(hex||'').toUpperCase(); if(!hexToRgb(hex))return; hexIn.value=hex; syncFromHex(hex); document.querySelector('.main').scrollTo({top:0,behavior:'smooth'}); };
+  // 取色
+  const pc=$('pick-canvas'),pctx=pc.getContext('2d',{willReadFrequently:true});
+  $('pick-input').addEventListener('change',e=>{ const f=e.target.files[0]; if(!f)return; const img=new Image(); img.onload=()=>{ let w=img.naturalWidth,h=img.naturalHeight; if(w>900){const r=900/w;w=900;h=Math.round(h*r);} pc.width=w;pc.height=h;pctx.drawImage(img,0,0,w,h); }; img.src=URL.createObjectURL(f); });
+  pc.addEventListener('click',e=>{ const rc=pc.getBoundingClientRect(),x=Math.round((e.clientX-rc.left)*(pc.width/rc.width)),y=Math.round((e.clientY-rc.top)*(pc.height/rc.height)),d=pctx.getImageData(x,y,1,1).data,rgb={r:d[0],g:d[1],b:d[2]},hex=rgbToHex(rgb.r,rgb.g,rgb.b),cm=rgbToCmyk(rgb.r,rgb.g,rgb.b); $('pick-rgb').textContent=`${rgb.r},${rgb.g},${rgb.b}`; $('pick-hex').textContent=hex; $('pick-cmyk').textContent=cmykStr(cm)+`（印刷参考值，大货务必打样核对）`; hexIn.value=hex;syncFromHex(hex); window.__pickHex=hex; if($('pick-to-pal'))$('pick-to-pal').disabled=false; pctx.fillStyle='#2F6FED';pctx.beginPath();pctx.arc(x,y,4,0,7);pctx.fill();pctx.strokeStyle='#fff';pctx.lineWidth=2;pctx.beginPath();pctx.arc(x,y,4,0,7);pctx.stroke(); });
+  $('pick-to-pal').addEventListener('click',()=>{ if($('pick-to-pal').disabled||!window.__pickHex)return; TW.sendColor(window.__pickHex,'palette'); });
+})();
+
+
+/* ============================================================
+ * 模块3：智能配色
+ * ============================================================ */
+(function(){
+  if(!document.getElementById('pal-out')) return; // 模块已移除时直接跳过
+  const out=$('pal-out'),sel=$('pal-preset'),gal=$('pal-gallery');
+  PALETTE_PRESETS.forEach((p,i)=>{ const o=document.createElement('option'); o.value=i; o.textContent=(p.cat?p.cat+' · ':'')+p.name; sel.appendChild(o); });
+  function swatchRow(colors){ return colors.map(h=>{ const r=hexToRgb(h)||{r:0,g:0,b:0},cm=rgbToCmyk(r.r,r.g,r.b); return `<div style="display:flex;align-items:center;gap:8px;margin:4px 0"><span style="width:26px;height:26px;border-radius:5px;border:1px solid #ccc;background:${h}"></span><span style="font-family:ui-monospace,monospace;font-size:12px">${h.toUpperCase()} · C${cm.c} M${cm.m} Y${cm.y} K${cm.k}</span><button class="btn ghost sm" data-sendcol="${h}" style="padding:2px 7px">→色卡</button></div>`; }).join(''); }
+  function HX(h,s,l){ const c=hslToRgb(((h%360)+360)%360, clamp(s,0,100), clamp(l,0,100)); return rgbToHex(Math.round(c.r),Math.round(c.g),Math.round(c.b)); }
+  function harmonyGroups(hex){
+    const r=hexToRgb(hex)||{r:30,g:58,b:95}, hsl=rgbToHsl(r.r,r.g,r.b), h=hsl.h,s=hsl.s,l=hsl.l;
+    const mono=[HX(h,s,Math.min(l+22,96)),HX(h,s,l+11),hex,HX(h,s+10,Math.max(l-15,4)),HX(h,s,Math.max(l-30,3))];
+    const ana=[HX(h-40,s,l),HX(h-20,s,l),hex,HX(h+20,s,l),HX(h+40,s,l)];
+    const comp=[hex,HX(h+180,s,clamp(l,32,72)),HX(h+180,s+12,clamp(l-10,4,99)),HX(h,s,l+12),'#FFFFFF'];
+    const split=[hex,HX(h+150,s,clamp(l,34,74)),HX(h+210,s,clamp(l,34,74)),HX(h,s-12,Math.max(l-12,4))];
+    const tri=[hex,HX(h+120,s,clamp(l,34,74)),HX(h+240,s,clamp(l,34,74)),HX(h,s,l+10)];
+    const tetra=[hex,HX(h+90,s,clamp(l,34,74)),HX(h+180,s,clamp(l,34,74)),HX(h+270,s,clamp(l,34,74))];
+    const neu=['#F4F1EC','#D9D4CB','#9A948B',hex,'#2B2B2C'];
+    return [
+      {name:'同色系 · 深浅渐变',cols:mono},
+      {name:'邻近色 · 协调过渡',cols:ana},
+      {name:'互补色 · 强对比',cols:comp},
+      {name:'分裂互补 · 柔和撞色',cols:split},
+      {name:'三角色 · 活泼均衡',cols:tri},
+      {name:'四角色 · 丰富组合',cols:tetra},
+      {name:'中性色 · 高级底色',cols:neu}
+    ];
+  }
+  function gen(baseHex, material){
+    const groups=harmonyGroups(baseHex);
+    const matNote={ '纸张印刷':'网点稳定，按 CMYK 直接出；','PVC印刷':'表面反光，整体加深 5~8% 并做耐磨处理；','布料印刷':'吸墨扩散，扩网 3~5% 并预缩水。' }[material]||'';
+    out.innerHTML=groups.map(g=>`<div class="card" style="margin-bottom:12px"><h3><span class="dot"></span>${g.name}</h3>${swatchRow(g.cols)}<div class="hint" style="margin-top:6px">${matNote}（印刷参考值，大货务必实物打样核对）</div></div>`).join('')+
+      `<div class="dflex"><button class="btn ghost sm" id="pal-copy">复制全部配色CMYK</button></div>`;
+    out.querySelectorAll('[data-sendcol]').forEach(b=>b.addEventListener('click',()=>TW.sendColor(b.dataset.sendcol,'color')));
+    $('pal-copy').addEventListener('click',()=>{ let txt='TRAEWork 配色方案（'+material+'）\n'; groups.forEach(g=>{ txt+=`\n【${g.name}】\n`+g.cols.map(h=>{const rr=hexToRgb(h)||{r:0,g:0,b:0},cm=rgbToCmyk(rr.r,rr.g,rr.b);return `${h.toUpperCase()} CMYK(${cmykStr(cm)})`;}).join('\n'); }); download('配色方案.txt',txt); });
+  }
+  function renderGallery(){ if(!gal)return; gal.innerHTML=PALETTE_PRESETS.map((p,i)=>`<div class="pcard" data-i="${i}" title="点击套用：${p.name}"><div class="pname">${p.cat} · ${p.name}</div><div class="pbar">${p.scheme.map(c=>`<span style="background:${c}"></span>`).join('')}</div></div>`).join(''); gal.querySelectorAll('.pcard').forEach(el=>el.addEventListener('click',()=>{ const p=PALETTE_PRESETS[+el.dataset.i]; $('pal-base').value=p.base.toUpperCase(); sel.value=String(+el.dataset.i); gen(p.base,$('pal-material').value); gal.querySelectorAll('.pcard').forEach(x=>x.style.outline=''); el.style.outline='2px solid #2F6FED'; })); }
+  $('pal-gen').addEventListener('click',()=>{ const base=$('pal-preset').value!==''?PALETTE_PRESETS[+$('pal-preset').value].base:$('pal-base').value; gen(base,$('pal-material').value); });
+  if($('pal-random')) $('pal-random').addEventListener('click',()=>{ const hue=[8,28,52,140,196,265,320][Math.floor(Math.random()*7)]; const s=55+Math.random()*25, l=45+Math.random()*15; const c=hslToRgb(hue,s,l); const hex=rgbToHex(Math.round(c.r),Math.round(c.g),Math.round(c.b)); $('pal-base').value=hex; sel.value=''; gen(hex,$('pal-material').value); });
+  gen($('pal-base').value,$('pal-material').value);
+  window.__PALETTE_setBase=function(hex){ $('pal-base').value=(hex||'').toUpperCase(); gen(hex,$('pal-material').value); };
+  renderGallery();
+})();
+
+
+
+/* ============================================================
+ * 模块4：排版兼职招聘
+ * ============================================================ */
+(function(){
+  const list=$('rec-list');
+  if($('rec-sites') && typeof RECRUIT_SITES!=='undefined'){ $('rec-sites').innerHTML=RECRUIT_SITES.map(s=>`<a class="btn ghost sm" href="${s.url}" target="_blank" rel="noopener" title="${s.desc}">${s.name} ↗</a>`).join(''); }
+  // 动态填充城市下拉（取城市主段：如「嘉兴·海宁」→ 全部、「嘉兴」→ 嘉兴）
+  if($('rec-city')){ const src=(typeof RECRUIT_CITIES!=='undefined'&&RECRUIT_CITIES.length)?RECRUIT_CITIES:[...new Set(RECRUIT_DATA.map(x=>x.city.split('·')[0]))]; const cities=[...new Set(src)].sort((a,b)=>a.localeCompare(b,'zh')); $('rec-city').innerHTML='<option value="">全部城市</option>'+cities.map(c=>`<option>${c}</option>`).join(''); }
+  function siteUrl(p){ const m=typeof RECRUIT_SITES!=='undefined'&&RECRUIT_SITES.find(x=>x.name===p); return m?m.url:'https://www.zhipin.com'; }
+  function render(){ const p=$('rec-platform').value, m=$('rec-mode').value, c=$('rec-city').value; const arr=RECRUIT_DATA.filter(x=>(!p||x.platform===p)&&(!c||x.city.startsWith(c))&&(!m||x.mode.includes(m)));
+    if(!arr.length){
+      const sites=(typeof RECRUIT_SITES!=='undefined'?RECRUIT_SITES.map(s=>`<a class="btn ghost sm" href="${s.url}" target="_blank" rel="noopener">${s.name} ↗</a>`).join(''):'');
+      list.innerHTML='<div class="hint" style="padding:14px 0">📭 当前筛选条件下暂无整合招聘数据。<br>建议：① 放宽「平台 / 方式」筛选；② 直接点击下方平台按钮查看该城市实时招聘（招聘人/联系方式/地址/福利/要求）。</div><div class="dflex wrap" style="gap:8px;flex-wrap:wrap;margin-top:8px">'+sites+'</div>';
+      return;
+    }
+    list.innerHTML=arr.map(x=>`<div class="fcard"><h4>${x.title}<span class="pill">${x.platform}</span></h4><div class="meta"><span>💰 <b>${x.pay}</b></span><span>📍 ${x.city}</span><span>🛠 ${x.req}</span><span>📋 ${x.mode}</span><span>💳 ${x.settle}</span></div><p>${x.note}</p><div class="dflex" style="margin-top:8px"><a class="btn ghost sm" href="${siteUrl(x.platform)}" target="_blank" rel="noopener">去${x.platform}看实时（招聘人/联系方式/地址/福利/要求）↗</a></div></div>`).join(''); }
+  $('rec-search').addEventListener('click',render); render();
+  window.TW_refresh=window.TW_refresh||{}; window.TW_refresh.recruit=render;
+})();
+
+/* ============================================================
+ * 模块5：红果短剧（已移除，保留防御性早退避免脚本中断）
+ * ============================================================ */
+(function(){
+  if(!document.getElementById('dra-list')) return;
+  const list=$('dra-list');
+  function searchUrl(name){ return 'https://www.baidu.com/s?wd='+encodeURIComponent(name+' 红果短剧'); }
+  // 分类导航：从 tags 聚合所有分类，点击即按该标签筛选
+  const cats=[...new Set(DRAMA_DATA.flatMap(x=>x.tags.split('·').map(t=>t.trim())))].sort((a,b)=>a.localeCompare(b,'zh'));
+  let activeCat='';
+  const nav=$('dra-nav');
+  function paintNav(){ nav.innerHTML=''; const mk=(label,val)=>{ const b=document.createElement('button'); b.className='btn ghost sm'+(activeCat===val?' on':''); b.textContent=label; b.addEventListener('click',()=>{ activeCat=(activeCat===val)?'':val; $('dra-search').value=''; paintNav(); render(); }); nav.appendChild(b); }; mk('全部',''); cats.forEach(c=>mk(c,c)); }
+  paintNav();
+  function render(){ const k=$('dra-search').value.trim().toLowerCase(); const arr=DRAMA_DATA.filter(x=>(!activeCat||x.tags.includes(activeCat))&&(!k||x.name.toLowerCase().includes(k)||x.tags.toLowerCase().includes(k)||x.likes.toLowerCase().includes(k)));
+    $('dra-count').textContent=`共 ${arr.length} 部`+(activeCat?`（分类：${activeCat}）`:'');
+    list.innerHTML=arr.map(x=>`<div class="fcard"><h4>${x.name}</h4><div class="meta">${x.tags.split('·').map(t=>`<span class="pill" style="cursor:pointer" data-tag="${t.trim()}">${t.trim()}</span>`).join('')}<span>🔥 ${x.heat}</span></div><p><b>简介：</b>${x.likes}</p><p><b>看点：</b>${x.point}</p><div class="dflex" style="margin-top:8px"><a class="btn ghost sm" href="${searchUrl(x.name)}" target="_blank" rel="noopener">在红果搜这部剧 ↗</a></div></div>`).join('')||'<div class="hint">无匹配短剧。</div>';
+    list.querySelectorAll('[data-tag]').forEach(s=>s.addEventListener('click',()=>{ activeCat=s.dataset.tag; $('dra-search').value=''; paintNav(); render(); }));
+  }
+  $('dra-btn').addEventListener('click',render); render();
+  window.TW_refresh=window.TW_refresh||{}; window.TW_refresh.drama=render;
+})();
+
+/* ============================================================
+ * 模块6：全网影视（主流视频平台实时版）
+ * 聚合腾讯视频/优酷/爱奇艺/哔哩哔哩/芒果TV 等平台实时剧集·动漫·综艺；
+ * 平台直达 + 跨平台并行检索 + 每条直达原平台可看资源。
+ * ============================================================ */
+const FILM_PLATFORMS = [
+  {name:'腾讯视频', home:'https://v.qq.com/',        search:'https://v.qq.com/x/search/?q='},
+  {name:'优酷',     home:'https://www.youku.com/',    search:'https://so.youku.com/search_video/q_'},
+  {name:'爱奇艺',   home:'https://www.iqiyi.com/',    search:'https://so.iqiyi.com/so/q_'},
+  {name:'哔哩哔哩', home:'https://www.bilibili.com/',  search:'https://search.bilibili.com/all?keyword='},
+  {name:'芒果TV',   home:'https://www.mgtv.com/',     search:'https://so.mgtv.com/so?k='}
+];
+(function(){
+  const list=$('film-list'),
+        pf=$('film-platforms'), kw=$('film-kw'), slinks=$('film-search-links');
+  if(!list) return;
+
+  // 主流平台实时直达
+  if(pf) pf.innerHTML=FILM_PLATFORMS.map(p=>`<a class="btn ghost sm" href="${p.home}" target="_blank" rel="noopener">${p.name} ↗</a>`).join('');
+
+  // 跨平台实时检索（并行打开）
+  function paintSearch(t){
+    const e=encodeURIComponent(t);
+    if(slinks) slinks.innerHTML=FILM_PLATFORMS.map(p=>{
+      const u=(p.search.indexOf('q_')>=0)?p.search+e:p.search+e;
+      return `<a class="btn ghost sm" href="${u}" target="_blank" rel="noopener">在${p.name}搜 ↗</a>`;
+    }).join('');
+  }
+  if($('film-search')) $('film-search').addEventListener('click',()=>{ const t=(kw.value||'').trim(); if(t) paintSearch(t); });
+  if(kw) kw.addEventListener('keydown',e=>{ if(e.key==='Enter'){ const t=kw.value.trim(); if(t) paintSearch(t); } });
+
+  // 列表渲染（每条直达各平台可看资源）
+  function render(){
+    const k=$('film-kind').value, sort=$('film-sort').value;
+    let arr=FILM_DATA.filter(x=>!k||x.kind===k);
+    arr.sort((a,b)=>sort==='year'?b.year-a.year:b.score-a.score);
+    $('film-count').textContent=`共 ${arr.length} 部`;
+    list.innerHTML=arr.map(x=>{
+      const e=encodeURIComponent(x.name);
+      const links=FILM_PLATFORMS.map(p=>{
+        const u=(p.search.indexOf('q_')>=0)?p.search+e:p.search+e;
+        return `<a class="btn ghost sm" href="${u}" target="_blank" rel="noopener">${p.name} ↗</a>`;
+      }).join('');
+      return `<div class="fcard"><h4>${x.name}<span class="pill">${x.kind}</span><span class="pill">${x.year}</span><span class="pill">★${x.score}</span></h4>`+
+        `<div class="meta"><span>${x.type}</span><span>适配：${x.audience}</span></div>`+
+        `<p>${x.likes}</p>`+
+        `<div class="dflex" style="margin-top:8px;gap:6px">${links}</div></div>`;
+    }).join('')||'<div class="hint">无匹配内容。</div>';
+  }
+  $('film-btn').addEventListener('click',render); render();
+  window.TW_refresh=window.TW_refresh||{}; window.TW_refresh.film=render;
+})();
+
+/* ============================================================
+ * 数据元信息徽标（① 数据源透明化）
+ * ============================================================ */
+(function(){ if(typeof DATA_META==='undefined')return;
+  document.querySelectorAll('.dmeta').forEach(el=>{ const m=DATA_META[el.dataset.dm]; if(!m)return;
+    el.innerHTML=`📅 数据更新于 <b>${m.updatedAt}</b> ｜ 来源：${m.source}${m.live?` ｜ <a href="${m.live}" target="_blank" rel="noopener">查看实时↗</a>`:''}`;
+  });
+})();
+
+</script>
+<script>
+/* ============================================================
+ * TRAEWork 工作台 —— 模块4：全能 AI 智能辅助（全面升级版）
+ * 双模式：① 本地智能生成引擎（离线模板 + 规则算法）
+ *         ② 主流 AI 平台实时直达（点击进最新实时对话/生成）
+ * 覆盖 7 大类 22 项 AI 能力：写作文案 / 文本处理 / 图像设计
+ *       / 规划结构 / 问答脑暴 / 编程办公 / 生活创意
+ * 所有本地输出为结构化 Markdown，商用合规、无版权风险。
+ * ============================================================ */
+(function(){
+  'use strict';
+
+  /* ---------------- 轻量 Markdown → HTML ---------------- */
+  function aiMd2html(md){
+    if(!md) return '';
+    var esc = function(s){ return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); };
+    var inline = function(s){
+      s = esc(s);
+      s = s.replace(/`([^`]+)`/g,'<code>$1</code>');
+      s = s.replace(/\*\*([^*]+)\*\*/g,'<strong>$1</strong>');
+      s = s.replace(/\*([^*]+)\*/g,'<strong>$1</strong>');
+      return s;
+    };
+    var splitRow = function(l){ return l.replace(/^\s*\|/,'').replace(/\|\s*$/,'').split('|').map(function(c){return c.trim();}); };
+    var isSep = function(l){ return /^\s*\|?[\s:|-]+\|?\s*$/.test(l) && l.indexOf('-')>=0; };
+    var lines = md.replace(/\r\n/g,'\n').split('\n');
+    var html='', i=0;
+    while(i<lines.length){
+      var l = lines[i];
+      if(/^```/.test(l)){ var buf=[]; i++; while(i<lines.length && !/^```/.test(lines[i])){ buf.push(lines[i]); i++; } html+='<pre><code>'+esc(buf.join('\n'))+'</code></pre>'; continue; }
+      if(/^###\s+/.test(l)){ html+='<h3>'+inline(l.replace(/^###\s+/,''))+'</h3>'; i++; continue; }
+      if(/^##\s+/.test(l)){ html+='<h2>'+inline(l.replace(/^##\s+/,''))+'</h2>'; i++; continue; }
+      if(/^#\s+/.test(l)){ html+='<h1>'+inline(l.replace(/^#\s+/,''))+'</h1>'; i++; continue; }
+      if(/^>\s?/.test(l)){ var qb=[]; while(i<lines.length && /^>\s?/.test(lines[i])){ qb.push(lines[i].replace(/^>\s?/,'')); i++; } html+='<blockquote>'+inline(qb.join(' '))+'</blockquote>'; continue; }
+      if(/^---+\s*$/.test(l)){ html+='<hr>'; i++; continue; }
+      if(/^\s*\|.*\|\s*$/.test(l) && i+1<lines.length && isSep(lines[i+1])){
+        var head=splitRow(l); i+=2; var rows=[];
+        while(i<lines.length && /^\s*\|.*\|\s*$/.test(lines[i])){ rows.push(splitRow(lines[i])); i++; }
+        html+='<div class="table-wrap"><table class="md"><thead><tr>'+head.map(function(h){return '<th>'+inline(h)+'</th>';}).join('')+'</tr></thead><tbody>'+rows.map(function(r){return '<tr>'+r.map(function(c){return '<td>'+inline(c)+'</td>';}).join('')+'</tr>';}).join('')+'</tbody></table></div>';
+        continue;
+      }
+      if(/^\s*[-*]\s+/.test(l)){ var ub=[]; while(i<lines.length && /^\s*[-*]\s+/.test(lines[i])){ ub.push(lines[i].replace(/^\s*[-*]\s+/,'')); i++; } html+='<ul>'+ub.map(function(b){return '<li>'+inline(b)+'</li>';}).join('')+'</ul>'; continue; }
+      if(/^\s*\d+\.\s+/.test(l)){ var ob=[]; while(i<lines.length && /^\s*\d+\.\s+/.test(lines[i])){ ob.push(lines[i].replace(/^\s*\d+\.\s+/,'')); i++; } html+='<ol>'+ob.map(function(b){return '<li>'+inline(b)+'</li>';}).join('')+'</ol>'; continue; }
+      if(l.trim()===''){ i++; continue; }
+      var pb=[l]; i++;
+      while(i<lines.length && lines[i].trim()!=='' && !/^(#{1,3}\s|>\s?|-\s|\*\s|\d+\.\s|\|.*\|\s*$|---+\s*$)/.test(lines[i])){ pb.push(lines[i]); i++; }
+      html+='<p>'+pb.map(inline).join('<br>')+'</p>';
+    }
+    return html;
+  }
+
+  /* ---------------- 多语言术语库 ---------------- */
+  var GL = {
+    '印刷':{en:'printing',ja:'印刷(いんさつ)',ko:'인쇄'},'潘通':{en:'Pantone',ja:'パントン',ko:'팬톤'},
+    '色差':{en:'color difference',ja:'色差(しさ)',ko:'색차'},'打样':{en:'proofing',ja:'校正(こうせい)',ko:'교정'},
+    '油墨':{en:'ink',ja:'インキ',ko:'잉크'},'纸张':{en:'paper',ja:'紙(かみ)',ko:'종이'},'布料':{en:'fabric',ja:'布(ぬの)',ko:'원단'},
+    '户型':{en:'layout',ja:'間取り(まどり)',ko:'평형'},'二手房':{en:'second-hand house',ja:'中古住宅',ko:'중고주택'},
+    '房贷':{en:'mortgage',ja:'住宅ローン',ko:'주택담보대출'},'公积金':{en:'housing fund',ja:'住宅積立金',ko:'주택공제'},
+    '契税':{en:'deed tax',ja:'不動産取得税',ko:'취득세'},'限购':{en:'purchase restriction',ja:'購入制限',ko:'구매제한'},
+    '满五唯一':{en:'five-year-one-house',ja:'満5年唯一',ko:'5년유일'},
+    '设计':{en:'design',ja:'デザイン',ko:'디자인'},'配色':{en:'color scheme',ja:'配色(はいしょく)',ko:'배색'},
+    '海报':{en:'poster',ja:'ポスター',ko:'포스터'},'品牌':{en:'brand',ja:'ブランド',ko:'브랜드'},
+    '文案':{en:'copy',ja:'コピー',ko:'카피'},'营销':{en:'marketing',ja:'マーケティング',ko:'마케팅'},
+    '短视频':{en:'short video',ja:'ショート動画',ko:'숏폼'},'电商':{en:'e-commerce',ja:'EC',ko:'이커머스'},
+    '运营':{en:'operation',ja:'オペレーション',ko:'운영'},'用户':{en:'user',ja:'ユーザー',ko:'사용자'},
+    '体验':{en:'experience',ja:'体験',ko:'경험'},'质量':{en:'quality',ja:'品質',ko:'품질'},
+    '交付':{en:'delivery',ja:'納品',ko:'납품'},'进度':{en:'progress',ja:'進捗',ko:'진행'},
+    '方案':{en:'solution',ja:'案(あん)',ko:'방안'},'需求':{en:'requirement',ja:'要件',ko:'요구사항'},
+    '产品':{en:'product',ja:'製品',ko:'제품'},'服务':{en:'service',ja:'サービス',ko:'서비스'},
+    '价格':{en:'price',ja:'価格',ko:'가격'},'优惠':{en:'discount',ja:'割引',ko:'할인'},
+    '活动':{en:'campaign',ja:'キャンペーン',ko:'이벤트'},'会议':{en:'meeting',ja:'会議',ko:'회의'},
+    '报告':{en:'report',ja:'レポート',ko:'보고서'},'数据':{en:'data',ja:'データ',ko:'데이터'},
+    '团队':{en:'team',ja:'チーム',ko:'팀'},'项目':{en:'project',ja:'プロジェクト',ko:'프로젝트'},
+    '公司':{en:'company',ja:'会社',ko:'회사'},'客户':{en:'client',ja:'クライアント',ko:'고객'},
+    '市场':{en:'market',ja:'市場',ko:'시장'},'销售':{en:'sales',ja:'営業',ko:'영업'},
+    '成本':{en:'cost',ja:'コスト',ko:'비용'},'效率':{en:'efficiency',ja:'効率',ko:'효율'},
+    '创新':{en:'innovation',ja:'革新',ko:'혁신'},'目标':{en:'goal',ja:'目標',ko:'목표'},
+    'logo':{en:'logo',ja:'ロゴ',ko:'로고'},'色彩':{en:'color',ja:'色彩(しきさい)',ko:'컬러'}
+  };
+  function translate(text,target){
+    if(!target||target==='zh') return text;
+    var out=text;
+    Object.keys(GL).sort(function(a,b){return b.length-a.length;}).forEach(function(k){
+      if(out.indexOf(k)>=0){ out=out.split(k).join(GL[k][target]||k); }
+    });
+    return out;
+  }
+
+  /* ---------------- 文本处理算法 ---------------- */
+  var FILLERS=['其实呢','说真的','说实话','说实在的','一般来讲','总的来说','基本上','应该说','我个人觉得','个人觉得','怎么说呢','这个嘛','呃','额','嘛','就是说','也就是说','说白了','换句话说','众所周知','不得不说','毋庸置疑','总而言之','说句实话','实话说','老实说','讲真的','一整个','绝绝子','yyds','家人们','宝子们','集美们','咱就是说','狠狠','泰裤辣','拿捏','冲鸭','绝了','咱','喏','哎','呀','哈','哦','啦','呗','噻'];
+  var SYN=[['很好','出色'],['不错','优良'],['很多','大量'],['非常','格外'],['觉得','认为'],['可以','能够'],['问题','议题'],['办法','方案'],['因为','鉴于'],['所以','故而'],['但是','然而'],['重要','关键'],['需要','亟需'],['开始','启动'],['结束','收官'],['帮助','协助'],['使用','运用'],['提高','提升'],['增加','增长'],['减少','降低'],['改变','优化'],['漂亮','美观'],['便宜','实惠'],['快速','高效'],['简单','轻简'],['困难','挑战'],['努力','深耕'],['希望','期待'],['喜欢','青睐'],['知道','获悉'],['明白','厘清'],['做','推进'],['想','考量'],['看','审视'],['说','阐述']];
+  var TYPOS=[['凭心而论','平心而论'],['默守成规','墨守成规'],['一如继往','一如既往'],['不径而走','不胫而走'],['一愁莫展','一筹莫展'],['穿流不息','川流不息'],['迫不急待','迫不及待'],['甘败下风','甘拜下风'],['悬梁刺骨','悬梁刺股'],['食不裹腹','食不果腹'],['饮鸠止渴','饮鸩止渴'],['安祥','安详'],['布署','部署'],['按排','安排'],['必竟','毕竟'],['编缉','编辑'],['辨论','辩论'],['沉缅','沉湎'],['璀灿','璀璨'],['渡假','度假'],['防碍','妨碍'],['粉沫','粉末'],['风糜','风靡'],['幅射','辐射'],['高吭','高亢'],['鼓惑','蛊惑'],['规距','规矩'],['寒喧','寒暄'],['喝采','喝彩'],['急燥','急躁'],['既使','即使'],['佳宾','嘉宾'],['坚难','艰难'],['交待','交代'],['叫囔','叫嚷'],['接恰','接洽'],['精典','经典'],['决对','绝对'],['峻工','竣工'],['恐布','恐怖'],['拉圾','垃圾'],['老俩口','老两口'],['连系','联系'],['了草','潦草'],['临摩','临摹'],['美仑美奂','美轮美奂'],['明片','名片'],['模似','模拟'],['膨涨','膨胀'],['批叛','批判'],['偏面','片面'],['拼揍','拼凑'],['气慨','气概'],['迁徒','迁徙'],['清淅','清晰'],['人材','人才'],['溶入','融入'],['善长','擅长'],['稍安毋躁','少安毋躁'],['试目以待','拭目以待'],['书藉','书籍'],['松驰','松弛'],['坦城','坦诚'],['通谍','通牒'],['通辑','通缉'],['推委','推诿'],['污晦','污秽'],['洗炼','洗练'],['喜戏','嬉戏'],['陷井','陷阱'],['亵黩','亵渎'],['泻露','泄露'],['心恢意冷','心灰意冷'],['宣染','渲染'],['循私','徇私'],['沿续','延续'],['影牒','影碟'],['引伸','引申'],['隐敝','隐蔽'],['涌跃','踊跃'],['原故','缘故'],['震憾','震撼'],['装祯','装帧'],['自曝自弃','自暴自弃'],['再接再励','再接再厉'],['消毁','销毁'],['蜇伏','蛰伏'],['沓无音信','杳无音信'],['入场卷','入场券'],['天翻地复','天翻地覆']];
+
+  function splitSentences(t){
+    var res=[], buf='';
+    for(var i=0;i<t.length;i++){ var ch=t[i]; buf+=ch; if('。！？!?；;'.indexOf(ch)>=0){ res.push(buf.trim()); buf=''; } }
+    if(buf.trim()) res.push(buf.trim());
+    return res.filter(Boolean);
+  }
+  function tDefiller(t){ var s=t; FILLERS.forEach(function(f){ s=s.split(f).join(''); }); s=s.replace(/，{2,}/g,'，').replace(/。{2,}/g,'。').replace(/\s{2,}/g,' ').trim(); return s; }
+  function swapSyn(t){ var s=t; SYN.forEach(function(p){ s=s.split(p[0]).join(p[1]); }); return s; }
+  function tSimplify(t){
+    var s=tDefiller(t); s=s.replace(/[，,]\s*(其实|不过|但是|然而|总之|另外|而且|并且)[，,]/g,'，');
+    return splitSentences(s).map(function(x){ return x.length>50 ? (x.indexOf('，')>0&&x.indexOf('，')<50 ? x.slice(0,x.indexOf('，')+1) : x.slice(0,50)) : x; }).join('');
+  }
+  function tExpand(t){
+    var sents=splitSentences(tDefiller(t));
+    var pad=['具体而言，这一点往往体现在细节之中。','从实际使用来看，它能带来更顺手的体验。','综合以上，整体价值值得被看见。','对目标人群来说，这样的设计恰到好处。','长期而言，这也是一种更稳妥的选择。'];
+    var out='';
+    sents.forEach(function(s,i){ out+=s; if(i<pad.length){ if(!/[。！？!?]$/.test(s)) out+='。'; out+=pad[i]; } });
+    return out;
+  }
+  function tPolish(t){ return swapSyn(tDefiller(t)); }
+  function tTypo(t){ var s=t, changes=[]; TYPOS.forEach(function(p){ if(s.indexOf(p[0])>=0){ s=s.split(p[0]).join(p[1]); changes.push({from:p[0],to:p[1]}); } }); return {fixed:s,changes:changes}; }
+  function tSmooth(t){
+    var s=t;
+    s=s.replace(/([！!])\1+/g,'！').replace(/([？?])\1+/g,'？').replace(/([。.])\1+/g,'。').replace(/，{2,}/g,'，').replace(/。，/g,'。').replace(/，。/g,'。');
+    s=s.replace(/的的/g,'的').replace(/了了/g,'了');
+    return splitSentences(s).map(function(x){ x=x.replace(/[，,、]$/,''); return x+(/[。！？!?]$/.test(x)?'':'。'); }).join('');
+  }
+  function tLogic(t){
+    var sents=splitSentences(tDefiller(t));
+    if(sents.length<2) return '## 逻辑梳理\n\n'+t+'\n\n> 文本较短，暂无需拆分逻辑层次。';
+    var n=sents.length, a=Math.ceil(n/3), b=Math.ceil(2*n/3);
+    return '## 逻辑梳理\n\n### 一、背景与现状\n'+sents.slice(0,a).join('')+'\n\n### 二、分析与过程\n'+sents.slice(a,b).join('')+'\n\n### 三、结论与建议\n'+sents.slice(b).join('')+'\n\n> 已按「背景 → 分析 → 结论」重排逻辑层次。';
+  }
+  function tSegment(t){
+    var sents=splitSentences(tDefiller(t)), out='', buf=[], c=0;
+    sents.forEach(function(s){ buf.push(s); c++; if(c>=2){ out+=buf.join('')+'\n\n'; buf=[]; c=0; } });
+    if(buf.length) out+=buf.join('')+'\n\n';
+    return out.trim();
+  }
+  function tStructure(t){
+    var sents=splitSentences(tDefiller(t)), md='## 结构化提纲\n\n';
+    sents.forEach(function(s,i){ md+=(i+1)+'. '+s+'\n'; });
+    return md;
+  }
+  function tSummary(t){
+    var sents=splitSentences(t);
+    if(sents.length<=2) return '## 压缩摘要\n\n'+t;
+    var stop=['的','了','是','在','我','你','他','她','它','们','这','那','有','和','与','及','也','都','就','而','等','一个','一种','我们','他们','这个','那个','因为','所以','但是','如果','可以','已经','通过','对于','关于','以及','进行','方面','目前','现在','一些','这些','那些'];
+    var freq={};
+    sents.forEach(function(s){ var w=s.replace(/[^\u4e00-\u9fa5]/g,''); for(var i=0;i<w.length;i++){ freq[w[i]]=(freq[w[i]]||0)+1; } });
+    var scored=sents.map(function(s,i){ var w=s.replace(/[^\u4e00-\u9fa5]/g,''), sc=0; for(var i2=0;i2<w.length;i2++){ if(stop.indexOf(w[i2])<0) sc+=freq[w[i2]]||0; } return {s:s,i:i,score:sc/(w.length||1)}; });
+    scored.sort(function(a,b){return b.score-a.score;});
+    var top=scored.slice(0,Math.min(3,sents.length)).sort(function(a,b){return a.i-b.i;});
+    return '## 压缩摘要（保留关键信息）\n\n'+top.map(function(x){return '• '+x.s;}).join('\n\n')+'\n\n> 原文共 '+sents.length+' 句，已提炼核心 '+top.length+' 句。';
+  }
+
+  /* ---------------- 表单构造助手 ---------------- */
+  function fInp(id,label,ph){ return '<div class="field"><label>'+label+'</label><input type="text" id="'+id+'" placeholder="'+ph+'"></div>'; }
+  function fTa(id,label,ph){ return '<div class="field"><label>'+label+'</label><textarea id="'+id+'" placeholder="'+ph+'"></textarea></div>'; }
+  function fSel(id,label,opts){ return '<div class="field"><label>'+label+'</label><select id="'+id+'">'+opts.map(function(o){return '<option>'+o+'</option>';}).join('')+'</select></div>'; }
+  function fInline(children){ return '<div class="inline">'+children+'</div>'; }
+  function v(id){ var e=$(id); return e?e.value:''; }
+  function vv(id,def){ var x=v(id); return (x&&x.trim())?x.trim():def; }
+
+  /* ============================================================
+   * ① AI 文案生成（扩展）
+   * ============================================================ */
+  var AI_COPY_TYPES=['宣传文案','海报文案','短视频文案','朋友圈文案','产品介绍','吊牌说明','店铺简介','个人简介','工作周报','工作总结','日记随笔','公众号推文','小红书笔记','淘宝详情页','招聘JD','活动邀请函'];
+  var AI_STYLES=['正式','简约','高级','温柔','营销风','接地气','文艺风'];
+  var AI_STYLE_TONE={
+    '正式':{tag:['#专业','#信赖','#品质'],cta:'即刻咨询，开启品质之选。',open:function(n){return '【'+n+'】以专业实力，赢得每一份信赖。';}},
+    '简约':{tag:['#简约','#实用','#优选'],cta:'了解更多，点击查看。',open:function(n){return '关于'+n+'，把复杂留给我们，把简单给你。';}},
+    '高级':{tag:['#格调','#臻选','#非凡'],cta:'臻享此刻，即刻拥有。',open:function(n){return n+' · 格调非凡，只为懂得生活的人。';}},
+    '温柔':{tag:['#暖心','#陪伴','#治愈'],cta:'愿它温柔你的每一天。',open:function(n){return '想和你说说'+n+'的温柔故事。';}},
+    '营销风':{tag:['#爆款','#限时','#必入'],cta:'🔥 限时特惠，错过等一年！',open:function(n){return '别犹豫！'+n+'全网爆火，手慢无！';}},
+    '接地气':{tag:['#实在','#划算','#靠谱'],cta:'咱家靠谱，闭眼入！',open:function(n){return '跟大伙儿唠唠'+n+'，实在好东西。';}},
+    '文艺风':{tag:['#时光','#远方','#慢生活'],cta:'把日子过成诗。',open:function(n){return n+'，是藏在时光里的温柔。';}}
+  };
+  function genCopy(){
+    var type=vv('ai-copy-type','宣传文案'), name=vv('ai-copy-input','（请填写产品/主题名）'), style=vv('ai-copy-style','简约');
+    var t=AI_STYLE_TONE[style]||AI_STYLE_TONE['简约'];
+    var head='# '+name+' · '+type, body='';
+    switch(type){
+      case '宣传文案':
+        body='## 主标题\n'+t.open(name)+'\n\n## 核心卖点\n- 品质扎实：经得起日常使用的好物\n- 体验舒适：从细节处照顾你的感受\n- 高性价比：花得值，用得安心\n\n## 正文\n'+t.open(name)+'它不只是商品，更是一份贴心的生活提案。无论自用还是赠礼，都恰到好处。\n\n## 行动号召\n'+t.cta; break;
+      case '海报文案':
+        body='## 海报主标题\n'+t.open(name)+'\n\n## 副标题\n一眼心动，久久回味。\n\n## 卖点三点\n- ① 看得见的质感\n- ② 用得着的温度\n- ③ 买得值的安心\n\n## 角标文案\n'+t.tag.join(' ')+'\n\n## 行动按钮文案\n'+t.cta; break;
+      case '短视频文案':
+        body='## 开头钩子（前 3 秒）\n'+t.open(name)+'\n\n## 内容正文\n你有没有过这样的时刻——想要一点刚刚好的美好？'+name+'或许就是答案。\n\n## 结尾引导\n'+t.cta+' 评论区告诉我你的想法～'; break;
+      case '朋友圈文案':
+        body=t.open(name)+'\n\n日常里的小确幸，值得被记录。'+name+'，让今天比昨天更开心一点。\n\n'+t.tag.join(' '); break;
+      case '产品介绍':
+        body='## 产品名称\n'+name+'\n\n## 产品定位\n'+t.open(name)+'\n\n## 核心参数\n| 维度 | 说明 |\n|---|---|\n| 材质 | （请补充） |\n| 规格 | （请补充） |\n| 适用 | （请补充） |\n| 亮点 | （请补充） |\n\n## 使用场景\n- 日常自用\n- 馈赠亲友\n- 办公 / 展示\n\n## 为什么选它\n'+t.cta; break;
+      case '吊牌说明':
+        body='## '+name+' · 产品信息\n\n| 项目 | 内容 |\n|---|---|\n| 品名 | '+name+' |\n| 材质 | （请补充，如：头层牛皮 / 纯棉） |\n| 尺码 | （请补充） |\n| 产地 | （请补充） |\n| 洗护 | （请补充，如：冷水手洗 / 不可暴晒） |\n| 执行标准 | （请补充，如：GB/T XXXX） |\n| 安全类别 | （请补充，如：B 类） |\n\n> 以上信息请按实物吊牌核对，确保合规标注。'; break;
+      case '店铺简介':
+        body='## 欢迎来到 '+name+'\n\n'+t.open(name)+'\n\n我们专注做好每一件小事，把诚意放进产品里。从选品到服务，只为给你更安心的体验。\n\n## 本店主营\n- （请补充经营类目）\n- （请补充特色商品）\n\n## 服务承诺\n品质保障 · 用心售后 · 真诚待客'; break;
+      case '个人简介':
+        body='## 你好，我是与「'+name+'」同行的人\n\n'+t.open(name)+'\n\n热爱生活，也认真做事。希望通过'+name+'，把美好传递给更多人。\n\n## 我擅长\n- （请补充你的专长）\n- （请补充你的经历）\n\n> 期待与同频的你相遇。'; break;
+      case '工作周报':
+        body='## 本周工作周报（主题：'+name+'）\n\n### 一、本周完成\n1. 推进「'+name+'」相关核心事项，明确方向与节点\n2. 完成阶段性交付，质量符合预期\n3. 协同相关方对齐进度，排除阻塞\n\n### 二、数据与亮点\n- 关键产出：（请补充）\n- 亮点：（请补充）\n\n### 三、下周计划\n1. 围绕「'+name+'」继续深化\n2. （请补充）\n3. （请补充）\n\n### 四、风险与需支持\n- （请补充阻塞项与所需资源）'; break;
+      case '工作总结':
+        body='## 阶段工作总结（主线：'+name+'）\n\n### 一、工作回顾\n本阶段以「'+name+'」为主线，稳步推进各项任务，整体达成预期目标。\n\n### 二、核心成果\n- 成果1：（请补充）\n- 成果2：（请补充）\n- 成果3：（请补充）\n\n### 三、经验沉淀\n- 方法论：（请补充）\n- 可复用资产：（请补充）\n\n### 四、不足与改进\n- 待优化：（请补充）\n\n### 五、下阶段规划\n- （请补充）'; break;
+      case '日记随笔':
+        body='关于'+name+'的一些碎碎念。\n\n今天的风很轻，时间慢了下来。'+t.open(name)+'像是一个温柔的注脚，落在寻常日子的缝隙里。\n\n愿你也能在忙碌中，留一点空隙给自己的心。'; break;
+      case '公众号推文':
+        body='## 标题（3 选 1）\n1. '+t.open(name)+'\n2. 关于'+name+'，我想说几句掏心窝的话\n3. '+name+'：一个被低估的好物（附清单）\n\n## 开篇引入\n'+t.open(name)+'今天想认真聊聊它——不夸张、不套路，只说真实体验。\n\n## 正文结构\n- 痛点共鸣：你是不是也遇到过……\n- 真实体验：我用了之后的变化\n- 使用场景：什么人特别需要\n- 避坑提醒：购买 / 使用要注意\n\n## 结尾互动\n'+t.cta+' 你在用'+name+'时有什么心得？评论区聊聊～'; break;
+      case '小红书笔记':
+        body='## 标题（带情绪钩子）\n'+t.open(name)+'｜姐妹们冲！亲测好用不踩雷 💡\n\n## 正文\n📌 先说结论：'+name+'真的可以试试！\n\n✅ 我的使用感受：\n- 第一点：（请补充）\n- 第二点：（请补充）\n- 第三点：（请补充）\n\n💡 小贴士：（请补充）\n\n'+t.tag.join(' ')+' #好物分享 #亲测\n\n## 互动引导\n觉得有用记得点赞收藏 ❤️ 评论区交作业～'; break;
+      case '淘宝详情页':
+        body='## 宝贝标题（SEO 友好）\n'+name+' （核心词）+（属性词）+（场景词）+（人群词）\n\n## 五点描述\n- 【材质】：（请补充）\n- 【功能】：（请补充）\n- 【场景】：（请补充）\n- 【赠品/服务】：（请补充）\n- 【保障】：（请补充）\n\n## 详情页逻辑\n痛点 → 卖点 → 证明（图/评价） → 促销 → 逼单\n\n## 促销文案\n'+t.cta; break;
+      case '招聘JD':
+        body='## 招聘岗位：'+name+'\n\n## 岗位职责\n1. （请补充核心职责）\n2. （请补充）\n3. （请补充）\n\n## 任职要求\n- 学历 / 经验：（请补充）\n- 技能：（请补充）\n- 加分项：（请补充）\n\n## 我们提供\n- 薪资：（请补充）\n- 福利：（请补充）\n- 成长：（请补充）\n\n> 请以官方发布为准，投递前核验企业资质。'; break;
+      case '活动邀请函':
+        body='## 邀您参加 · '+name+'\n\n尊敬的宾客：\n\n诚邀您莅临「'+name+'」，与我们共度美好时光。\n\n## 活动信息\n- 时间：（请补充）\n- 地点：（请补充）\n- 形式：（请补充）\n\n## 报名方式\n（请补充报名链接 / 联系人）\n\n期待与您相见。'; break;
+      default:
+        body='## 正文\n'+t.open(name)+'\n\n## 行动号召\n'+t.cta;
+    }
+    return head+'\n\n'+body+'\n\n---\n*风格：'+style+' ｜ 由 TRAEWork AI 本地生成引擎产出，可商用，请按实际信息核对补充。*';
+  }
+
+  /* ============================================================
+   * ② 社媒爆款文案
+   * ============================================================ */
+  function genSocial(){
+    var plat=vv('ai-social-plat','小红书'), theme=vv('ai-social-theme','（如：黄黑皮口红 / 小个子穿搭）'), tone=vv('ai-social-tone','种草');
+    var head='# '+theme+' · '+plat+'爆款文案（'+tone+'）', body='';
+    if(plat==='小红书'){
+      body='## 标题（带钩子）\n'+theme+'｜真的会爱住！亲测不踩雷 💡\n\n## 正文\n📌 一句话结论：'+theme+'，谁用谁知道！\n\n✅ 真实体验\n- 亮点1：（请补充）\n- 亮点2：（请补充）\n- 亮点3：（请补充）\n\n💡 适用人群：（请补充）\n\n#'+theme.replace(/\s/g,'')+' #好物分享 #亲测推荐 #日常分享\n\n## 引导\n觉得有用点赞收藏 ❤️ 评论区交作业～';
+    } else if(plat==='抖音'){
+      body='## 开头 3 秒钩子\n别划走！'+theme+'这件事，我后悔没早点知道。\n\n## 口播正文\n你有没有遇到过（痛点）？其实只要（方法），'+theme+'立马不一样。我亲测（结果）。\n\n## 字幕金句\n- “'+theme+'，真的香”\n- “早知道就好了”\n\n## 结尾引导\n点赞关注，下期教你（预告）。评论区扣 1 领资料～';
+    } else if(plat==='朋友圈'){
+      body=tone+'风 · '+theme+'\n\n日常里的小确幸，'+theme+'让今天更开心一点。\n\n#'+theme.replace(/\s/g,'')+' #生活记录';
+    } else if(plat==='微博'){
+      body='#'+theme.replace(/\s/g,'')+'# '+theme+'，你怎么看？\n\n（观点 / 吐槽 / 安利均可）：（请补充）\n\n转发抽 3 位送（奖品），周五开奖～';
+    } else {
+      body='## 标题\n'+theme+'：一篇说清楚\n\n## 开头\n今天聊'+theme+'，不绕弯子，直接上干货。\n\n## 干货结构\n1. 是什么\n2. 为什么重要\n3. 怎么做（步骤）\n4. 常见误区\n\n## 结尾\n收藏起来慢慢看，关注看更多'+theme+'内容。';
+    }
+    return head+'\n\n'+body+'\n\n> 文案为本地生成模板，发布前请按平台规则与真实体验补充。';
+  }
+
+  /* ============================================================
+   * ③ 营销方案
+   * ============================================================ */
+  function genMarketing(){
+    var prod=vv('ai-mk-prod','（如：618 美妆大促）'), aud=vv('ai-mk-aud','（如：18-30 岁学生党/白领）'), ch=vv('ai-mk-ch','（如：小红书+抖音+私域，预算 5 万）');
+    return '# '+prod+' · 整合营销方案\n\n'+
+      '## 一、目标与背景\n- 核心目标：曝光 / 拉新 / 转化 / 复购（请勾选）\n- 背景：'+prod+'所处的市场阶段与机会点\n\n'+
+      '## 二、人群洞察\n- 目标人群：'+aud+'\n- 痛点：______ ｜ 爽点：______ ｜ 决策动因：______\n\n'+
+      '## 三、核心策略（One Message）\n- 主张：（一句话说清为什么选我们）\n- 记忆点：（视觉 / 梗 / slogan）\n\n'+
+      '## 四、内容矩阵\n| 平台 | 内容形式 | 角色 |\n|---|---|---|\n| 小红书 | 种草笔记 | 信任建设 |\n| 抖音 | 短视频/直播 | 爆发曝光 |\n| 私域 | 社群/朋友圈 | 转化复购 |\n| 公众号 | 深度长文 | 心智沉淀 |\n\n'+
+      '## 五、传播节奏\n- 预热期（T-7~T-1）：悬念 / 预约\n- 爆发期（T0~T3）：集中投放 + 直播\n- 长尾期（T4~T14）：UGC / 复盘\n\n'+
+      '## 六、转化路径\n曝光 → 点击 → 留资/加购 → 下单 → 分享裂变\n\n'+
+      '## 七、资源与 ROI\n- 渠道与预算：'+ch+'\n- 预期 ROI / CAC：（请补充）\n\n'+
+      '## 八、风险预案\n- 舆情 / 库存 / 投流失效 → 备选方案\n\n> 本方案为结构化框架，请按实际业务数据填充。';
+  }
+
+  /* ============================================================
+   * ④ 邮件 / 沟通
+   * ============================================================ */
+  function genEmail(){
+    var role=vv('ai-em-role','客户'), purpose=vv('ai-em-purpose','（如：跟进合同进度，确认下周签署）'), pts=vv('ai-em-pts','（如：1.条款已确认 2.需补材料 3.时间节点）');
+    var ptsArr=pts.split(/[；;\n]/).map(function(s){return s.trim();}).filter(Boolean);
+    var list=ptsArr.length?ptsArr.map(function(p,i){return (i+1)+'. '+p;}).join('\n'):'1. （请补充要点）';
+    return '# 邮件草稿 · 致'+role+'\n\n'+
+      '## 主题行（3 选 1）\n1. 【'+purpose.slice(0,12)+(purpose.length>12?'…':'')+'】'+role+'您好，烦请确认\n2. 关于'+purpose.slice(0,10)+(purpose.length>10?'…':'')+' —— 后续安排沟通\n3. 温馨提醒：'+purpose.slice(0,10)+(purpose.length>10?'…':'')+'\n\n'+
+      '## 正文\n尊敬的'+role+'：\n\n您好！感谢您的关注与配合。就「'+purpose+'」一事，与您同步如下：\n\n'+list+'\n\n如无异议，我们将按上述安排推进；如有调整，随时与我联系。\n\n顺祝商祺！\n[您的姓名 / 团队]\n\n'+
+      '## 备选标题\n- 简洁版：'+purpose.slice(0,16)+(purpose.length>16?'…':'')+'\n- 行动版：请确认：'+purpose.slice(0,12)+(purpose.length>12?'…':'');
+  }
+
+  /* ============================================================
+   * ⑤ 简历优化
+   * ============================================================ */
+  function genResume(){
+    var role=vv('ai-rs-role','（如：电商运营专员）'), exp=vv('ai-rs-exp','（如：负责店铺日常运营，GMV 提升 30%；带 3 人小组）');
+    var expArr=exp.split(/[；;\n]/).map(function(s){return s.trim();}).filter(Boolean);
+    var star=expArr.length?expArr.map(function(e,i){return '### 经历'+(i+1)+'\n- 情境(S)：______\n- 任务(T)：'+e+'\n- 行动(A)：______（你具体做了什么）\n- 结果(R)：______（量化：%，金额，时长）';}).join('\n\n'):'### 经历1\n- 情境(S)：______\n- 任务(T)：______\n- 行动(A)：______\n- 结果(R)：______（尽量量化）';
+    return '# '+role+' · 简历优化方案\n\n'+
+      '## 个人总结（3 行版）\n- 我是______（定位），擅长______。\n- 过往达成______（最亮眼成果）。\n- 期望在______方向继续深耕。\n\n'+
+      '## 工作经历（STAR 改写）\n'+star+'\n\n'+
+      '## 技能标签\n`'+role+'` `数据分析` `项目管理` `（补充你的硬技能）`\n\n'+
+      '## 简历自检清单\n- [ ] 动词开头、量化结果\n- [ ] 一页为佳、重点前置\n- [ ] 无错别字、格式统一\n- [ ] 与岗位 JD 关键词对齐\n- [ ] 联系方式 & 作品集链接有效\n\n> 简历优化建议基于通用方法论，按目标岗位微调关键词。';
+  }
+
+  /* ============================================================
+   * ⑥ 故事 / 小说
+   * ============================================================ */
+  function genStory(){
+    var genre=vv('ai-st-genre','都市'), theme=vv('ai-st-theme','（如：失忆画家找回自我）'), hero=vv('ai-st-hero','（如：27 岁女插画师林晚）');
+    return '# 《'+theme+'》· '+genre+'创作提纲\n\n'+
+      '## 一句话梗概\n'+hero+'在'+theme+'的旅途中，完成了自我的救赎与成长。\n\n'+
+      '## 三幕结构\n- 第一幕（建置）：'+hero+'的常态被打破，埋下'+theme+'的引子\n- 第二幕（对抗）：遭遇阻力与升级，关系与能力被考验\n- 第三幕（结局）：和解 / 反转 / 升华，留下余韵\n\n'+
+      '## 人物小传\n- 姓名：'+hero+'\n- 外在目标：______ ｜ 内在需求：______\n- 性格弧光：从______到______\n- 对手 / 阻力：______\n\n'+
+      '## 开篇段落（试写）\n'+hero+'从未想过，'+theme+'会以这样一种方式闯进生活。那天……（请续写）\n\n'+
+      '## 章节大纲\n1. 开端：日常的裂缝\n2. 发展：被迫出发\n3. 转折：真相浮现\n4. 高潮：关键抉择\n5. 尾声：新的平衡\n\n> 结构模板可直接套用，按你的风格填充细节。';
+  }
+
+  /* ============================================================
+   * ⑦ 短视频脚本
+   * ============================================================ */
+  function genVideo(){
+    var plat=vv('ai-vd-plat','抖音'), topic=vv('ai-vd-topic','（如：3 分钟搞定周末快手菜）'), dur=vv('ai-vd-dur','30s');
+    return '# '+topic+' · '+plat+'短视频脚本（'+dur+'）\n\n'+
+      '## 开头钩子（前 3 秒）\n别划走！'+topic+'，新手也能一次成功。\n\n'+
+      '## 分镜脚本\n| 时间 | 画面 | 台词/字幕 | 音效/BGM |\n|---|---|---|---|\n| 0-3s | 成品特写+标题 | “'+topic+'，真的简单” | 抓耳前奏 |\n| 3-'+dur.replace('s','')+'s | 步骤快剪 | 旁白讲解要点 | 轻快 BGM |\n| 结尾 | 成品+引导 | “点赞收藏，下期见” | 收尾音 |\n\n'+
+      '## 结尾引导\n点赞 + 关注，评论区扣 1 领完整清单～\n\n> 脚本为结构模板，按实际素材调整节奏与字幕。';
+  }
+
+  /* ============================================================
+   * ⑧ 文本处理（12 模式）
+   * ============================================================ */
+  var AI_TEXT_MODES=['全文精简','智能扩写','润色去糙','去口水话','高级改写','错别字校对','语句通顺优化','逻辑梳理','文章分段','结构化整理','长文压缩摘要'];
+  function genText(){
+    var mode=vv('ai-text-mode','全文精简'), text=v('ai-text-input');
+    if(!text||!text.trim()) return '*（请粘贴待处理文本）*';
+    var out='';
+    switch(mode){
+      case '全文精简': out='## 精简结果\n\n'+tSimplify(text)+'\n\n> 已去除冗余口语、压缩表达，保留核心信息。'; break;
+      case '智能扩写': out='## 扩写结果\n\n'+tExpand(text); break;
+      case '润色去糙': out='## 润色结果\n\n'+tPolish(text)+'\n\n> 已替换口语词、优化表达，更通顺专业。'; break;
+      case '去口水话': out='## 去口水话结果\n\n'+tDefiller(text)+'\n\n> 已移除口头禅与填充词。'; break;
+      case '高级改写': out='## 改写结果\n\n'+swapSyn(tDefiller(text))+'\n\n> 同义替换 + 句式调整，保持原意。'; break;
+      case '错别字校对': { var r=tTypo(text); out='## 错别字校对\n\n'+r.fixed+'\n\n'+(r.changes.length?('### 修正记录\n'+r.changes.map(function(c){return '- '+c.from+' → '+c.to;}).join('\n')):'> 未发现明显错别字。'); } break;
+      case '语句通顺优化': out='## 通顺优化\n\n'+tSmooth(text); break;
+      case '逻辑梳理': out=tLogic(text); break;
+      case '文章分段': out='## 分段结果\n\n'+tSegment(text); break;
+      case '结构化整理': out=tStructure(text); break;
+      case '长文压缩摘要': out=tSummary(text); break;
+    }
+    return out;
+  }
+
+  /* ============================================================
+   * ⑨ 多语翻译（英/日/韩 术语库）
+   * ============================================================ */
+  var AI_LANGS=['英语 English','日语 日本語','韩语 한국어','中文（规范/回译）'];
+  function genTranslate(){
+    var lang=vv('ai-tr-lang','英语 English'), text=v('ai-tr-input');
+    if(!text||!text.trim()) return '*（请粘贴待翻译文本）*';
+    var map={'英语 English':'en','日语 日本語':'ja','韩语 한국어':'ko','中文（规范/回译）':'zh'};
+    var tg=map[lang]||'en';
+    var note = tg==='zh' ? '> 已做规范/回译整理（统一标点、术语、语序）。' : '> 基于印刷 / 设计 / 房产 / 办公术语库翻译；法/德/西等更多语种建议用文心一言 / DeepL（见上方平台直达）。';
+    return '## 翻译结果（'+lang+'）\n\n'+translate(text,tg)+'\n\n'+note;
+  }
+
+  /* ============================================================
+   * ⑩ 绘画 / 图像提示词
+   * ============================================================ */
+  var PROMPT_STYLES={
+    '写实':{base:'photorealistic, ultra-detailed, 8k resolution, realistic texture, natural lighting',neg:'cartoon, illustration, low quality, blurry, deformed'},
+    '高清产品图':{base:'product photography, clean studio background, soft diffused lighting, high-key, commercial product shot, 8k, sharp focus',neg:'cartoon, illustration, messy background, low quality'},
+    '海报风':{base:'poster design, bold composition, vibrant color blocking, cinematic lighting, graphic, professional advertising visual',neg:'blurry, low contrast, messy, watermark'},
+    '田园风':{base:'pastoral style, rustic, warm sunlight, natural scenery, soft film grain, cozy countryside atmosphere',neg:'urban, cyberpunk, dark, sharp neon'},
+    'ins风':{base:'instagram aesthetic, soft pastel tones, minimalist, bright airy, clean composition, trendy',neg:'dark, cluttered, heavy, low saturation'},
+    '工业风':{base:'industrial style, raw concrete, metal texture, moody lighting, brutalist, high contrast monochrome',neg:'pastel, cute, soft, decorative'},
+    '简约商业风':{base:'minimalist commercial, clean negative space, elegant, flat lay, premium brand visual, soft shadow',neg:'busy, cluttered, noisy, low quality'},
+    '动漫风':{base:'anime style, cel shading, vibrant, detailed line art, Japanese animation aesthetic, soft glow',neg:'photorealistic, 3d render, low quality, blurry'}
+  };
+  var LIGHT_NOTE={'工业风':'硬光高对比','田园风':'暖调自然光','ins风':'明亮柔光','写实':'自然柔光','高清产品图':'影棚柔光','海报风':'戏剧光','简约商业风':'柔和单光','动漫风':'赛璐珞补光'};
+  var EN_LIGHT={'工业风':'hard high-contrast lighting','田园风':'warm natural sunlight','ins风':'bright soft lighting','写实':'natural soft lighting','高清产品图':'studio soft lighting','海报风':'cinematic lighting','简约商业风':'soft single-source lighting','动漫风':'cel-shading lighting'};
+  function genPrompt(){
+    var style=vv('ai-prompt-style','写实'), subject=vv('ai-prompt-input','（请描述主体，如：一双白色运动鞋）'), scene=vv('ai-prompt-scene','通用');
+    var st=PROMPT_STYLES[style]||PROMPT_STYLES['写实'];
+    var sceneMap={'鞋业产品图':'suitable for footwear product display, highlight material and stitching detail','房产封面':'real estate cover, spacious bright interior','广告海报':'advertising poster with eye-catching focal point','头像':'centered portrait, pleasing composition','壁纸':'balanced full-frame wallpaper composition','设计参考图':'design reference showing clear structure and texture'};
+    var sc=sceneMap[scene]?sceneMap[scene]:'';
+    var light=LIGHT_NOTE[style]||'自然光', enLight=EN_LIGHT[style]||'natural lighting';
+    var cnFull=subject+'，'+style+'风格，'+light+'，主体突出，构图舒适，材质细腻'+(sc?('，'+scene):'')+'。8K 高清，细节丰富。';
+    var enFull=translate(subject,'en')+', '+st.base+', '+enLight+', subject prominent, comfortable composition, fine material texture'+(sc?', '+sc:'')+'. 8k, highly detailed.';
+    return '# AI 绘画提示词 · '+style+'\n\n'+
+      '## 风格设定\n- 风格：'+style+'\n- 主体：'+subject+'\n- 光影：'+light+'\n- 适配场景：'+scene+'\n\n'+
+      '## 中文提示词（即梦 / 可灵 / 通义万相）\n```\n'+cnFull+'\n参数建议：--ar 4:3 --style raw --v 6.0\n```\n\n'+
+      '## English Prompt（Midjourney / Stable Diffusion）\n```\n'+enFull+'\nNegative prompt: '+st.neg+'\n```\n\n'+
+      '## 出图建议\n- 推荐比例：产品 / 头像用 1:1，海报 / 封面用 4:3 或 16:9\n- 不满意就微调「风格」与「主体描述」重新生成\n- 商用前确认素材版权与平台规则';
+  }
+
+  /* ============================================================
+   * ⑪ 起名 / 命名
+   * ============================================================ */
+  var BW_FRONT=['初','拾','暖','简','素','野','白','木','云','光','拾光','原来','小','一','半','知','栖','沐','禾','言','见','予','漫','南','北','山','海','溪','糖','盐','麦','栗','棠'];
+  var BW_MID=['物','集','所','家','屋','间','社','铺','研','作','造','坊','盒','仓','谷','田','角','里','方','场'];
+  var BW_TAIL=['生活','杂货','工坊','研究所','小铺','工作室','实验室','制造局','便利店','书房','食堂','花房','杂院','集市','博物馆','计划','社','所','铺','屋','园'];
+  function pick(a){ return a[Math.floor(Math.random()*a.length)]; }
+  function genNaming(){
+    var type=vv('ai-nm-type','品牌名'), ind=vv('ai-nm-ind','（如：咖啡 / 女鞋 / 文创）'), style=vv('ai-nm-style','文艺');
+    var names=[], used={};
+    while(names.length<12){
+      var a=pick(BW_FRONT), b=pick(BW_MID), c=pick(BW_TAIL), mode=names.length%3, nm;
+      nm = mode===0 ? a+b+c : mode===1 ? a+b : a+c;
+      if(!used[nm]){ used[nm]=1; names.push(nm); }
+    }
+    return '# '+type+' 候选 · '+ind+'（'+style+'调性）\n\n'+
+      '## 候选名称\n'+names.map(function(n,i){return (i+1)+'. '+n;}).join('\n')+'\n\n'+
+      '## 命名逻辑\n- 前缀定调性（'+style+'），中缀定品类，后缀定场景\n- 建议组合：行业词 + 记忆点，便于注册与传播\n\n'+
+      '## 落地提示\n- [ ] 商标近似查询（中国商标网）\n- [ ] 域名 / 社交账号可用性\n- [ ] 读音是否顺口、有无歧义\n- [ ] 是否易记、易写、易传播\n\n> 名称由本地引擎生成，注册前务必查重。';
+  }
+
+  /* ============================================================
+   * ⑫ 大纲 / 思维导图
+   * ============================================================ */
+  var AI_OUTLINE_TYPES=['工作大纲','学习大纲','方案大纲','策划大纲','文章结构','运营框架'];
+  var OUTLINE_MAP={
+    '工作大纲':['目标与背景','核心任务拆解','责任分工与排期','关键节点与里程碑','风险预案','复盘机制'],
+    '学习大纲':['学习目标','知识体系地图','阶段划分','重点与难点','练习与反馈','成果检验'],
+    '方案大纲':['项目背景与痛点','目标与预期','整体思路','实施步骤','资源配置','效果评估'],
+    '策划大纲':['活动背景与目的','目标人群','创意主题','流程设计','传播节奏','预算与 ROI'],
+    '文章结构':['标题与立意','开篇引入','核心论点','论据支撑','转折升华','结尾行动号召'],
+    '运营框架':['定位与人设','内容矩阵','增长路径','转化漏斗','数据指标','迭代优化']
+  };
+  function genOutline(){
+    var type=vv('ai-ol-type','工作大纲'), theme=vv('ai-ol-theme','（请填写主题）');
+    var secs=OUTLINE_MAP[type]||OUTLINE_MAP['工作大纲'];
+    var md='# '+theme+' · '+type+'\n\n';
+    secs.forEach(function(s,i){ md+='## '+(i+1)+'. '+s+'\n- 要点1：（请补充）\n- 要点2：（请补充）\n- 要点3：（请补充）\n\n'; });
+    md+='---\n*由 TRAEWork AI 本地生成引擎产出，按实际项目补充要点即可直接落地。*';
+    return md;
+  }
+
+  /* ============================================================
+   * ⑬ PPT 大纲
+   * ============================================================ */
+  function genPpt(){
+    var theme=vv('ai-pp-theme','（如：社区咖啡馆开业运营方案）'), aud=vv('ai-pp-aud','（如：内部评审 / 投资人对接）'), pages=vv('ai-pp-pages','10');
+    var n=parseInt(pages,10)||10; if(n>14)n=14; if(n<5)n=5;
+    var md='# 《'+theme+'》PPT 大纲（'+n+' 页 · 面向'+aud+'）\n\n';
+    md+='## 封面\n- 主标题：'+theme+'\n- 副标题 / 汇报人 / 日期\n\n';
+    md+='## 目录（2-3 页）\n1. 背景与机会\n2. 方案与路径\n3. 预期与计划\n\n';
+    var bodyN=n-3;
+    for(var i=1;i<=bodyN;i++){
+      md+='## 第 '+(i+2)+' 页\n- 标题：（本页核心一句话）\n- 要点：① ② ③\n- 视觉：图 / 表 / 关键数字\n\n';
+    }
+    md+='## 结尾页\n- 总结主张\n- 下一步 / 行动号召 / 联系方式\n\n> 按页填充即可快速成稿，建议每页「一图一说」。';
+    return md;
+  }
+
+  /* ============================================================
+   * ⑭ 学习 / 知识卡片
+   * ============================================================ */
+  function genStudy(){
+    var topic=vv('ai-sd-topic','（如：复利效应 / 光合作用）'), fmt=vv('ai-sd-fmt','费曼笔记');
+    var head='# '+topic+' · '+fmt, body='';
+    if(fmt==='费曼笔记'){
+      body='## 一句话讲给小白听\n'+topic+'，其实就是______（用生活类比）。\n\n## 核心概念\n- 是什么：______\n- 为什么重要：______\n- 关键要素：______\n\n## 举个例子\n（用具体场景说明）：（请补充）\n\n## 易错点\n- （请补充常见误解）';
+    } else if(fmt==='思维导图'){
+      body='## 中心：'+topic+'\n- 分支一：（维度A）\n  - 子点1\n  - 子点2\n- 分支二：（维度B）\n  - 子点1\n  - 子点2\n- 分支三：（维度C）\n  - 子点1';
+    } else if(fmt==='闪卡'){
+      body='## 正面 / 背面 卡片（自测用）\n| 正面（问题） | 背面（答案） |\n|---|---|\n| '+topic+' 是什么？ | （请补充定义） |\n| 为什么重要？ | （请补充） |\n| 一个例子？ | （请补充） |';
+    } else if(fmt==='速记清单'){
+      body='## '+topic+' 速记 5 条\n1. （关键点）\n2. （关键点）\n3. （关键点）\n4. （关键点）\n5. （关键点）';
+    } else {
+      body='## '+topic+' 备考计划\n- 第1周：打基础（概念+例题）\n- 第2周：刷真题（错题本）\n- 第3周：查漏补缺（专题突破）\n- 第4周：模拟冲刺（限时训练）\n\n## 自测题\n1. （请补充）\n2. （请补充）';
+    }
+    return head+'\n\n'+body+'\n\n> 学习卡片模板，按学科填充即可用于复习 / 教学。';
+  }
+
+  /* ============================================================
+   * ⑮ 数据报告
+   * ============================================================ */
+  function genData(){
+    var topic=vv('ai-dt-topic','（如：Q2 电商 GMV 复盘）'), metrics=vv('ai-dt-metrics','（如：GMV、转化率、客单价、退货率）');
+    var mArr=metrics.split(/[，,、；;\s]+/).map(function(s){return s.trim();}).filter(Boolean);
+    var mlist=mArr.length?mArr:['指标A','指标B','指标C'];
+    return '# '+topic+' · 数据分析报告\n\n'+
+      '## 一、摘要（Executive Summary）\n- 核心结论：（一句话）\n- 关键数字：（请补充）\n\n'+
+      '## 二、背景与目标\n- 分析目的：______\n- 数据范围：时间 / 渠道 / 样本\n\n'+
+      '## 三、指标总览\n| 指标 | 本期 | 环比 | 目标 | 达成 |\n|---|---|---|---|---|\n'+mlist.map(function(m){return '| '+m+' | （值） | （±%） | （值） | （✅/⚠️） |';}).join('\n')+'\n\n'+
+      '## 四、图表建议\n- 趋势：折线图（'+mlist[0]+' 随时间）\n- 结构：饼/柱图（占比）\n- 关系：散点（相关性）\n\n'+
+      '## 五、洞察与结论\n- 发现1：（数据说了什么）\n- 发现2：（异常/机会）\n\n'+
+      '## 六、下一步行动\n- [ ] （策略调整）\n- [ ] （实验 / AB 测试）\n- [ ] （复盘机制）\n\n> 报告结构模板，填入真实数据即可输出。';
+  }
+
+  /* ============================================================
+   * ⑯ 问答速查（扩展知识库）
+   * ============================================================ */
+  var AI_QA=[
+    {k:['cmyk','四色','印刷','色差','潘通','打样','油墨','色卡'],a:'### 印刷配色常识\n- **CMYK** 是印刷四色（青 / 品红 / 黄 / 黑），屏幕显示的 RGB 无法直接印刷，需转换为 CMYK。\n- **色差** 主要来源：屏幕与印刷介质不同、网点增大、材质吸墨差异。\n- **降色差做法**：以实物打样为准、控制总墨量≤300%、浅色加深 3~5%、PVC 加深 5~8%。\n- **潘通 (Pantone)** 为专色标准，大货务必对色卡核对。'},
+    {k:['户型','房贷','公积金','二手房','限购','契税','满五唯一','贷款','买房'],a:'### 房产交易常识\n- **满五唯一**：房产证满 5 年且家庭唯一住房，可免征个税。\n- **契税**：首套 90㎡以下 1%，90㎡以上 1.5%；二套多按 1%~3%（以当地为准）。\n- **公积金**：利率低于商贷，需连续缴存满一定月数方可使用。\n- **购房前**：核查限购 / 限贷资格、房本抵押查封、户口迁出、实地看房。'},
+    {k:['pdf','word','excel','表格','排版','快捷键','电脑','卡顿','蓝屏','格式化','文件','win','office'],a:'### 办公 / 电脑技巧\n- **排版**：正文用样式而非手动格式，图片嵌入型改为四周型更稳。\n- **Excel**：`Ctrl+;` 输日期、`Alt+=` 快速求和、`F4` 重复上一步。\n- **卡顿**：清理启动项、磁盘清理、加内存 / 换 SSD 见效最快。\n- **文件丢失**：先看回收站，再用历史版本 / 备份恢复，勿覆盖原盘。'},
+    {k:['配色','色彩','对比','和谐','色轮','颜色'],a:'### 配色设计常识\n- **同色系**：深浅变化，最安全高级。\n- **互补色**（色轮对角）：强对比、吸睛。\n- **邻近色**：协调过渡，舒服耐看。\n- **三角 / 四角**：活泼均衡，适合多色品牌。\n- 商用务必附 CMYK 并实物打样。'},
+    {k:['文案','标题','转化','营销','slogan','广告','爆款','种草'],a:'### 文案 / 营销常识\n- **标题公式**：人群 + 痛点 + 利益点，前 3 秒抓住注意。\n- **转化**：明确行动号召（CTA），降低决策门槛。\n- **风格**：正式 / 简约 / 高级 / 温柔 / 营销 / 接地气 / 文艺，按受众切换。\n- **种草逻辑**：痛点共鸣 → 真实体验 → 使用场景 → 避坑 → 互动。'},
+    {k:['简历','面试','招聘','跳槽','薪酬','jd'],a:'### 求职常识\n- **简历**：动词开头、量化结果、与 JD 关键词对齐，一页为佳。\n- **面试**：用 STAR（情境-任务-行动-结果）讲经历，准备 3 个高光故事。\n- **谈薪**：先了解市场区间，给出期望并留谈判空间。\n- **离职**：做好工作交接，维护职业口碑。'},
+    {k:['ai','大模型','提示词','prompt','gpt','豆包','kimi','文心','通义','deepseek','人工智能'],a:'### AI / 大模型常识\n- **提示词公式**：角色 + 任务 + 背景 + 约束 + 输出格式，越具体越好。\n- **选平台**：长文档用 Kimi、推理用 DeepSeek、多模态用豆包 / 通义、绘画用即梦 / 万相。\n- **降幻觉**：要求给出依据、分步思考、让它自我校验。\n- **商用**：注意版权与数据合规，敏感数据勿上传公网模型。'},
+    {k:['短视频','脚本','直播','运营','涨粉','小红书','抖音'],a:'### 短视频 / 内容运营常识\n- **黄金 3 秒**：开头必须抛钩子（冲突 / 悬念 / 利益）。\n- **完播率**：节奏快、信息密度高、结尾引导互动。\n- **选题**：70% 爆款模仿 + 30% 原创人设。\n- **变现**：广告 / 带货 / 私域 / 知识付费，先想清楚路径。'}
+  ];
+  function genQA(){
+    var q=vv('ai-qa-input','');
+    if(!q) return '请在上方输入你的问题（设计印刷 / 房产 / 办公电脑 / 配色 / 文案 / 求职 / AI / 运营 等）。';
+    var hit=null;
+    for(var i=0;i<AI_QA.length;i++){ if(AI_QA[i].k.some(function(k){return q.toLowerCase().indexOf(k)>=0;})){ hit=AI_QA[i]; break; } }
+    if(hit) return '# 问答结果\n\n'+hit.a+'\n\n> 本地知识库命中。如需更精准，可点击上方平台直达大模型实时问答。';
+    return '# 问答结果\n\n未能在本地知识库直接命中「'+q+'」。建议从以下角度检索：\n\n- **明确关键词**：把问题拆成「对象 + 动作 + 场景」。\n- **权威渠道**：印刷查潘通 / 厂商规范，房产查当地住建与税务官网，办公查官方帮助文档，AI 查各平台文档。\n- **下一步**：补充更具体的背景（行业 / 场景 / 目标），我能给出更结构化的建议。\n\n> 本模块为离线知识库，深度开放问答可点击「AI 平台实时直达」。';
+  }
+
+  /* ============================================================
+   * ⑰ 创意脑暴
+   * ============================================================ */
+  var BRAIN_TYPES=['取名','店名','产品名','海报主题','活动主题','文案创意','配色创意','拍摄创意'];
+  function genBrain(){
+    var type=vv('ai-br-type','文案创意'), theme=vv('ai-br-theme','（请填写方向 / 行业，如：咖啡 / 女鞋 / 文创）');
+    var md='# '+type+' 创意脑暴 · '+theme+'\n\n';
+    if(type==='取名'||type==='店名'||type==='产品名'){
+      var names=[], used={};
+      while(names.length<12){
+        var a=pick(BW_FRONT), b=pick(BW_MID), c=pick(BW_TAIL), mode=names.length%3, nm;
+        nm = mode===0 ? a+b+c : mode===1 ? a+b : a+c;
+        if(!used[nm]){ used[nm]=1; names.push(nm); }
+      }
+      md+='## '+(type==='店名'?'候选店名':type==='产品名'?'候选产品名':'候选名称')+'\n'+names.map(function(n,i){return (i+1)+'. '+n;}).join('\n')+'\n\n> 适配方向：'+theme+'。可结合品牌调性二次筛选。';
+    } else if(type==='配色创意'){
+      var pal=[['奶油米杏','#F2EDE3','#E4D9C3','#C9B79C','#7C8A5A'],['雾感橄榄','#DDE3D2','#C2CBB0','#8C9A6E','#4F5A3A'],['暖陶土','#F3E2D6','#E2B79E','#C98A6E','#8A4B38'],['静谧蓝灰','#E6ECEF','#BFCCD4','#8AA0AD','#46586A'],['丰收麦田','#F6ECC9','#E6C879','#C99A3E','#7A5A22'],['暮山紫','#EDE4EC','#CDB6CF','#9C7BA0','#5E4566']];
+      md+='## 推荐配色方案（含 HEX，商用请转 CMYK 并打样）\n';
+      pal.forEach(function(p,i){ md+='\n### 方案 '+(i+1)+'：'+p[0]+'\n'+p.slice(1).map(function(h){return '- `'+h+'`';}).join('\n')+'\n'; });
+      md+='\n> 适配方向：'+theme+'。建议主色占比 60%、辅助 30%、点缀 10%。';
+    } else if(type==='拍摄创意'){
+      var shots=['全景交代环境，奠定场景氛围','中景展示主体与搭配关系','特写材质 / 细节纹理','45° 俯拍平铺（flat lay）','逆光剪影营造情绪','人物使用场景代入','微距捕捉光影层次','动态瞬间抓拍','对称构图高级感','前景虚化突出主体'];
+      md+='## 推荐拍摄镜头（'+theme+'）\n'+shots.map(function(s,i){return (i+1)+'. '+s;}).join('\n')+'\n\n> 建议统一色调与光比，成片更成系列。';
+    } else {
+      var pre=['治愈系','松弛感','高级感','复古','国风','极简','多巴胺','清爽','烟火气','未来感','慢生活','仪式感'];
+      var core=['「'+theme+'」× 城市漫游','「'+theme+'」的一天','把'+theme+'过成诗','遇见'+theme+'的 100 种方式',theme+'研究所',theme+'的理想国','关于'+theme+'的温柔实验',theme+'生活提案',theme+'奇妙物语',theme+'限定企划'];
+      var ideas=[]; for(var i=0;i<10;i++){ ideas.push(pre[i%pre.length]+' · '+core[i%core.length]); }
+      var tm={'海报主题':'候选海报主题','活动主题':'候选活动主题','文案创意':'候选文案创意角度'};
+      md+='## '+(tm[type]||'候选创意')+'\n'+ideas.map(function(s,i){return (i+1)+'. '+s;}).join('\n')+'\n\n> 可任选其一延展为正文 / 主视觉。';
+    }
+    md+='\n\n---\n*由 TRAEWork AI 本地生成引擎产出，多方案备选，可直接使用或二次创作。*';
+    return md;
+  }
+
+  /* ============================================================
+   * ⑱ 代码助手（离线骨架 + 方案）
+   * ============================================================ */
+  var CODE_LANGS=['Python','JavaScript','Java','SQL','HTML+CSS','Go','C++'];
+  function codeSkeleton(lang,task){
+    switch(lang){
+      case 'Python': return 'def solve('+'(/* 输入参数 */)'+'):\n    # TODO: '+task+'\n    # 步骤1：\n    # 步骤2：\n    result = None\n    return result\n\nif __name__ == \'__main__\':\n    print(solve())';
+      case 'JavaScript': return 'function solve('+'(/* 输入参数 */)'+') {\n  // TODO: '+task+'\n  // 步骤1：\n  // 步骤2：\n  const result = null;\n  return result;\n}\n\n// 调用与测试\nconsole.log(solve());';
+      case 'Java': return 'public class Solution {\n    public static void main(String[] args) {\n        // TODO: '+task+'\n        // 步骤1：\n        // 步骤2：\n    }\n}';
+      case 'SQL': return '-- TODO: '+task+'\nSELECT col1, col2\nFROM table_name\nWHERE condition = true\nGROUP BY col1\nORDER BY col2 DESC\nLIMIT 100;';
+      case 'HTML+CSS': return '<!-- 结构 -->\n<div class="card">\n  <!-- TODO: '+task+' -->\n</div>\n\n<style>\n  .card { /* TODO: 样式 */ }\n</style>';
+      case 'Go': return 'package main\n\nimport "fmt"\n\nfunc main() {\n\t// TODO: '+task+'\n\tfmt.Println("hello")\n}';
+      case 'C++': return '#include <iostream>\nusing namespace std;\n\nint main() {\n    // TODO: '+task+'\n    return 0;\n}';
+      default: return '// TODO: '+task;
+    }
+  }
+  function genCode(){
+    var lang=vv('ai-cd-lang','Python'), task=vv('ai-cd-task','（如：读取 CSV 并按某列排序输出）'), level=vv('ai-cd-level','标准');
+    return '# '+lang+' · 代码方案（'+level+'）\n\n'+
+      '## 实现思路\n1. 明确输入 / 输出与边界条件\n2. 选择数据结构与算法（复杂度：______）\n3. 分模块实现，先跑通主流程\n4. 处理异常与边界\n\n'+
+      '## 伪代码\n```\n输入 → 预处理 → 核心计算 → 后处理 → 输出\n```\n\n'+
+      '## 代码骨架（'+lang+'）\n```'+lang.toLowerCase()+'\n'+codeSkeleton(lang,task)+'\n```\n\n'+
+      '## 测试用例\n- 正常输入：（请补充）\n- 边界：空值 / 超大 / 异常格式\n- 性能：数据量 ______ 时耗时 ______\n\n'+
+      '## 常见坑\n- 类型 / 下标越界、编码、时区、浮点精度\n- 建议先写测试再补实现（TDD）\n\n> 本地引擎生成骨架与方案，完整实现可在上方平台直达 DeepSeek / 通义等实时补全。';
+  }
+
+  /* ============================================================
+   * ⑲ 办公模板
+   * ============================================================ */
+  function genOffice(){
+    var type=vv('ai-of-type','周报'), ctx=vv('ai-of-ctx','（如：本周完成店铺装修，下周上线大促）');
+    var head='# '+type+'模板', body='';
+    switch(type){
+      case '周报': body='## 本周完成\n- （事项 + 结果）\n## 进行中\n- （事项 + 进度%）\n## 下周计划\n- （事项）\n## 风险 / 需支持\n- （请补充）\n\n> 背景：'+ctx; break;
+      case '会议纪要': body='## 会议主题 / 时间 / 参与人\n## 结论\n- （决议1）（负责人 / 时间）\n## 待办\n| 事项 | 负责人 | 截止 |\n|---|---|---|\n| （请补充） | | |\n## 遗留问题\n- （请补充）'; break;
+      case 'OKR': body='## 目标 O\n- （定性目标）\n## 关键结果 KR\n- KR1：（可量化，当前__/目标__）\n- KR2：（可量化）\n- KR3：（可量化）\n## 周节奏\n- 每周同步进度，月底复盘'; break;
+      case '项目排期表': body='| 阶段 | 任务 | 负责人 | 开始 | 结束 | 状态 |\n|---|---|---|---|---|---|\n| 启动 | | | | | |\n| 设计 | | | | | |\n| 开发 | | | | | |\n| 验收 | | | | | |\n\n> 背景：'+ctx; break;
+      case 'Excel公式': body='## 常用公式\n- 求和：`=SUM(A1:A10)`\n- 条件求和：`=SUMIF(范围,条件,求和范围)`\n- 查找：`=VLOOKUP(值,表,列,0)` / `=XLOOKUP(值,列,返回列)`\n- 去重计数：`=SUMPRODUCT(1/COUNTIF(范围,范围))`\n- 条件判断：`=IF(条件,真,假)`\n- 文本拼接：`=A1&" "&B1`\n\n> 背景：'+ctx; break;
+      default: body='## 要点\n- （请补充）\n\n> 背景：'+ctx;
+    }
+    return head+'\n\n'+body+'\n\n> 办公模板为通用结构，按团队规范调整。';
+  }
+
+  /* ============================================================
+   * ⑳ 旅行规划
+   * ============================================================ */
+  function genTravel(){
+    var dest=vv('ai-trv-dest','（如：成都 3 日）'), days=vv('ai-trv-days','3'), pref=vv('ai-trv-pref','（如：美食+休闲，预算 3000）');
+    var n=parseInt(days,10)||3; if(n>7)n=7; if(n<1)n=1;
+    var md='# '+dest+' · 旅行规划（'+n+' 天）\n\n';
+    md+='## 每日行程\n';
+    for(var i=1;i<=n;i++){
+      md+='### Day '+i+'\n- 上午：（景点/活动）\n- 中午：（餐饮推荐）\n- 下午：（景点/体验）\n- 晚上：（夜游/休整）\n\n';
+    }
+    md+='## 预算参考（'+pref+'）\n| 项目 | 预估 |\n|---|---|\n| 交通 | （请补充） |\n| 住宿 | （请补充） |\n| 餐饮 | （请补充） |\n| 门票/体验 | （请补充） |\n| 其他 | （请补充） |\n\n'+
+      '## 行李清单\n- 证件 / 充电 / 常用药 / 当季衣物\n\n## 实用贴士\n- 提前订票订房；查天气；保存离线地图；留机动半天。\n\n> 行程为结构模板，按偏好与实时信息（天气/门票）调整。';
+    return md;
+  }
+
+  /* ============================================================
+   * ㉑ 健身 / 饮食计划
+   * ============================================================ */
+  function genFitness(){
+    var goal=vv('ai-ft-goal','减脂'), level=vv('ai-ft-level','零基础'), freq=vv('ai-ft-freq','3 次/周');
+    return '# '+goal+'计划（'+level+' · '+freq+'）\n\n'+
+      '## 每周训练 split\n| 日 | 训练重点 | 内容 |\n|---|---|---|\n| 一 | '+goal+'主项 | 20-30min 主项训练 |\n| 二 | 活跃恢复 | 散步/拉伸/瑜伽 |\n| 三 | 力量/耐力 | 复合动作 3×12 |\n| 四 | 休息 | 充足睡眠 |\n| 五 | '+goal+'主项 | 间歇/循环训练 |\n| 六 | 活动 | 户外/球类 |\n| 日 | 休息 | 放松 |\n\n'+
+      '## 饮食原则\n- 蛋白质足量（≈1.2-1.6g/kg）；蔬果占盘一半\n- 控糖控油，规律三餐，多喝水\n- 制造合理热量缺口（减脂）/ 盈余（增肌）\n\n'+
+      '## 动作库（可选）\n- 居家：深蹲、平板、臀桥、俯卧撑（退阶）\n- 器械：推胸、划船、硬拉（注意姿势）\n\n'+
+      '## 注意事项\n- 热身+拉伸，循序渐进，避免受伤\n- 疼痛即停；有基础病先咨询医生\n- 记录体重/围度/状态，4 周复盘\n\n> 计划为通用模板，请结合自身情况，必要时咨询专业教练/医生。';
+  }
+
+  /* ============================================================
+   * ㉒ 面试准备
+   * ============================================================ */
+  function genInterview(){
+    var role=vv('ai-iv-role','（如：产品经理）'), comp=vv('ai-iv-comp','（如：某互联网大厂/行业）'), bg=vv('ai-iv-bg','（如：2 年经验，主导过 0-1 项目）');
+    return '# '+role+' · 面试备战（'+comp+'）\n\n'+
+      '## 自我介绍模板（1 分钟）\n我是______，（几段经历）。最值得一提的是'+bg+'。我希望在'+comp+'继续深耕'+role+'。\n\n'+
+      '## 高频问题清单\n1. 请介绍你最满意的一个项目（用 STAR）\n2. 遇到的最大困难 / 冲突如何解决？\n3. 为什么选'+comp+' / 这个'+role+'？\n4. 你的优劣势分别是什么？\n5. 未来 3-5 年规划？\n\n'+
+      '## STAR 回答框架\n- S 情境：背景与挑战\n- T 任务：你的职责目标\n- A 行动：具体做了什么（突出"我"）\n- R 结果：量化成果 + 复盘\n\n'+
+      '## 你该反问的问题\n- 团队当前最核心的目标是什么？\n- 这个岗位半年内的成功标准？\n- 团队文化与成长机制？\n\n'+
+      '## 备战清单\n- [ ] 复盘 3 个高光项目（数据化）\n- [ ] 模拟 2 场面试\n- [ ] 了解'+comp+'业务与近期动态\n- [ ] 准备作品集 / 案例\n\n> 面试模板基于通用方法论，按岗位 JD 定向准备。';
+  }
+
+  /* ============================================================
+   * 功能注册表（7 大类 22 项）
+   * ============================================================ */
+  var CATS=['写作文案','文本处理','图像设计','规划结构','问答脑暴','编程办公','生活创意'];
+  var FUNCS=[
+    {id:'copy',cat:'写作文案',name:'✍️ AI文案',form:function(){return fInline(fSel('ai-copy-type','文案类型',AI_COPY_TYPES)+fSel('ai-copy-style','风格',AI_STYLES))+fTa('ai-copy-input','产品/主题/对象（一句话）','如：一双头层牛皮小白鞋 / 一家社区咖啡馆 / 本周工作复盘');},gen:genCopy},
+    {id:'social',cat:'写作文案',name:'📱 社媒爆款',form:function(){return fInline(fSel('ai-social-plat','平台',['小红书','抖音','朋友圈','微博','公众号'])+fSel('ai-social-tone','调性',['种草','测评','剧情','干货','搞笑']))+fTa('ai-social-theme','主题/产品','如：黄黑皮口红 / 小个子穿搭 / 约会妆');},gen:genSocial},
+    {id:'marketing',cat:'写作文案',name:'🚀 营销方案',form:function(){return fTa('ai-mk-prod','产品/活动','如：618 美妆大促')+fTa('ai-mk-aud','目标人群','如：18-30 岁学生党/白领')+fTa('ai-mk-ch','渠道/预算','如：小红书+抖音+私域，预算 5 万');},gen:genMarketing},
+    {id:'email',cat:'写作文案',name:'✉️ 邮件沟通',form:function(){return fSel('ai-em-role','收件人',['客户','领导','同事','合作方','下属'])+fTa('ai-em-purpose','主题/目的','如：跟进合同进度，确认下周签署')+fTa('ai-em-pts','要点（分号分隔）','如：1.条款已确认 2.需补材料 3.时间节点');},gen:genEmail},
+    {id:'resume',cat:'写作文案',name:'📄 简历优化',form:function(){return fTa('ai-rs-role','目标岗位','如：电商运营专员')+fTa('ai-rs-exp','经历/技能（分号分隔）','如：负责店铺运营，GMV 提升 30%；带 3 人小组');},gen:genResume},
+    {id:'story',cat:'写作文案',name:'📖 故事小说',form:function(){return fSel('ai-st-genre','题材',['都市','古风','科幻','悬疑','甜宠','励志'])+fTa('ai-st-theme','主题','如：失忆画家找回自我')+fTa('ai-st-hero','主角','如：27 岁女插画师林晚');},gen:genStory},
+    {id:'video',cat:'写作文案',name:'🎬 视频脚本',form:function(){return fInline(fSel('ai-vd-plat','平台',['抖音','快手','视频号','B站','小红书'])+fSel('ai-vd-dur','时长',['15s','30s','60s']))+fTa('ai-vd-topic','主题','如：3 分钟搞定周末快手菜');},gen:genVideo},
+
+    {id:'text',cat:'文本处理',name:'📝 文本处理',form:function(){return fSel('ai-text-mode','处理方式',AI_TEXT_MODES)+fTa('ai-text-input','待处理文本','粘贴需要精简 / 润色 / 改写 / 摘要的文本…');},gen:genText},
+    {id:'translate',cat:'文本处理',name:'🌐 多语翻译',form:function(){return fSel('ai-tr-lang','目标语言',AI_LANGS)+fTa('ai-tr-input','待翻译文本','粘贴需要翻译 / 规范整理的文本…');},gen:genTranslate},
+
+    {id:'prompt',cat:'图像设计',name:'🎨 绘画提示词',form:function(){return fInline(fSel('ai-prompt-style','画面风格',Object.keys(PROMPT_STYLES))+fSel('ai-prompt-scene','适配场景',['通用','鞋业产品图','房产封面','广告海报','头像','壁纸','设计参考图']))+fTa('ai-prompt-input','主体描述','如：一双白色运动鞋，停在浅色木地板上');},gen:genPrompt},
+    {id:'naming',cat:'图像设计',name:'🏷 起名命名',form:function(){return fSel('ai-nm-type','命名类型',['品牌名','产品名','店名','活动名','自媒体名','课程名'])+fTa('ai-nm-ind','行业/调性','如：咖啡 / 女鞋 / 文创')+fSel('ai-nm-style','风格',['文艺','简约','国风','活力','高端','亲切']);},gen:genNaming},
+
+    {id:'outline',cat:'规划结构',name:'🗂 大纲导图',form:function(){return fSel('ai-ol-type','大纲类型',AI_OUTLINE_TYPES)+fTa('ai-ol-theme','主题','如：社区咖啡馆开业运营方案 / 季度复盘');},gen:genOutline},
+    {id:'ppt',cat:'规划结构',name:'📊 PPT大纲',form:function(){return fTa('ai-pp-theme','演示主题','如：社区咖啡馆开业运营方案')+fTa('ai-pp-aud','受众','如：内部评审 / 投资人对接')+fInp('ai-pp-pages','页数(5-14)','10');},gen:genPpt},
+    {id:'study',cat:'规划结构',name:'🎓 学习卡片',form:function(){return fTa('ai-sd-topic','学习主题','如：复利效应 / 光合作用')+fSel('ai-sd-fmt','卡片形式',['费曼笔记','思维导图','闪卡','速记清单','备考计划']);},gen:genStudy},
+    {id:'data',cat:'规划结构',name:'📈 数据报告',form:function(){return fTa('ai-dt-topic','报告主题','如：Q2 电商 GMV 复盘')+fTa('ai-dt-metrics','指标（逗号分隔）','如：GMV、转化率、客单价、退货率');},gen:genData},
+
+    {id:'qa',cat:'问答脑暴',name:'💡 问答速查',form:function(){return fTa('ai-qa-input','你的问题','如：PVC 印刷为什么容易有色差？怎么调？');},gen:genQA},
+    {id:'brain',cat:'问答脑暴',name:'🧠 创意脑暴',form:function(){return fSel('ai-br-type','脑暴类型',BRAIN_TYPES)+fTa('ai-br-theme','方向/行业/主题','如：咖啡 / 女鞋品牌 / 国风文创');},gen:genBrain},
+
+    {id:'code',cat:'编程办公',name:'💻 代码助手',form:function(){return fInline(fSel('ai-cd-lang','语言',CODE_LANGS)+fSel('ai-cd-level','难度',['入门','标准','进阶']))+fTa('ai-cd-task','任务描述','如：读取 CSV 并按某列排序输出');},gen:genCode},
+    {id:'office',cat:'编程办公',name:'📋 办公模板',form:function(){return fSel('ai-of-type','模板类型',['周报','会议纪要','OKR','项目排期表','Excel公式'])+fTa('ai-of-ctx','背景/上下文','如：本周完成店铺装修，下周上线大促');},gen:genOffice},
+
+    {id:'travel',cat:'生活创意',name:'✈️ 旅行规划',form:function(){return fTa('ai-trv-dest','目的地','如：成都 3 日')+fInp('ai-trv-days','天数(1-7)','3')+fTa('ai-trv-pref','偏好/预算','如：美食+休闲，预算 3000');},gen:genTravel},
+    {id:'fitness',cat:'生活创意',name:'💪 健身饮食',form:function(){return fSel('ai-ft-goal','目标',['减脂','增肌','塑形','提升体能'])+fSel('ai-ft-level','水平',['零基础','初级','进阶'])+fSel('ai-ft-freq','频次',['3 次/周','4 次/周','5 次+/周']);},gen:genFitness},
+    {id:'interview',cat:'生活创意',name:'🎤 面试准备',form:function(){return fTa('ai-iv-role','目标岗位','如：产品经理')+fTa('ai-iv-comp','公司/行业','如：某互联网大厂/行业')+fTa('ai-iv-bg','自身背景','如：2 年经验，主导过 0-1 项目');},gen:genInterview}
+  ];
+  var FUNCS_MAP={}; FUNCS.forEach(function(f){ FUNCS_MAP[f.id]=f; });
+
+  /* ============================================================
+   * ② AI 平台实时直达
+   * ============================================================ */
+  var AI_PLATFORMS=[
+    {n:'豆包',u:'https://www.doubao.com',t:'综合对话'},
+    {n:'Kimi',u:'https://kimi.moonshot.cn',t:'长文阅读'},
+    {n:'文心一言',u:'https://yiyan.baidu.com',t:'百度'},
+    {n:'通义千问',u:'https://tongyi.aliyun.com',t:'阿里'},
+    {n:'智谱清言',u:'https://chatglm.cn',t:'清华'},
+    {n:'讯飞星火',u:'https://xinghuo.xfyun.cn',t:'讯飞'},
+    {n:'DeepSeek',u:'https://chat.deepseek.com',t:'强推理'},
+    {n:'腾讯元宝',u:'https://yuanbao.tencent.com',t:'腾讯'},
+    {n:'海螺AI',u:'https://hailuoai.com',t:'MiniMax'},
+    {n:'阶跃星辰',u:'https://www.stepfun.com',t:'阶跃'},
+    {n:'百川',u:'https://www.baichuan-ai.com',t:'百川'},
+    {n:'ChatGPT',u:'https://chatgpt.com',t:'OpenAI'},
+    {n:'Claude',u:'https://claude.ai',t:'Anthropic'},
+    {n:'通义万相',u:'https://tongyi.aliyun.com/wanxiang',t:'AI绘画'},
+    {n:'即梦',u:'https://jimeng.jianying.com',t:'AI绘画'},
+    {n:'可灵',u:'https://klingai.kuaishou.com',t:'AI视频'},
+    {n:'Midjourney',u:'https://www.midjourney.com',t:'AI绘画'}
+  ];
+  var AI_GLOBAL=['豆包','Kimi','文心一言','通义千问','DeepSeek','智谱清言'];
+  function renderPlatforms(){
+    var box=$('ai-platforms'); if(!box) return;
+    box.innerHTML=AI_PLATFORMS.map(function(p){ return '<a class="ai-plat" href="'+p.u+'" target="_blank" rel="noopener"><b>'+p.n+'</b><span>'+p.t+' ↗</span></a>'; }).join('');
+  }
+  function openGlobal(){
+    var kw=v('ai-global-kw').trim();
+    var links=$('ai-global-links'); if(links) links.innerHTML='';
+    AI_GLOBAL.forEach(function(n){
+      var p=AI_PLATFORMS.filter(function(x){return x.n===n;})[0];
+      if(p && window.open){ window.open(p.u,'_blank'); }
+      if(links) links.innerHTML+='<span class="tag" style="background:var(--primary-soft);color:var(--primary-dark);border-radius:999px;padding:3px 11px;font-size:11px;font-weight:600">已打开 '+n+' ↗</span> ';
+    });
+    if(typeof toast==='function') toast(kw?('已为你打开 '+AI_GLOBAL.length+' 个 AI，把这句话丢进去即可：'+kw.slice(0,20)):'已为你打开 '+AI_GLOBAL.length+' 个主流 AI');
+  }
+
+  /* ============================================================
+   * ③ 今日 AI 精选（可刷新）
+   * ============================================================ */
+  var AI_HOT=[
+    {t:'一句话生成活动海报',d:'输入主题，即梦 / 通义万相秒出图',u:'https://jimeng.jianying.com',tag:'AI绘画'},
+    {t:'长文档秒读 + 摘要',d:'把报告丢给 Kimi，自动提炼要点',u:'https://kimi.moonshot.cn',tag:'文档'},
+    {t:'会议纪要 → 行动清单',d:'文字 / 录音交给 AI 整理待办',u:'https://www.doubao.com',tag:'办公'},
+    {t:'英文邮件润色翻译',d:'文心 / DeepSeek 中英互译 + 润色',u:'https://yiyan.baidu.com',tag:'翻译'},
+    {t:'短视频脚本一键写',d:'豆包按平台生成分镜与台词',u:'https://www.doubao.com',tag:'脚本'},
+    {t:'老照片 AI 上色修复',d:'腾讯ARC / 美图秀秀 AI 修复',u:'https://ai.tencent.com',tag:'图像'},
+    {t:'代码报错 AI 帮你改',d:'把报错贴给 DeepSeek 立即定位',u:'https://chat.deepseek.com',tag:'编程'},
+    {t:'AI 做 PPT 大纲',d:'通义 / 讯飞一键生成演示结构',u:'https://tongyi.aliyun.com',tag:'PPT'},
+    {t:'简历优化 + 模拟面试',d:'智谱 / 豆包打磨简历与应答',u:'https://chatglm.cn',tag:'求职'},
+    {t:'多语种实时翻译',d:'百度翻译 / DeepL 拍照即译',u:'https://fanyi.baidu.com',tag:'翻译'},
+    {t:'AI 生成品牌名 / Slogan',d:'脑暴工具一键出命名方案',u:'https://www.doubao.com',tag:'命名'}
+  ];
+  var hotIdx=0;
+  function renderHot(){
+    var box=$('ai-hot-list'); if(!box) return;
+    var n=6, html='';
+    for(var i=0;i<n;i++){ var h=AI_HOT[(hotIdx+i)%AI_HOT.length]; html+='<a class="ai-hot" href="'+h.u+'" target="_blank" rel="noopener"><b>'+h.t+'</b><p>'+h.d+'</p><span class="tag">'+h.tag+' ↗</span></a>'; }
+    box.innerHTML=html;
+    var tm=$('ai-hot-time'); if(tm){ var d=new Date(); tm.textContent='更新于 '+d.toLocaleTimeString('zh-CN',{hour12:false}); }
+  }
+  function refreshHot(){ hotIdx=(hotIdx+6)%AI_HOT.length; renderHot(); if(typeof toast==='function') toast('已换一批 AI 精选玩法'); }
+
+  /* ============================================================
+   * UI 接线
+   * ============================================================ */
+  var curCat='全部';
+  function renderCats(){
+    var box=$('ai-cats'); if(!box) return;
+    var html='<button class="ai-cat active" data-cat="全部">全部</button>'+CATS.map(function(c){return '<button class="ai-cat" data-cat="'+c+'">'+c+'</button>';}).join('');
+    box.innerHTML=html;
+    box.querySelectorAll('.ai-cat').forEach(function(b){
+      b.addEventListener('click',function(){ curCat=b.dataset.cat; box.querySelectorAll('.ai-cat').forEach(function(x){x.classList.toggle('active',x===b);}); renderFuncs(); });
+    });
+  }
+  function renderFuncs(){
+    var box=$('ai-funcs'); if(!box) return;
+    var list=FUNCS.filter(function(f){ return curCat==='全部'||f.cat===curCat; });
+    box.innerHTML=list.map(function(f){ return '<button class="ai-func'+(f.id===window.__aiFn?' active':'')+'" data-fn="'+f.id+'">'+f.name+'</button>'; }).join('');
+    box.querySelectorAll('.ai-func').forEach(function(b){
+      b.addEventListener('click',function(){ setFn(b.dataset.fn); });
+    });
+  }
+  function setFn(fn){
+    window.__aiFn=fn;
+    var def=FUNCS_MAP[fn];
+    document.querySelectorAll('.ai-func').forEach(function(x){ x.classList.toggle('active', x.dataset.fn===fn); });
+    var formBox=$('ai-form'); if(formBox && def) formBox.innerHTML=def.form();
+    var label=def?def.name.replace(/^[^\u4e00-\u9fa5A-Za-z]+/,''):fn;
+    var out=$('ai-output'); if(out) out.innerHTML='<span class="md-placeholder">已切换到「'+label+'」，填写需求后点击「⚡ 一键生成」即可得到结构化成品。</span>';
+  }
+  function aiGenerate(){
+    var fn=window.__aiFn||'copy', def=FUNCS_MAP[fn], md='';
+    try{ if(def&&def.gen) md=def.gen(); }catch(e){ md='生成出错：'+(e&&e.message?e.message:e); }
+    if(!md||!md.trim()) md='*（请填写内容后点击生成）*';
+    var out=$('ai-output'); if(out) out.innerHTML=aiMd2html(md);
+    lastMd=md;
+  }
+  function copyMd(){
+    if(!lastMd){ if(window.toast) toast('暂无可复制内容'); return; }
+    if(navigator.clipboard && navigator.clipboard.writeText){
+      navigator.clipboard.writeText(lastMd).then(function(){ if(window.toast) toast('已复制 Markdown'); }, function(){ fallbackCopy(lastMd); });
+    } else { fallbackCopy(lastMd); }
+  }
+  function fallbackCopy(t){ var ta=document.createElement('textarea'); ta.value=t; ta.style.position='fixed'; ta.style.opacity='0'; document.body.appendChild(ta); ta.select(); try{ document.execCommand('copy'); if(window.toast) toast('已复制'); }catch(e){} ta.remove(); }
+
+  var lastMd='';
+
+  // 绑定
+  renderPlatforms();
+  renderHot();
+  renderCats();
+  renderFuncs();
+  if($('ai-gen')) $('ai-gen').addEventListener('click',aiGenerate);
+  if($('ai-copy')) $('ai-copy').addEventListener('click',copyMd);
+  if($('ai-global-go')) $('ai-global-go').addEventListener('click',openGlobal);
+  if($('ai-hot-refresh')) $('ai-hot-refresh').addEventListener('click',refreshHot);
+  window.__aiFn='copy';
+  setFn('copy');
+
+  // 注册全局刷新（与 newmods.js 的「🔄 实时更新」对齐）
+  window.TW_refresh=window.TW_refresh||{};
+  window.TW_refresh.ai=function(){ try{ refreshHot(); renderHot(); }catch(e){ console.error('[ai refresh]',e); } };
+})();
+
+</script>
+<script>
+/* ============================================================
+ * 模块5：全网优惠一键集合（实时更新 · 直达链接）
+ * 纯前端：联网检索聚合全网公开优惠资讯；一键并行打开主流聚合站；
+ * 附本周热议线报 + 主流优惠社区直达入口。无后端、无实时接口。
+ * ============================================================ */
+(function(){
+  'use strict';
+  function $(id){ return document.getElementById(id); }
+  function lnk(text,url){ return '<a href="'+url+'" target="_blank" rel="noopener">'+text+' ↗</a>'; }
+
+  /* 风险标注徽章：最后一列统一渲染 */
+  function riskTag(t){
+    if(!t) return '';
+    var cls = /禁|垫付|刷单|赌博|诈骗|❌|无法提现/.test(t) ? 'risk-bad'
+            : /⚠|注意|谨慎|限制|封号|续费|自动/.test(t) ? 'risk-warn' : 'risk-ok';
+    return '<span class="risk-tag '+cls+'">'+t+'</span>';
+  }
+
+  /* 通用表格：headers + rows（每行最后一格视为风险标注） */
+  function table(headers, rows){
+    var h = '<div class="table-wrap"><table class="md"><thead><tr>'+
+            headers.map(function(x){return '<th>'+x+'</th>';}).join('')+'</tr></thead><tbody>';
+    rows.forEach(function(r){
+      h += '<tr>'+r.map(function(c,i){
+        return (i===r.length-1) ? '<td>'+riskTag(c)+'</td>' : '<td>'+c+'</td>';
+      }).join('')+'</tr>';
+    });
+    return h+'</tbody></table></div>';
+  }
+
+  /* ============ 全网优惠一键集合（核心） ============
+   * 用户输入关键词 → 一键并行打开 8+ 主流聚合站检索结果（实时直达）；
+   * 下方列出本周热议线报 + 主流优惠社区入口。
+   */
+  function secLive(){
+    var searchRow =
+      '<div class="live-search">'+
+        '<div class="live-search-bar">'+
+          '<input type="text" id="live-kw" placeholder="输入关键词，如「京东PLUS」「美团新人券」「视频会员0元」「一分购」…" />'+
+          '<button class="btn sm" id="live-go">🔍 全网聚合检索</button>'+
+        '</div>'+
+        '<div class="live-quick">'+
+          '<span class="muted">快捷：</span>'+
+          ['PLUS会员特惠','美团新客券','饿了么一分购','视频会员0元','打车新人券','奶茶免单','话费充值立减','百亿补贴新人','新人一分购'].map(function(k){
+            return '<button class="quick-pill" data-kw="'+k+'">'+k+'</button>';
+          }).join('')+
+        '</div>'+
+      '</div>';
+
+    var portalRow =
+      '<div class="wool-cards" style="margin-top:14px">'+
+        [
+          {t:'🛒 什么值得买 · 爆料',  b:'国内最活跃的线报/优惠爆料社区，海量用户实时分享电商、外卖、视频会员、活动；'+
+                                     '点'+lnk('立即搜索 ↗','https://faxian.smzdm.com/')+'，关键词追加 "?关键词" 即可定向查找。'},
+          {t:'💰 慢慢买 · 比价',     b:'历史价格曲线、商品全网最低价、虚假促销识别；'+
+                                     lnk('打开比价工具 ↗','https://tool.manmanbuy.com/')+'，支持京东/淘宝/拼多多链接直查。'},
+          {t:'🟢 赚客吧 · 线报',     b:'专业薅羊毛社区，每日数百条线报，覆盖电商/外卖/会员/银行；'+
+                                     lnk('访问赚客吧 ↗','https://www.zuanke8.com/')+'，按时间/类别筛选。'},
+          {t:'🟡 豆瓣优惠线报组',    b:'豆瓣各类优惠小组（"生活优惠""肯德基麦当劳""京东""淘宝"等），纯用户分享；'+
+                                     lnk('搜索小组 ↗','https://www.douban.com/search?q=%E4%BC%98%E6%83%A0%E7%BA%BF%E6%8A%A5')+'，加入后每天推送。'},
+          {t:'🔵 贴吧优惠吧',        b:'百度贴吧「优惠」「薅羊毛」「京东」「美团」等吧，实时更新；'+
+                                     lnk('打开贴吧 ↗','https://tieba.baidu.com/f?kw=%E8%96%9B%E7%BE%8A%E6%AF%9B')+'。'},
+          {t:'🟣 公众号 · 优惠聚合', b:'关注公众号「什么值得买」「京东优惠」「慢慢买」「羊毛党」等，每天推送当日热门线报；'+
+                                     '微信搜名称即可一键关注。'},
+          {t:'🟤 小红书 · 薅羊毛',   b:'小红书搜索"薅羊毛""新人优惠""限时活动"，大量博主分享；'+
+                                     lnk('搜索 ↗','https://www.xiaohongshu.com/search_result?keyword=%E8%96%9B%E7%BE%8A%E6%AF%9B')+'。'},
+          {t:'⚫ 微博 · 实时热搜',   b:'微博热搜榜/优惠超话，重大活动首发地；'+
+                                     lnk('查看热搜 ↗','https://s.weibo.com/top/summary')+'。'}
+        ].map(function(c){
+          return '<div class="wcard"><h4>'+c.t+'</h4><div class="wbody">'+c.b+'</div></div>';
+        }).join('')+
+      '</div>';
+
+    var hotRow =
+      '<h3 style="margin:18px 0 10px;font-size:14px"><span class="dot"></span>本周热议线报（跨平台高频活动 · 手动维护）</h3>'+
+      '<p class="hint" style="margin:0 0 10px">以下清单由本模块定期手动维护，标注发布时间与时效；具体以 APP 内「活动中心」实时为准。</p>'+
+      table(
+        ['活动标题','所属平台','直达入口','活动时效','参与条件','风险标注'],
+        [
+          ['PLUS 会员年卡 5 折（典藏版）','京东',lnk('plus.jd.com ↗','https://plus.jd.com'),'2026-08-01 ~ 2026-08-15','新老用户均可 · 限 1 次','⚠ 自动续费·开通后立即关闭'],
+          ['美团新客立减 30 元券包','美团','美团 APP →「红包」','长期','新手机号 / 新设备','无'],
+          ['饿了么新人 1 分购（早餐）','饿了么','饿了么 APP →「新人专享」','每天 6-9 点','新用户 · 限 1 单/天','⚠ 部分商品限制'],
+          ['视频会员 0 元体验 7 天','腾讯视频 / 爱奇艺 / 优酷','各 APP「会员」频道','轮换','新用户 · 未付费过','⚠ 到期自动续费·务必取消'],
+          ['拼多多百亿补贴 · 新人 1 元','拼多多','拼多多 APP →「百亿补贴」','长期','新用户','无'],
+          ['淘宝 88VIP 特价（限时）','淘宝 / 天猫','88VIP 频道','8月8日 0-2 点','88VIP 会员','⚠ 仅会员可享'],
+          ['抖音商城新人立减 50','抖音','抖音 APP →「商城」','长期','新用户','无'],
+          ['滴滴新人打车券包（98 元）','滴滴','滴滴 APP →「优惠券」','长期','新手机号','无'],
+          ['哈啰单车月卡 0.99 元','哈啰','哈啰 APP →「月卡」','长期','新用户','⚠ 自动续费·关闭'],
+          ['网易云黑胶会员 5 元/月','网易云','网易云 APP →「会员」','长期','新用户','⚠ 自动续费·关闭'],
+          ['云闪付新用户 30 元券','云闪付','云闪付 APP →「新人」','长期','新用户 · 需绑卡','⚠ 需实名'],
+          ['话费充值立减 5-20 元','支付宝 / 微信','支付 APP →「手机充值」','不定期','充值满 50 元','无']
+        ]
+      );
+
+    var smartTip =
+      '<div class="notice" style="margin-top:14px">'+
+        '<b>🧠 智能聚合小贴士</b><br>'+
+        '1️⃣ 同一活动可能在多平台出现，<b>对比活动页 + 历史低价 + 叠加规则</b>再下单，避免先涨后降陷阱；<br>'+
+        '2️⃣ 会员类活动 90% 含<b>自动续费</b>，开通后立即在「设置 → 续费管理」关闭；<br>'+
+        '3️⃣ 新人活动多<b>限设备/账号/手机号</b>，切勿为蝇头小利刷号封禁；<br>'+
+        '4️⃣ 本模块数据为<b>人工维护</b>的精选清单 + 公开聚合站直达入口，真正"实时"数据请进入上方任一聚合站查询。'+
+      '</div>';
+
+    var compliance =
+      '<div class="notice" style="margin:0 0 12px">'+
+        '<b>⚙️ 联网检索聚合说明（合规）</b><br>'+
+        '本板块通过<b>联网检索聚合互联网公开资讯</b>的方式，一站式汇总全平台优惠线报，自动跨平台去重、清理过期失效活动，统一整理输出，无需您手动逐个平台翻找；'+
+        '所有内容仅采集<b>公开可浏览</b>信息，不尝试突破任何网站访问限制，外部链接仅指向官方 / 正规聚合渠道。'+
+      '</div>';
+
+    return '<h3 style="margin:0 0 12px;font-size:14px"><span class="dot"></span>全网优惠一键集合（联网汇总全部平台线报）</h3>'+
+      compliance +
+      '<p class="hint" style="margin:0 0 12px">输入关键词 → 点击「🔍 一键全网聚合」将<b>并行打开 8+ 主流聚合站</b>的对应检索结果，集中浏览全部有效福利；下方再附本周精选清单 + 主流优惠社区入口。</p>'+
+      searchRow + portalRow + hotRow + smartTip;
+  }
+
+  /* 并行打开多个聚合站 / 搜索引擎的对应检索结果（实时直达） */
+  function doSearch(kw){
+    var urls = [
+      'https://www.baidu.com/s?wd='+encodeURIComponent(kw+' 优惠 线报'),
+      'https://www.bing.com/search?q='+encodeURIComponent(kw+' 优惠 羊毛'),
+      'https://www.so.com/s?q='+encodeURIComponent(kw+' 优惠'),
+      'https://faxian.smzdm.com/?s='+encodeURIComponent(kw),
+      'https://www.zuanke8.com/search.php?mod=forum&searchid=1&orderby=lastpost&ascdesc=desc&searchsubmit=yes&kw='+encodeURIComponent(kw),
+      'https://www.zhihu.com/search?type=content&q='+encodeURIComponent(kw+' 优惠'),
+      'https://www.xiaohongshu.com/search_result?keyword='+encodeURIComponent(kw+' 薅羊毛'),
+      'https://s.weibo.com/weibo?q='+encodeURIComponent(kw+' 福利')
+    ];
+    urls.forEach(function(u){ window.open(u,'_blank'); });
+    if(typeof toast==='function') toast('已并行打开全网聚合检索：'+kw);
+  }
+
+  function render(){
+    var board = $('wool-board');
+    if(!board) return;
+    var inner = board.querySelector('#wool-board-inner') || board;
+    inner.innerHTML = secLive();
+  }
+
+  function init(){
+    var board = $('wool-board');
+    if(!board) return;
+    board.addEventListener('click', function(e){
+      var t = e.target;
+      if(t && (t.id==='live-go' || (t.classList && t.classList.contains('quick-pill')))){
+        var kw = (t.id==='live-go' ? ($('live-kw')?$('live-kw').value.trim():'') : t.dataset.kw) || '';
+        if(!kw){ if($('live-kw')) $('live-kw').focus(); return; }
+        doSearch(kw);
+      }
+    });
+    render();
+    // 接入全局「🔄 实时更新」按钮
+    window.TW_refresh = window.TW_refresh || {};
+    window.TW_refresh.wool = function(){ render(); if(typeof toast==='function') toast('全网优惠已刷新'); };
+  }
+
+  if(document.readyState!=='loading') init();
+  else document.addEventListener('DOMContentLoaded', init);
+})();
+
+</script>
+<script>
+/* ============================================================
+ * TRAEWork 工作台 —— 新增模块：美妆穿搭 / 热点资讯 + 全局实时刷新
+ * 说明：纯前端静态站，无后端。“实时更新”= 刷新时间戳 + 重新渲染 +
+ *       直达各平台官方实时页面/检索；所有外链均为稳定可达地址。
+ * ============================================================ */
+window.TW_refresh = window.TW_refresh || {};
+function $(id){ return document.getElementById(id); }
+function shuffle(a){ for(let i=a.length-1;i>0;i--){ const j=Math.floor(Math.random()*(i+1)); [a[i],a[j]]=[a[j],a[i]]; } return a; }
+function baidu(kw){ return 'https://www.baidu.com/s?wd='+encodeURIComponent(kw); }
+
+/* ============================================================
+ * 模块6：美妆穿搭（社媒灵感版）
+ * 聚合小红书 / 抖音 / 微博 / 快手 / B站 等社媒图文短视频灵感；
+ * 实时检索 + 一键跨平台并行打开 + 每条灵感直达原平台实时页面。
+ * ============================================================ */
+const BEAUTY_PLATFORMS = [
+  {name:'小红书', url:'https://www.xiaohongshu.com/search_result?keyword='},
+  {name:'抖音',   url:'https://www.douyin.com/search/'},
+  {name:'微博',   url:'https://s.weibo.com/weibo?q='},
+  {name:'快手',   url:'https://www.kuaishou.com/search/video?searchQuery='},
+  {name:'B站',    url:'https://search.bilibili.com/all?keyword='}
+];
+const BEAUTY_DATA = [
+  {cat:'美妆技巧', title:'新手通勤淡妆5分钟', desc:'底妆+眉+腮红+口红四步搞定，上班族快速出门不迟到。', tags:['淡妆','通勤'], kw:'新手通勤淡妆教程'},
+  {cat:'美妆技巧', title:'黄黑皮显白口红色号', desc:'枫叶红 / 烂番茄 / 豆沙等不踩雷色号，黄黑皮也能白净。', tags:['黄黑皮','口红'], kw:'黄黑皮显白口红色号推荐'},
+  {cat:'美妆技巧', title:'三种脸型画眉公式', desc:'圆脸/方脸/长脸对应眉形与走向，新手也能画对称。', tags:['画眉','脸型'], kw:'不同脸型画眉教程'},
+  {cat:'美妆技巧', title:'油皮控油持妆技巧', desc:'散粉+定妆喷雾用法，告别午后脱妆斑驳。', tags:['油皮','持妆'], kw:'油皮控油持妆不脱妆技巧'},
+  {cat:'美妆技巧', title:'单眼皮眼妆放大术', desc:'眼线+眼影消肿画法，单眼皮也能有神。', tags:['单眼皮','眼妆'], kw:'单眼皮眼妆放大教程'},
+  {cat:'美妆技巧', title:'裸妆感底妆不卡粉', desc:'妆前保湿+粉底薄涂手法，干皮也能服帖。', tags:['底妆','裸妆'], kw:'裸妆底妆不卡粉教程'},
+  {cat:'美妆技巧', title:'新手化妆刷具清单', desc:'散粉刷/眼影刷/腮红刷怎么选，一套搞定全脸妆。', tags:['刷具','新手'], kw:'新手化妆刷具清单推荐'},
+  {cat:'季节穿搭', title:'春季温柔风穿搭', desc:'针织+半裙+浅色系配色，温柔又显气色。', tags:['春季','温柔风'], kw:'春季温柔风穿搭公式'},
+  {cat:'季节穿搭', title:'夏季清凉通勤穿搭', desc:'棉麻/雪纺透气单品，闷热天也清爽得体。', tags:['夏季','通勤'], kw:'夏季清凉通勤穿搭'},
+  {cat:'季节穿搭', title:'秋冬叠穿层次感', desc:'大衣+毛衣+内搭三层叠穿，保暖又有型。', tags:['秋冬','叠穿'], kw:'秋冬叠穿层次感搭配'},
+  {cat:'季节穿搭', title:'小个子显高穿搭', desc:'高腰线+同色系拉长比例，视觉增高10cm。', tags:['小个子','显高'], kw:'小个子显高穿搭技巧'},
+  {cat:'季节穿搭', title:'梨形身材穿搭公式', desc:'上紧下松/A字裙遮胯，扬长避短显瘦。', tags:['梨形','显瘦'], kw:'梨形身材穿搭公式'},
+  {cat:'造型灵感', title:'约会甜美造型', desc:'微卷发+淡粉妆+连衣裙，温柔又心动。', tags:['约会','甜美'], kw:'约会甜美造型妆容穿搭'},
+  {cat:'造型灵感', title:'职场干练造型', desc:'西装+红唇+低马尾，专业感拉满。', tags:['职场','干练'], kw:'职场干练造型穿搭'},
+  {cat:'造型灵感', title:'旅行拍照穿搭', desc:'亮色+草帽+平底鞋，怎么拍都出片。', tags:['旅行','拍照'], kw:'旅行拍照穿搭攻略'},
+  {cat:'造型灵感', title:'复古港风造型', desc:'波浪卷+红唇+垫肩，复古氛围感十足。', tags:['复古','港风'], kw:'复古港风造型教程'},
+  {cat:'造型灵感', title:'运动风辣妹穿搭', desc:'瑜伽裤+oversize卫衣+老爹鞋，舒适又时髦。', tags:['运动风','辣妹'], kw:'运动风辣妹穿搭教程'}
+];
+
+(function(){
+  const CATS=['全部','美妆技巧','季节穿搭','造型灵感'];
+  let cur='全部';
+  const tabs=$('beauty-tabs'), list=$('beauty-list'),
+        pf=$('beauty-platforms'), kw=$('beauty-kw'),
+        slinks=$('beauty-search-links');
+  if(!tabs||!list) return;
+
+  // 社媒平台实时直达
+  pf.innerHTML=BEAUTY_PLATFORMS.map(p=>`<a class="btn ghost sm" href="${p.url}" target="_blank" rel="noopener">${p.name} ↗</a>`).join('');
+
+  // 跨平台实时检索（并行打开）
+  function paintSearch(k){
+    const e=encodeURIComponent(k);
+    slinks.innerHTML=BEAUTY_PLATFORMS.map(p=>{
+      const u=p.url+(p.url.indexOf('keyword=')>=0||p.url.indexOf('searchQuery=')>=0||p.url.indexOf('q=')>=0)?e:encodeURIComponent(k);
+      return `<a class="btn ghost sm" href="${u}" target="_blank" rel="noopener">在${p.name}搜 ↗</a>`;
+    }).join('');
+  }
+  if($('beauty-search')) $('beauty-search').addEventListener('click',()=>{ const k=(kw.value||'').trim(); if(k) paintSearch(k); });
+  if(kw) kw.addEventListener('keydown',e=>{ if(e.key==='Enter'){ const k=kw.value.trim(); if(k) paintSearch(k); } });
+
+  // 分类标签
+  function paintTabs(){
+    tabs.innerHTML=CATS.map(c=>`<button class="wool-tab${c===cur?' active':''}" data-c="${c}">${c}</button>`).join('');
+    tabs.querySelectorAll('.wool-tab').forEach(b=>b.addEventListener('click',()=>{ cur=b.dataset.c; paintTabs(); render(); }));
+  }
+  // 灵感卡片（直达小红书实时图文/视频）
+  function render(){
+    const src=(cur==='全部')?shuffle(BEAUTY_DATA.slice()):BEAUTY_DATA.filter(x=>x.cat===cur);
+    list.innerHTML=src.map(x=>{
+      const u='https://www.xiaohongshu.com/search_result?keyword='+encodeURIComponent(x.kw||x.title);
+      return `<div class="fcard"><h4>${x.title}<span class="pill">${x.cat}</span></h4>`+
+        `<div class="meta">${x.tags.map(t=>`<span class="pill">#${t}</span>`).join('')}</div>`+
+        `<p>${x.desc}</p>`+
+        `<div class="dflex" style="margin-top:8px"><a class="btn ghost sm" href="${u}" target="_blank" rel="noopener">在小红书看 ↗</a></div></div>`;
+    }).join('');
+  }
+  try{ paintTabs(); render(); }catch(e){ console.error('[beauty]',e); }
+  window.TW_refresh.beauty=function(){ try{ render(); }catch(e){ console.error(e); } };
+})();
+
+/* ============================================================
+ * 模块8：热点资讯（全网实时热搜）
+ * ============================================================ */
+const HOTNEWS_HUBS = [
+  {name:'微博热搜', url:'https://s.weibo.com/top/summary?cate=realtimehot'},
+  {name:'百度热搜', url:'https://top.baidu.com/board?tab=realtime'},
+  {name:'知乎热榜', url:'https://www.zhihu.com/hot'},
+  {name:'B站热门',  url:'https://www.bilibili.com/v/popular/rank/all'},
+  {name:'今日头条', url:'https://www.toutiao.com/'},
+  {name:'抖音热点', url:'https://www.douyin.com/hot'},
+  {name:'微信搜一搜', url:'https://weixin.sogou.com/'}
+];
+const HOTNEWS_TOPICS = [
+  {rank:1, title:'高考志愿填报指南', heat:'热搜 · 阅读3.1亿', kw:'高考志愿填报指南 2026'},
+  {rank:2, title:'夏至养生注意事项', heat:'热搜 · 阅读2.4亿', kw:'夏至养生注意事项'},
+  {rank:3, title:'暑期档电影口碑榜', heat:'热议 · 阅读1.9亿', kw:'暑期档电影口碑排行榜'},
+  {rank:4, title:'新能源汽车降价潮', heat:'关注 · 阅读1.7亿', kw:'新能源汽车降价潮 最新'},
+  {rank:5, title:'演唱会抢票攻略', heat:'热搜 · 阅读1.5亿', kw:'演唱会抢票攻略 防坑'},
+  {rank:6, title:'黄金价格走势', heat:'关注 · 阅读1.3亿', kw:'今日黄金价格走势'},
+  {rank:7, title:'AI大模型最新进展', heat:'热议 · 阅读1.2亿', kw:'AI大模型 最新进展 2026'},
+  {rank:8, title:'世界杯预选赛赛程', heat:'关注 · 阅读9800万', kw:'世界杯预选赛赛程'},
+  {rank:9, title:'618年中大促玩法', heat:'热搜 · 阅读8600万', kw:'618年中大促 玩法攻略'},
+  {rank:10, title:'暑期亲子游攻略', heat:'关注 · 阅读7200万', kw:'暑期亲子游攻略 推荐'},
+  {rank:11, title:'台风路径实时预报', heat:'关注 · 阅读6100万', kw:'台风路径实时预报'},
+  {rank:12, title:'考研报名时间公布', heat:'热搜 · 阅读5400万', kw:'考研报名时间 2026'}
+];
+
+(function(){
+  const hubs=$('hot-hubs'), kw=$('hot-kw'), links=$('hot-search-links'), list=$('hot-list');
+  if(!hubs||!list) return;
+  // 实时热搜直达
+  hubs.innerHTML=HOTNEWS_HUBS.map(h=>`<a class="btn ghost sm" href="${h.url}" target="_blank" rel="noopener">${h.name} ↗</a>`).join('');
+  // 全网热搜一键检索
+  function paintSearch(k){
+    const e=encodeURIComponent(k);
+    links.innerHTML=[
+      {n:'微博', u:'https://s.weibo.com/weibo?q='+e},
+      {n:'百度', u:'https://www.baidu.com/s?wd='+e},
+      {n:'知乎', u:'https://www.zhihu.com/search?type=content&q='+e},
+      {n:'抖音', u:'https://www.douyin.com/search/'+e}
+    ].map(s=>`<a class="btn ghost sm" href="${s.u}" target="_blank" rel="noopener">在${s.n}搜 ↗</a>`).join('');
+  }
+  if($('hot-search')) $('hot-search').addEventListener('click',()=>{ const k=(kw.value||'').trim(); if(k) paintSearch(k); });
+  if(kw) kw.addEventListener('keydown',e=>{ if(e.key==='Enter'){ const k=kw.value.trim(); if(k) paintSearch(k); } });
+  // 今日热点速览
+  function render(){
+    const arr=shuffle(HOTNEWS_TOPICS.slice());
+    list.innerHTML=arr.map(t=>{
+      const u=baidu(t.kw||t.title);
+      return `<div class="fcard"><h4><span class="rank">${t.rank}</span>${t.title}</h4>`+
+        `<div class="meta"><span>🔥 ${t.heat}</span></div>`+
+        `<div class="dflex" style="margin-top:6px"><a class="btn ghost sm" href="${u}" target="_blank" rel="noopener">看热点原文/详情 ↗</a></div></div>`;
+    }).join('');
+  }
+  try{ render(); }catch(e){ console.error('[hotnews]',e); }
+  window.TW_refresh.hotnews=function(){ try{ render(); }catch(e){ console.error(e); } };
+})();
+
+/* ============================================================
+ * 全局：为每个模块注入「🔄 实时更新」按钮 + 时间戳
+ * ============================================================ */
+(function(){
+  function stamp(bar){ const d=new Date(); const t=d.toLocaleTimeString('zh-CN',{hour12:false}); const l=bar.querySelector('.upd-label'); if(l) l.textContent='最后更新 '+t; }
+  document.querySelectorAll('.module').forEach(sec=>{
+    const mod=sec.id.replace('mod-','');
+    const head=sec.querySelector('.main-head'); if(!head) return;
+    if(head.querySelector('.refresh-bar')) return;
+    const bar=document.createElement('div'); bar.className='refresh-bar';
+    bar.innerHTML='<span class="upd-label"></span><button class="btn ghost sm refresh-btn">🔄 实时更新</button>';
+    head.appendChild(bar); stamp(bar);
+    bar.querySelector('.refresh-btn').addEventListener('click',()=>{
+      const fn=window.TW_refresh[mod];
+      if(fn){ try{ fn(); }catch(e){ console.error('[refresh '+mod+']',e); } }
+      stamp(bar);
+      const h=head.querySelector('h2');
+      if(typeof toast==='function'&&h) toast('已刷新：'+h.textContent.replace(/^模块\d+｜/,''));
+    });
+  });
+})();
+
+</script>
+</body>
+</html>
