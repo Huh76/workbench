@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<!-- build:trailwork-20260728j -->
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>TRAEWork · 卡片式智能办公工作台</title>
+  <link rel="stylesheet" href="assets/style.css"/>
+<script>
+(function(){
+  try{
+    var beacon=new BeaconAction({
+      appkey:'0WEB06U85YBSLJNL',
+      versionCode:'1.0.0',
+      channelID:'share',
+      delay:1000,
+      sessionDuration:30*60*1000,
+      isOversea:false,
+      needReportRqdEvent:false
+    });
+    beacon.onDirectUserAction('preview_page_view',{
+      'url':location.href,
+      'referrer':document.referrer,
+      'title':document.title,
+      'sandbox_id':'21b204b699b64f66b93e8585f76b9014'
+    });
+  }catch(e){}
+})();
+</script></head>
+<body>
+<div class="app">
+  <!-- 左侧永久导航 -->
+  <aside class="sidebar">
+    <div class="brand">
+      <p>7大模块工作台</p>
+    </div>
+    <nav class="nav" id="nav">
+      <div class="nav-item active" data-mod="property"><span class="num">1</span><div class="meta"><b>全国房源查询</b><span>多户型二手房</span></div></div>
+      <div class="nav-item" data-mod="recruit"><span class="num">2</span><div class="meta"><b>排版兼职招聘</b><span>最新招聘整合</span></div></div>
+      <div class="nav-item" data-mod="film"><span class="num">3</span><div class="meta"><b>全网影视推荐</b><span>电影/剧/动漫/综艺</span></div></div>
+      <div class="nav-item" data-mod="ai"><span class="num">4</span><div class="meta"><b>全能AI辅助</b><span>写作/代码/营销/办公</span></div></div>
+      <div class="nav-item" data-mod="wool"><span class="num">5</span><div class="meta"><b>薅羊毛线报</b><span>新人/回归/悬赏</span></div></div>
+      <div class="nav-item" data-mod="beauty"><span class="num">6</span><div class="meta"><b>美妆穿搭</b><span>美妆/穿搭/造型</span></div></div>
+      <div class="nav-item" data-mod="hotnews"><span class="num">7</span><div class="meta"><b>热点资讯</b><span>全网实时热搜</span></div></div>
+    </nav>
+    <div class="foot">一站式生活 / 办公 / 情报工作台</div>
+  </aside>
+
+  <main class="main">
+    <!-- ========== 模块1 全国房源 ========== -->
+    <section class="module active" id="mod-property">
+      <div class="main-head"><h2>模块1｜全国二手房房源（多平台实时 + 本地示例）</h2><p>覆盖全国 22 城 · 选城市/户型/租售 · 点平台直达贝壳/安居客/链家/58 等最新实时列表</p><span class="dmeta" data-dm="property"></span></div>
+      <div class="notice">免责：下方"示例房源"为互联网公开整合调研资料（非实时），不作为房产交易、产权、税费、过户依据；实时数据请点击上方平台直达官方最新列表，最终核验务必咨询线下正规中介。</div>
+      <div class="card" style="border:1px solid #bcd2ff;background:#f6f9ff">
+        <h3><span class="dot"></span>多平台实时检索（选城市/户型后点击平台直达最新列表 ↗）</h3>
+        <div class="row">
+          <div class="field"><label>城市</label><select id="live-city"></select></div>
+          <div class="field"><label>租售</label><select id="live-sale"><option>二手房</option><option>租房</option><option>新房</option></select></div>
+          <div class="field"><label>户型</label><select id="live-layout"><option value="">不限户型</option></select></div>
+          <div class="field"><label>性质</label><select id="live-type"><option value="">不限（住宅+商办）</option><option value="住宅">住宅·70年</option><option value="商办">商办·40年</option></select></div>
+        </div>
+        <div class="dflex wrap" style="gap:8px;margin-top:8px;flex-wrap:wrap">
+          <a class="btn sm" data-plat="beike" href="https://www.ke.com" target="_blank" rel="noopener">贝壳 ↗</a>
+          <a class="btn ghost sm" data-plat="anjuke" href="https://www.anjuke.com" target="_blank" rel="noopener">安居客 ↗</a>
+          <a class="btn ghost sm" data-plat="lianjia" href="https://www.lianjia.com" target="_blank" rel="noopener">链家 ↗</a>
+          <a class="btn ghost sm" data-plat="58" href="https://www.58.com" target="_blank" rel="noopener">58同城 ↗</a>
+          <a class="btn ghost sm" data-plat="baidu" href="https://www.baidu.com" target="_blank" rel="noopener" style="border-color:#4a90d9;color:#1a5fb4">百度聚合 ↗</a>
+        </div>
+        <div class="hint" style="margin-top:8px">本工作台无官方接口，无法直接抓取各平台实时数据。<strong>选好城市/户型/租售后点击上方任一平台，将在新标签页打开该平台最新的对应城市列表</strong>，以平台实时页面为准。下方为本地<strong>示例房源（调研参考·非实时）</strong>。</div>
+      </div>
+      <div class="card">
+        <h3><span class="dot"></span>筛选条件</h3>
+        <div class="row">
+          <div class="field"><label>城市</label><select id="f-city"><option value="">全部城市</option></select></div>
+          <div class="field"><label>片区</label><select id="f-district"><option value="">全部</option></select></div>
+          <div class="field"><label>户型</label><select id="f-layout"><option value="">全部户型</option></select></div>
+          <div class="field"><label>性质</label><select id="f-type"><option value="">全部</option><option value="住宅">70年纯住宅</option><option value="公寓">40年商办公寓</option></select></div>
+          <div class="field"><label><input type="checkbox" id="f-newonly"/> 仅看2016后次新</label></div>
+          <div class="field"><label>最高总价(万)</label><input type="number" id="f-maxprice" placeholder="如 60" style="width:110px"/></div>
+          <div class="field"><label>最大面积(㎡)</label><input type="number" id="f-maxarea" placeholder="如 50" style="width:110px"/></div>
+          <div class="field" style="justify-content:flex-end"><label>&nbsp;</label><div class="dflex"><button class="btn ghost sm" id="f-reset">重置</button><button class="btn sm" id="f-apply">应用筛选</button></div></div>
+        </div>
+        <div class="dflex spread" style="margin-top:10px"><span class="hint" id="prop-count"></span><button class="btn ghost sm" id="prop-export">导出Markdown</button></div>
+      </div>
+      <div class="stats" id="prop-stats"></div>
+      <h3 style="margin:16px 0 10px;font-size:14px">🏠 70年纯住宅 · 示例房源（调研参考·非实时）</h3>
+      <div class="grid" id="prop-grid"></div>
+      <h3 style="margin:16px 0 10px;font-size:14px">🏢 40年商办公寓 · 示例房源（单独分栏·强制标注）</h3>
+      <div class="grid" id="prop-grid-apt"></div>
+      <div class="card"><h3><span class="dot"></span>多套横向对比</h3><div id="compare-box" class="hint table-wrap">点击上方房源卡片加入对比（最多 3 套）。</div></div>
+      <div class="card"><h3><span class="dot"></span>片区实时租金行情参考（按所选城市/片区统计）</h3><div id="rent-box" class="table-wrap"></div></div>
+      <div class="card"><h3><span class="dot"></span>刚需购房避坑指南</h3>
+        <ul style="margin:0;padding-left:18px;font-size:12.5px;color:#374151;line-height:1.9">
+          <li>优先确认<strong>70年住宅性质</strong>与<strong>天然气入户</strong>，商办公寓不通燃气、不可落户、税费高，谨慎购买。</li>
+          <li>核验房本<strong>满五唯一</strong>可省个税/增值税；确认抵押、查封、户口迁出。</li>
+          <li>楼龄影响贷款成数与居住体验，2016年后次新小区优先。</li>
+          <li>单价对比小区近 3 月成交均价，警惕高溢价精装房。</li>
+          <li>签约前务必实地看房、查物业与车位，所有口头承诺写入合同。</li>
+          <li>各城市<strong>限购/限贷政策</strong>差异大，购房前务必查询当地最新购房资格与贷款规则。</li>
+        </ul>
+      </div>
+    </section>
+
+    <!-- ========== 模块2 招聘 ========== -->
+    <section class="module" id="mod-recruit">
+      <div class="main-head"><h2>模块2｜排版兼职招聘（最新整合）</h2><p>整合智联/BOSS/前程无忧/58/猎聘 等平台印刷排版类兼职 · <b>覆盖全国 70+ 城市</b> · 调研参考</p><span class="dmeta" data-dm="recruit"></span></div>
+      <div class="notice">招聘信息为公开整合调研资料，以各平台实时发布为准；投递前请核验企业资质，谨防收费陷阱。</div>
+      <div class="card"><h3><span class="dot"></span>招聘平台直达（看招聘人/联系方式/地址/福利/要求）</h3>
+        <div class="toolbar" id="rec-sites"></div>
+        <div class="hint" style="margin-top:8px">点平台按钮直接跳转该平台「排版」最新招聘列表，实时查看招聘方联系方式、工作地址、薪资福利与任职要求。</div>
+      </div>
+      <div class="card"><h3><span class="dot"></span>本地整合筛选</h3>
+        <div class="dflex"><select id="rec-platform"><option value="">全部平台</option><option>智联招聘</option><option>BOSS直聘</option><option>前程无忧</option><option>58同城</option></select>
+          <select id="rec-city"><option value="">全部城市</option></select>
+          <select id="rec-mode"><option value="">全部方式</option><option>线上</option><option>坐班</option><option>居家</option></select>
+          <button class="btn sm" id="rec-search">筛选</button>
+        </div>
+        <div id="rec-list" style="margin-top:12px"></div>
+      </div>
+    </section>
+
+    <!-- ========== 模块3 影视 ========== -->
+    <section class="module" id="mod-film">
+      <div class="main-head"><h2>模块3｜全网影视推荐（主流平台版）</h2><p>聚合腾讯视频 / 优酷 / 爱奇艺 / 哔哩哔哩 / 芒果TV 等实时剧集·动漫·综艺 · 直达原平台</p><span class="dmeta" data-dm="film"></span></div>
+      <div class="card">
+        <h3><span class="dot"></span>主流视频平台实时直达</h3>
+        <div class="dflex wrap" id="film-platforms" style="margin-bottom:10px"></div>
+        <div class="dflex">
+          <input type="text" id="film-kw" placeholder="如 十日终焉 / 中国奇谭 / 大侦探" style="flex:1;min-width:160px">
+          <button class="btn sm" id="film-search">跨平台搜 ↗</button>
+        </div>
+        <div class="dflex wrap" id="film-search-links" style="margin-top:8px"></div>
+        <p class="hint" style="margin:8px 0 0">点击上方平台看实时热播榜；输入剧名/综艺名 → 一键并行打开各平台检索页，直达可看资源。</p>
+      </div>
+      <div class="card"><h3><span class="dot"></span>筛选与排序</h3>
+        <div class="dflex"><select id="film-kind"><option value="">全部分类</option><option>电影</option><option>电视剧</option><option>动漫</option><option>综艺</option></select>
+          <select id="film-sort"><option value="score">按评分</option><option value="year">按年份</option></select>
+          <button class="btn sm" id="film-btn">筛选</button><span class="hint" id="film-count"></span></div>
+        <div id="film-list" style="margin-top:12px"></div>
+      </div>
+    </section>
+
+    <!-- ========== 模块4 全能AI辅助 ========== -->
+    <section class="module" id="mod-ai">
+      <div class="main-head"><h2>模块4｜全能 AI 智能辅助（全场景生产力 · 全面升级版）</h2><p>写作文案 · 文本处理 · 绘画提示词 · 大纲 · 翻译 · 代码 · 简历 · 营销 · 社媒 · 学习 · 办公 · 生活创意 ｜ 一句话需求 → 结构化成品（本地引擎生成 + 主流 AI 实时直达）</p></div>
+      <div class="notice">说明：本模块为<strong>本地智能生成引擎（离线模板 + 规则算法）</strong> + <strong>主流 AI 平台实时直达</strong>双模式。上方选功能即填即生成结构化成品，商用合规、无版权风险；需要更强实时推理时，点「AI 平台实时直达」进入豆包 / Kimi / 文心 / 通义 / DeepSeek 等最新对话。所有外部链接仅指向官方平台。</div>
+
+      <!-- 平台实时直达 -->
+      <div class="card">
+        <h3><span class="dot"></span>AI 平台实时直达（点击进入最新实时对话 / 生成）</h3>
+        <div class="dflex wrap" id="ai-platforms" style="margin-bottom:10px"></div>
+        <div class="dflex">
+          <input type="text" id="ai-global-kw" placeholder="如 帮我写一份618活动方案 / 把这段日文翻译成中文" style="flex:1;min-width:160px">
+          <button class="btn sm" id="ai-global-go">一键直达 AI ↗</button>
+        </div>
+        <div class="dflex wrap" id="ai-global-links" style="margin-top:8px"></div>
+        <p class="hint" style="margin:8px 0 0">点平台按钮直接进该 AI 最新实时对话页；输入任意需求 → 点「一键直达 AI」并行打开多个主流 AI，把同一句话丢给它即可得到实时生成结果。</p>
+      </div>
+
+      <!-- 功能大全 -->
+      <div class="card">
+        <div class="ai-cats" id="ai-cats"></div>
+        <div class="ai-funcs" id="ai-funcs"></div>
+        <div class="hint" style="margin-top:8px">共 <b id="ai-fn-count">22</b> 项 AI 能力，按分类筛选，选择后填写需求点「⚡ 一键生成」。</div>
+      </div>
+      <div class="card">
+        <div class="ai-form" id="ai-form"></div>
+      </div>
+      <div class="card">
+        <div class="dflex spread" style="margin-bottom:12px">
+          <h3 style="margin:0"><span class="dot"></span>生成结果（Markdown）</h3>
+          <div class="dflex">
+            <button class="btn ghost sm" id="ai-copy">复制</button>
+            <button class="btn sm" id="ai-gen">⚡ 一键生成</button>
+          </div>
+        </div>
+        <div id="ai-output" class="md-body"><span class="md-placeholder">在上方选择功能并填写需求，点击「⚡ 一键生成」即可得到结构化成品。</span></div>
+      </div>
+
+      <!-- 今日精选 -->
+      <div class="card">
+        <div class="dflex spread" style="margin-bottom:8px">
+          <h3 style="margin:0"><span class="dot"></span>今日 AI 精选 · 热门玩法</h3>
+          <div class="dflex"><span class="hint" id="ai-hot-time"></span><button class="btn ghost sm" id="ai-hot-refresh">🔄 换一批</button></div>
+        </div>
+        <div id="ai-hot-list"></div>
+        <p class="hint" style="margin:8px 0 0">精选高频 AI 玩法，点卡片直达对应平台实时体验；点「🔄 换一批 / 实时更新」获取下一组。</p>
+      </div>
+    </section>
+
+    <!-- ========== 模块5 全网优惠一键集合 ========== -->
+    <section class="module" id="mod-wool">
+      <div class="main-head"><h2>模块5｜全网优惠一键集合（实时更新 · 直达链接）</h2><p>联网检索聚合全网公开优惠线报 · 一键并行打开主流聚合站 · 本周精选 + 社区直达入口</p></div>
+      <div class="notice">说明：本板块通过<strong>联网检索聚合互联网公开资讯</strong>，一站式汇总全平台优惠线报，自动跨平台去重、清理过期失效活动；优惠以各平台 APP / 官网实时活动为准，外部链接仅指向官方 / 正规聚合渠道。已自动过滤垫付 / 充值 / 刷单类项目并预警风险。所有内容<strong>不构成消费、投资或兼职建议</strong>。</div>
+      <div class="card" id="wool-board">
+        <h3><span class="dot"></span>全网优惠一键集合（实时检索 · 本周精选 · 社区直达）</h3>
+        <div id="wool-board-inner"></div>
+      </div>
+    </section>
+
+    <!-- ========== 模块7 美妆穿搭 ========== -->
+    <section class="module" id="mod-beauty">
+      <div class="main-head"><h2>模块6｜美妆穿搭（社媒灵感版）</h2><p>聚合小红书 / 抖音 / 微博 / 快手 / B站 等社媒图文短视频灵感 · 实时更新 · 直达原帖</p></div>
+      <div class="card">
+        <h3><span class="dot"></span>社交平台实时直达</h3>
+        <div class="dflex wrap" id="beauty-platforms" style="margin-bottom:10px"></div>
+        <div class="dflex">
+          <input type="text" id="beauty-kw" placeholder="如 黄黑皮口红 / 小个子穿搭 / 约会妆" style="flex:1;min-width:160px">
+          <button class="btn sm" id="beauty-search">跨平台搜 ↗</button>
+        </div>
+        <div class="dflex wrap" id="beauty-search-links" style="margin-top:8px"></div>
+        <p class="hint" style="margin:8px 0 0">输入关键词 → 一键并行打开各社媒实时检索页（图文 / 视频均可），所有链接指向官方平台。</p>
+      </div>
+      <div class="card"><div class="wool-tabs" id="beauty-tabs"></div></div>
+      <div class="card">
+        <div class="dflex spread" style="margin-bottom:8px"><span class="hint">点击下方「在小红书看 ↗」直达该灵感词的社媒实时图文 / 视频页</span></div>
+        <div id="beauty-list" class="grid"></div>
+      </div>
+    </section>
+
+    <!-- ========== 模块8 热点资讯 ========== -->
+    <section class="module" id="mod-hotnews">
+      <div class="main-head"><h2>模块7｜热点资讯（全网实时热搜）</h2><p>聚合全网实时热搜、热门话题，快速浏览各平台最新动态，资讯实时刷新，直达热点原文</p></div>
+      <div class="card"><h3><span class="dot"></span>实时热搜直达（点击进入各平台热搜榜，实时刷新）</h3><div class="toolbar" id="hot-hubs" style="margin-top:6px"></div></div>
+      <div class="card"><h3><span class="dot"></span>全网热搜一键检索</h3>
+        <div class="dflex"><input type="text" id="hot-kw" placeholder="输入关键词，如 高考 / 演唱会 / 新品发布" style="width:260px"><button class="btn sm" id="hot-search">检索</button></div>
+        <div class="toolbar" id="hot-search-links" style="margin-top:8px"></div>
+        <div class="hint" style="margin-top:6px">点平台按钮在新标签页打开该平台对该词的实时搜索结果。</div>
+      </div>
+      <div class="card"><h3><span class="dot"></span>今日热点速览（精选 · 点击标题直达原文检索）</h3><div id="hot-list"></div></div>
+    </section>
+  </main>
+</div>
+
+<script src="assets/data.js"></script>
+<script src="assets/app.js"></script>
+<script src="assets/ai.js"></script>
+<script src="assets/wool.js"></script>
+<script src="assets/newmods.js"></script>
+</body>
+</html>
